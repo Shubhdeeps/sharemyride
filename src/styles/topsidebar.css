@@ -1,0 +1,38 @@
+.small-container {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+}
+
+.topbar {
+  position: relative;
+  z-index: 2;
+}
+
+.header-title {
+  margin-top: -8px;
+}
+
+.sidebar-active {
+  transition: 0.2s ease-in-out;
+  right: 0%;
+  z-index: 1;
+}
+.sidebar-inactive {
+  right: -100%;
+  transition: 0.2s ease-in-out;
+  z-index: 1;
+}
+
+.nav-button {
+  width: 49%;
+  height: 60px;
+  position: relative;
+  z-index: 0;
+  top: -25px;
+  font-weight: 600;
+}
+
+.nav-button span {
+  margin-top: -5px;
+}

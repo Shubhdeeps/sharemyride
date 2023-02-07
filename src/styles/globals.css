@@ -1,0 +1,181 @@
+:root {
+  --primary: #252c34;
+  --primaryOverlay: #13171c;
+  --secondary: #fefefe;
+  --highlight: #f2b349;
+
+  --fontPrimary: #727272;
+  --fontSecondary: #a0a0a0;
+  --fontWhite: #ecf3ff;
+  --button: #f2b349;
+  --button-inactive: #f7faff;
+  --fontSafe: #008d38;
+  --fontDanger: #8d0000;
+
+  --textField1: rgba(30, 0, 52, 0.4);
+  --textField2: rgba(73, 107, 146, 0.2);
+
+  --placeholder: #8c8c8c;
+}
+body {
+  padding: 0%;
+  margin: 0;
+  color: var(--primary);
+  background: linear-gradient(90deg, #8d5481 12.94%, #6e5084 55.25%);
+}
+
+.main {
+  width: 100vw;
+  height: 100vh;
+}
+
+.textField1 {
+  background: var(--textField1) !important;
+}
+
+.textField2 {
+  background: var(--textField2) !important;
+}
+
+.primary-bg {
+  background: var(--primary) !important;
+}
+.primaryOverlay-bg {
+  background: var(--primaryOverlay) !important;
+}
+.primary-color {
+  color: var(--primary) !important;
+}
+
+.secondary-bg {
+  background: var(--secondary) !important;
+}
+.secondary-color {
+  color: var(--secondary) !important;
+}
+
+.highlight {
+  background: var(--highlight) !important;
+}
+
+.highlight-color {
+  color: var(--highlight) !important;
+}
+
+.fontPrimary {
+  color: var(--fontPrimary);
+}
+
+.fontLight {
+  color: var(--fontWhite);
+}
+
+.fontSecondary {
+  color: var(--fontSecondary) !important;
+}
+
+.button-color {
+  background: var(--button) !important;
+}
+
+.button-color-border {
+  border: 1px solid var(--button) !important;
+}
+
+.button-inactive-color {
+  background: var(--button-inactive) !important;
+}
+
+.font-danger {
+  color: var(--fontDanger);
+}
+
+.font-safe {
+  color: var(--fontSafe);
+}
+
+.text-1 {
+  font-size: 48px !important;
+}
+.text-1-5 {
+  font-size: 28px !important;
+}
+.text-2 {
+  font-size: 24px !important;
+}
+.text-2-5 {
+  font-size: 20px !important;
+}
+.text-3 {
+  font-size: 12px !important;
+}
+.text-4 {
+  font-size: 10px !important;
+}
+.text-5 {
+  font-size: 8px !important;
+}
+.text-6 {
+  font-size: 6px !important;
+}
+
+.border-r1 {
+  border-radius: 12px;
+}
+
+.border-r2 {
+  border-radius: 24px;
+}
+
+.border-r3 {
+  border-radius: 48px;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: var(--placeholder);
+  font-weight: 200 !important;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: var(--placeholder);
+  font-weight: 200 !important;
+
+  opacity: 1;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: var(--placeholder);
+  font-weight: 200 !important;
+
+  opacity: 1;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: var(--placeholder);
+  font-weight: 200 !important;
+}
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: var(--placeholder);
+  font-weight: 200 !important;
+}
+
+::placeholder {
+  /* Most modern browsers support this now. */
+  color: var(--placeholder);
+  font-weight: 200 !important;
+}

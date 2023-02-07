@@ -1,0 +1,40 @@
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="email"],
+input[type="checkbox"],
+[type="datetime-local"],
+[type="date"],
+textarea {
+  background: none !important;
+  border: none;
+  width: 100%;
+}
+
+input:focus,
+input[type="password"],
+input[type="number"],
+input[type="email"],
+input[type="checkbox"],
+[type="datetime-local"],
+[type="date"],
+textarea {
+  outline: none;
+  background: none !important;
+}
+
+.empty-area {
+  height: 30vh;
+}
+
+.filled-area {
+  min-height: 70vh;
+  height: 100%;
+  background: #ecf3ff;
+}
+
+.float-btn {
+  height: 70px;
+  width: 70px;
+  bottom: 50px;
+}
