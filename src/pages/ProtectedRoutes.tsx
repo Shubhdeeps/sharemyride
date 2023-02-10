@@ -6,7 +6,8 @@ import Loader from "../components/loader";
 import Header from "../components/navigationBars/Header";
 import Sidebar from "../components/navigationBars/Sidebar";
 import Layout from "../Layout";
-import { auth } from "../service/firebaseConfig";
+import { auth } from "../service/firebase/firebaseConfig";
+import { currentUserProfile } from "../store/store";
 import Register from "./registration";
 
 export const ProtectedRoutesFN = () => {
@@ -19,6 +20,7 @@ export const ProtectedRoutesFN = () => {
     auth.onAuthStateChanged((user) => {
       console.log("state change");
       if (user) {
+        currentUserProfile.value = user;
         setCurrUser(user);
         setIsLoading(false);
       } else {

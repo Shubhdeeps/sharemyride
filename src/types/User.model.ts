@@ -1,4 +1,4 @@
-import { Timestamp } from "../service/firebaseConfig";
+import { Timestamp } from "../service/firebase/firebaseConfig";
 
 export type User = {
     uid: string;

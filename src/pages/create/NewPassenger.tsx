@@ -6,21 +6,22 @@ import InputCheckboxField from "../../components/inputFields/InputCheckboxField"
 import InputTextFieldwitState from "../../components/inputFields/InputTextFieldwithState";
 import Loader from "../../components/loader";
 import { PassengerModel } from "../../types/passenger.model";
-import { timestamp } from "../../service/firebaseConfig";
+import { timestamp } from "../../service/firebase/firebaseConfig";
+import { useNavigate, useParams } from "react-router-dom";
+import { createNewPassengerTile } from "../../service/firebase/collectionOperations";
+import RouteDetails from "../../components/route/RouteDetails";
+import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
 
 export default function NewPassenger() {
-  const [loading, setLoading] = useState(true);
+  const { routeId } = useParams();
+  const routes = routeId?.split("_") as string[];
+  const navigate = useNavigate();
 
-  //stoppages
-  const stopRef1 = useRef("");
-  const stopRef2 = useRef("");
-  const stopRef3 = useRef("");
-  const stopRefs = [stopRef1, stopRef2, stopRef3];
-  const [stoppageRef, setStoppageRef] = useState<
-    React.MutableRefObject<string>[]
-  >([stopRefs[0]]);
-  const [departTime, setDepartTime] = useState([]);
-  const [arriveTime, setArriveTime] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const [departTime, setDepartTime] = useState("");
+  const [arriveTime, setArriveTime] = useState("");
   const [departFrom, setDepartFrom] = useState("");
   const [arriveAt, setArriveAt] = useState("");
 
@@ -31,7 +32,6 @@ export default function NewPassenger() {
   const additionalData = useRef("");
   const eventRef = useRef("");
   const eventURLRef = useRef("");
-  const dayOfTravelling = useRef<Date | null>(null);
 
   //message refS
   const messangerRef = useRef("");
@@ -47,7 +47,8 @@ export default function NewPassenger() {
   //Rehydrating the data
   useEffect(() => {
     const storedData = localStorage.getItem("new-passenger-info");
-
+    setDepartFrom(capitalizeFirstLetter(routes[0]));
+    setArriveAt(capitalizeFirstLetter(routes[1]));
     //stroing local data
     if (storedData) {
       const data = JSON.parse(storedData) as PassengerModel;
@@ -68,15 +69,22 @@ export default function NewPassenger() {
   }, []);
 
   const handlePost = () => {
+    if (
+      !departTime ||
+      !arriveTime ||
+      !costRef.current ||
+      !numberOfPassengerRef.current
+    ) {
+      setError("All field with * are required!");
+      return;
+    }
     // Data to be stored
     const data: PassengerModel = {
-      stoppages: stoppageRef.map((stop) => stop.current),
-      departTime,
-      arriveTime,
+      actualStartTime: timestamp.fromMillis(+new Date(departTime)),
+      actualEndTime: timestamp.fromMillis(+new Date(arriveTime)),
       departFrom,
       arriveAt,
       cost: costRef.current,
-      dayOfTravel: dayOfTravelling.current,
       additionalInfo: {
         eventName: eventRef.current,
         eventURL: eventURLRef.current,
@@ -96,9 +104,22 @@ export default function NewPassenger() {
         showContact: showContactDetails.current,
       },
     };
+    //saving to local storage
     localStorage.setItem("new-passenger-info", JSON.stringify(data));
+
+    //upload to firestore
+    if (routeId) {
+      createNewPassengerTile(data, routeId);
+      setError("");
+      handleCancel();
+    } else {
+      setError("Something went wrong, please try again later.");
+      return;
+    }
   };
-  const handleCancel = () => {};
+  const handleCancel = () => {
+    navigate(`/route/${routeId}`);
+  };
 
   if (loading) {
     return <Loader />;
@@ -106,16 +127,16 @@ export default function NewPassenger() {
   return (
     <>
       <div className="empty-area">
-        <br />
+        <RouteDetails />
       </div>
       <div className="filled-area container noselect">
         <span className="text-2 fw-bold fontLigh">Request new ride</span>
         <Timeline
           endPoint={arriveAt}
           startPoint={departFrom}
-          startTime={[timestamp.fromMillis(+new Date(departTime[0]))]}
-          endTime={[timestamp.fromMillis(+new Date(arriveTime[0]))]}
-          stoppage={[...stoppageRef.map((eachRef) => eachRef.current)]}
+          startTime={[timestamp.fromMillis(+new Date(departTime))]}
+          endTime={[timestamp.fromMillis(+new Date(arriveTime))]}
+          stoppage={[]}
         />
 
         <br />
@@ -126,23 +147,17 @@ export default function NewPassenger() {
             placeholder="14:00"
             setData={setDepartTime}
             title="Depart time*"
-            type="time"
-            isAnArray={true}
+            type="datetime-local"
+            isAnArray={false}
             currValue={departTime}
           />
           <InputTextFieldwitState
             placeholder="20:00"
             setData={setArriveTime}
             title="Arriving time*"
-            type="time"
-            isAnArray={true}
+            type="datetime-local"
+            isAnArray={false}
             currValue={arriveTime}
-          />
-          <InputTextFieldSecondary
-            placeholder="20:00"
-            textRef={dayOfTravelling}
-            title="Day of travelling*"
-            type="date"
           />
         </div>
         <hr />
@@ -173,7 +188,7 @@ export default function NewPassenger() {
           <InputTextFieldwitState
             placeholder="Kristiine, Tallinn"
             setData={setDepartFrom}
-            title="Departing from*"
+            title="Departing from"
             type="text"
             isAnArray={false}
             currValue={departFrom}
@@ -181,67 +196,12 @@ export default function NewPassenger() {
           <InputTextFieldwitState
             placeholder="Old town, Tartu"
             setData={setArriveAt}
-            title="Arriving at*"
+            title="Arriving at"
             type="text"
             isAnArray={false}
             currValue={arriveAt}
           />
           <br />
-          <span className="text-5 fontSecondary">{`Stoppages (max 3)`}</span>
-          {Array.from({ length: stoppageRef.length }, (_, i) => i + 1).map(
-            (stop) => {
-              return (
-                <React.Fragment key={stop}>
-                  <InputTextFieldSecondary
-                    placeholder={`Xyz city ${stop}`}
-                    textRef={stoppageRef[stop - 1]}
-                    title={`Stoppage ${stop}`}
-                    type="text"
-                  />
-                </React.Fragment>
-              );
-            }
-          )}
-
-          <span className="mt-2 d-flex justify-content-center noselect">
-            <i
-              onClick={() => {
-                if (stoppageRef.length < 3) {
-                  setStoppageRef((prevState) => [
-                    ...prevState,
-                    stopRefs[prevState.length],
-                  ]);
-                } else {
-                  setStoppageRef((prevState) => [...prevState]);
-                }
-              }}
-              className="cursor bi bi-plus-circle text-2 p-2 primary-bg border-r1 fontLight d-flex gap-2 justify-content-center align-items-center w-75"
-            >
-              Add Stoppage
-            </i>
-          </span>
-          <span className="mt-2 d-flex justify-content-center noselect">
-            <i
-              onClick={() => {
-                if (stoppageRef.length === 1) {
-                  stoppageRef[0].current = "";
-                  setStoppageRef([stoppageRef[0]]);
-                }
-                if (stoppageRef.length > 1) {
-                  console.log("clicking..");
-                  const newStopRefs = stoppageRef;
-                  const removedRef = newStopRefs.pop();
-                  if (removedRef && removedRef.current) {
-                    removedRef.current = "";
-                  }
-                  setStoppageRef([...newStopRefs]);
-                }
-              }}
-              className="cursor bi bi-x-circle text-2 p-2 primary-bg border-r1 fontLight d-flex gap-2 justify-content-center align-items-center w-75"
-            >
-              Remove Stoppage
-            </i>
-          </span>
         </div>
 
         <hr />
@@ -319,15 +279,12 @@ export default function NewPassenger() {
               switchRef={showContactDetails}
               title="Show contact details?"
             />
-            <InputCheckboxField
-              placeholder=""
-              switchRef={showContactDetails}
-              title="Pick me from my depart point."
-            />
           </div>
         </div>
         <hr />
-        <br />
+        {error && (
+          <div className="text-danger text-3 mb-3 text-center">{error}</div>
+        )}
         <div className="d-flex gap-2">
           <FilledButton title="Cancel" onClick={() => console.log("Cancel")} />
           <FilledButton title="Post" onClick={() => handlePost()} />

@@ -8,9 +8,9 @@ import Loader from "../../components/loader";
 import { NewRideModal } from "../../types/ride.model";
 import { useNavigate, useParams } from "react-router-dom";
 import RouteDetails from "../../components/route/RouteDetails";
-import { createNewRideTile } from "../../service/collectionOperations";
-import { capitalizeFirstLetter } from "../../service/captalizeFirstLetter";
-import { timestamp } from "../../service/firebaseConfig";
+import { createNewRideTile } from "../../service/firebase/collectionOperations";
+import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
+import { timestamp } from "../../service/firebase/firebaseConfig";
 
 export default function NewRide() {
   const { routeId } = useParams();

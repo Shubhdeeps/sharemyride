@@ -1,6 +1,6 @@
 import React from "react";
-import { Timestamp } from "../../../service/firebaseConfig";
-import { firebaseTimestampToTime } from "../../../service/firebaseTimestampToString";
+import { Timestamp } from "../../../service/firebase/firebaseConfig";
+import { firebaseTimestampToTime } from "../../../service/helperFunctions/firebaseTimestampToString";
 
 // const data = {
 //   startTime: ["16:00", "16:20"],
@@ -11,8 +11,8 @@ import { firebaseTimestampToTime } from "../../../service/firebaseTimestampToStr
 // };
 
 type TimelineData = {
-  startTime: typeof Timestamp[];
-  endTime: typeof Timestamp[];
+  startTime: (typeof Timestamp)[];
+  endTime: (typeof Timestamp)[];
   startPoint: string;
   endPoint: string;
   stoppage: string[];
@@ -52,7 +52,7 @@ export default function Timeline(data: TimelineData) {
 
 // if current index is greater than zero, then make it red otherwise green
 // index greater than zero means, there are multple enteries in array, so delayed.
-const Time = ({ time }: { time: typeof Timestamp[] }) => {
+const Time = ({ time }: { time: (typeof Timestamp)[] }) => {
   const timeLastIndex = time.length - 1;
   const timeAvail = time[0].seconds;
   if (isNaN(timeAvail)) {

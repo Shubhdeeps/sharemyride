@@ -1,35 +1,49 @@
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
+import {
+  addRouteToFavourite,
+  removeFromFavourite,
+} from "../../service/firebase/collectionOperations";
 import OutlinedButton from "../inputFields/OutlinedButton";
 type Props = {
   countryName: string;
   startPoint: string;
   endPoint: string;
+  isFavourite: boolean;
 };
 
 export default function RouteCard(data: Props) {
-  const [isFav, setFavourite] = useState(false);
+  const [isFav, setFavourite] = useState(data.isFavourite);
   const navigation = useNavigate();
   const handleAddToFav = () => {
     setFavourite((prevState) => !prevState);
+    if (isFav) {
+      //already fav, remove it
+
+      removeFromFavourite(data.startPoint, data.endPoint, data.countryName);
+    } else {
+      // not fav, add to fav
+      addRouteToFavourite(data.startPoint, data.endPoint, data.countryName);
+    }
   };
 
   const handleRoute = () => {
     const routeId = `${data.startPoint.toLowerCase()}_${data.endPoint.toLowerCase()}_${data.countryName.toLowerCase()}`;
-    navigation(`route/${routeId}`);
+    navigation(`/route/${routeId}`);
   };
   return (
     <Container className="primary-color container border-r1 route-card p-3 shadow d-flex flex-column justify-content-between">
       <span className="text-3 fw-bold">
-        {data.countryName} <i className="bi bi-flag"></i>
+        {capitalizeFirstLetter(data.countryName)} <i className="bi bi-flag"></i>
       </span>
       <div className="d-flex align-items-center text-2 w-100 gap-1">
-        <span>{data.startPoint}</span>
+        <span>{capitalizeFirstLetter(data.startPoint)}</span>
         <i className="bi bi-car-front"></i>
         <div className="flex-grow-1">{routeSVG}</div>
         <i className="bi bi-geo-alt"></i>
-        <span>{data.endPoint}</span>
+        <span>{capitalizeFirstLetter(data.endPoint)}</span>
       </div>
       <div
         onClick={() => handleAddToFav()}

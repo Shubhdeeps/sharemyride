@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../service/collectionOperations";
+import { logout } from "../../service/firebase/collectionOperations";
 import SideBarButton from "../inputFields/SideBarButton";
 
 export default function Sidebar({
@@ -31,7 +31,7 @@ export default function Sidebar({
     >
       <div className="d-flex flex-column gap-2 align-items-center justify-content-center h-100 p-4">
         <SideBarButton
-          onClick={() => handleClick(() => navigate("/"))}
+          onClick={() => handleClick(() => navigate("/dashboard"))}
           title="Dashboard"
         />
         <SideBarButton

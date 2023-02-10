@@ -35,7 +35,6 @@
 
 .scroll {
   position: relative;
-  overflow-y: scroll;
 }
 .modal-container {
   height: fit-content;

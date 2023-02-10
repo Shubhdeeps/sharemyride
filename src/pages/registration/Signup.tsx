@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import FilledButton from "../../components/inputFields/FIlledButton";
 import InputTextFieldPrimary from "../../components/inputFields/InputTextFieldPrimary";
-import { auth } from "../../service/firebaseConfig";
+import { auth } from "../../service/firebase/firebaseConfig";
 
 export default function Signup({ setIsLogIn }: { setIsLogIn: Function }) {
   const [error, setError] = useState("");

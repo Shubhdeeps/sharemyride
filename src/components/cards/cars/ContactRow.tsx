@@ -14,21 +14,21 @@ export default function ContactRow(data: Props) {
   return (
     <>
       <div className="d-flex gap-2">
-        {data.messanger && (
+        {!!data.messanger && (
           <Image
             onClick={() => window.open(`https://m.me/${data.messanger}`)}
             className="icon-images"
             src={messanger}
           />
         )}
-        {data.whatsapp && (
+        {!!data.whatsapp && (
           <Image
             onClick={() => window.open(`https://wa.me/${data.whatsapp}`)}
             className="icon-images"
             src={whatsapp}
           />
         )}
-        {data.text && (
+        {!!data.text && (
           <Image
             onClick={() => window.open(`sms:${data.text}`)}
             className="icon-images"

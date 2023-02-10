@@ -1,4 +1,4 @@
-import { Timestamp } from "../service/firebaseConfig";
+import { Timestamp } from "../service/firebase/firebaseConfig";
 
 export type NewRideModal = {
     stoppages: string[];
@@ -18,9 +18,9 @@ export type NewRideModal = {
       routeDescription: string;
     };
     contact: {
-      messanger: string;
-      whatsapp: string;
-      text: string;
+      messanger: string,
+      whatsapp: string,
+      text: string,
     };
     privacy: {
       petsAllowed: boolean | null;
@@ -37,7 +37,7 @@ export type NewRideModal = {
 
 export type RideDB = NewRideModal & 
 {
-  authodId: string; 
+  authorId: string; 
   created: typeof Timestamp;
   routeId: string; 
   passengerUids: string[]; 

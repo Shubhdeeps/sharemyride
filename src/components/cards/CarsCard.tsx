@@ -1,7 +1,8 @@
 import React from "react";
-import { Timestamp } from "../../service/firebaseConfig";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../../service/firebase/firebaseConfig";
 import { RideDB } from "../../types/ride.model";
-import { User } from "../../types/User.model";
+import OutlinedButton from "../inputFields/OutlinedButton";
 import { AdditionalInfoBox } from "./AdditionalInfoBlock";
 import ContactAndButton from "./cars/ContactAndButton";
 import Cost from "./cars/Cost";
@@ -10,9 +11,14 @@ import Timeline from "./cars/Timeline";
 
 type Props = {
   data: RideDB;
-  requestRideOnClick: Function;
+  requestRideOnClick: Function | undefined;
 };
 export default function CarsCard({ data, requestRideOnClick }: Props) {
+  const navigate = useNavigate();
+  const isCurrUserAccepted = data.passengerUids.includes(
+    auth.currentUser?.uid as string
+  );
+  const isBelongToCurrentUser = data.authorId === auth.currentUser?.uid;
   const additionalInformation = [
     {
       value: data.additionalInfo.carColor,
@@ -78,7 +84,6 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
 
   return (
     <>
-      {}
       <div className="cards shadow border-r1">
         <div className="d-flex justify-content-between">
           <ProfileDetails
@@ -86,15 +91,17 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
             displayName={data.displayName}
             photoURL={data.photoURL}
           />
-          <Cost cost={`${data.cost}`} />
+          <Cost cost={`${data.cost}`} title="cost" />
         </div>
         <div className="d-flex align-items-center gap-1 d-flex justify-content-end">
-          <span className="text-4 fw-bold">Seats left</span>
           {!!data.passengerSeats && (
-            <span className="text-1-5 highlight-color">
-              {data.passengerSeats - data.passengerUids.length}/
-              {data.passengerSeats}
-            </span>
+            <>
+              <span className="text-4 fw-bold">Seats left</span>
+              <span className="text-1-5 highlight-color">
+                {data.passengerSeats - data.passengerUids.length}/
+                {data.passengerSeats}
+              </span>
+            </>
           )}
         </div>
         <Timeline
@@ -106,10 +113,10 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
         />
         <br />
         <span className="fw-bold text-4">ADDITIONAL INFORMATION</span>
-        <div className="d-flex gap-2 flex-wrap">
+        <div className="d-flex gap-2 flex-wrap mb-2">
           {additionalInformation.map((info) => {
             return (
-              <React.Fragment key={info.value}>
+              <React.Fragment key={info.key}>
                 {info.show && (
                   <AdditionalInfoBox title={info.key} value={info.value} />
                 )}
@@ -117,14 +124,27 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
             );
           })}
         </div>
-        <br />
-        <ContactAndButton
-          buttonText={"Request ride"}
-          messanger={data.privacy.showContact ? data.contact.messanger : ""}
-          text={data.privacy.showContact ? data.contact.text : ""}
-          whatsapp={data.privacy.showContact ? data.contact.whatsapp : ""}
-          onClick={() => requestRideOnClick(data.rideTicektId)}
-        />
+        {requestRideOnClick && !isBelongToCurrentUser && (
+          <ContactAndButton
+            buttonText={isCurrUserAccepted ? "Accepted" : "Request ride"}
+            messanger={data.privacy.showContact ? data.contact.messanger : ""}
+            text={data.privacy.showContact ? data.contact.text : ""}
+            whatsapp={data.privacy.showContact ? data.contact.whatsapp : ""}
+            onClick={() => {
+              if (!isCurrUserAccepted) {
+                requestRideOnClick(`${data.authorId}_${data.rideTicektId}`);
+              } else {
+              }
+            }}
+          />
+        )}
+        <div className="mt-2"></div>
+        {requestRideOnClick && (
+          <OutlinedButton
+            onClick={() => navigate(`/review-ride/${data.rideTicektId}`)}
+            title="Visit"
+          />
+        )}
       </div>
     </>
   );

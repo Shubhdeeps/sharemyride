@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { capitalizeFirstLetter } from "../../service/captalizeFirstLetter";
+import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
 
 // type Props = {
 //   routeStart: string;
