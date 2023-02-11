@@ -168,6 +168,7 @@ export default function NewRide() {
           startTime={[timestamp.fromMillis(+new Date(departTime[0]))]}
           endTime={[timestamp.fromMillis(+new Date(arriveTime[0]))]}
           stoppage={[...stoppageRef.map((eachRef) => eachRef.current)]}
+          commute="car"
         />
 
         <br />

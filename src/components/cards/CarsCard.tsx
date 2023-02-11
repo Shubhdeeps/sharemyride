@@ -110,6 +110,7 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
           endTime={data.arriveTime}
           startPoint={data.departFrom}
           stoppage={data.stoppages}
+          commute="car"
         />
         <br />
         <span className="fw-bold text-4">ADDITIONAL INFORMATION</span>

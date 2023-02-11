@@ -4,6 +4,7 @@ import CarsCard from "../../components/cards/CarsCard";
 import TitleHeader from "../../components/cards/TitleHeader";
 import Error from "../../components/error/Error";
 import Filter from "../../components/filter/Filter";
+import TimeHeader from "../../components/headers/TimeHeader";
 import FloatButton from "../../components/inputFields/FloatButton";
 import Loader from "../../components/loader";
 import RequestModal from "../../components/modals/RequestRideModal";
@@ -142,17 +143,20 @@ export default function CarsList({
             </div>
           </div>
           <TitleHeader heading="Rides" />
+          {/* <TitleHeader
+            heading={firebaseTimestampToDateString(previousDateRef.current)}
+          /> */}
           <>
-            {rides.map((ride) => {
+            {rides.map((ride, ind) => {
               const isCurrentTimeChanged =
                 firebaseTimestampToDayNumber(previousDateRef.current) !==
                 firebaseTimestampToDayNumber(ride.actualStartTime);
               previousDateRef.current = ride.actualStartTime;
               return (
                 <React.Fragment key={ride.rideTicektId}>
-                  {isCurrentTimeChanged && (
-                    <TitleHeader
-                      heading={firebaseTimestampToDateString(
+                  {(isCurrentTimeChanged || ind === 0) && (
+                    <TimeHeader
+                      time={firebaseTimestampToDateString(
                         previousDateRef.current
                       )}
                     />
