@@ -39,3 +39,11 @@
 .modal-container {
   height: fit-content;
 }
+
+.market-card {
+  min-width: 100%;
+}
+
+.highlight-chatcard {
+  background: #ebc8ff;
+}

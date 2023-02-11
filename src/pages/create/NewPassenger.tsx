@@ -137,6 +137,7 @@ export default function NewPassenger() {
           startTime={[timestamp.fromMillis(+new Date(departTime))]}
           endTime={[timestamp.fromMillis(+new Date(arriveTime))]}
           stoppage={[]}
+          commute="car"
         />
 
         <br />

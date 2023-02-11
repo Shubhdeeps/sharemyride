@@ -71,6 +71,7 @@ export default function PassengerCard({ data, requestRideOnClick }: Props) {
         endTime={[data.actualEndTime]}
         startTime={[data.actualStartTime]}
         stoppage={[]}
+        commute="car"
       />
       <br />
       <span className="fw-bold text-4">ADDITIONAL INFORMATION</span>

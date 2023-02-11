@@ -2,36 +2,51 @@ import React from "react";
 import { Timestamp } from "../../../service/firebase/firebaseConfig";
 import { firebaseTimestampToTime } from "../../../service/helperFunctions/firebaseTimestampToString";
 
-// const data = {
-//   startTime: ["16:00", "16:20"],
-//   endTime: ["19:00"],
-//   startPoint: "Kesklinn kess k linn",
-//   endPoint: "Old town",
-//   stoppage: ["Abc Town", "Cde Town"],
-// };
-
 type TimelineData = {
   startTime: (typeof Timestamp)[];
   endTime: (typeof Timestamp)[];
   startPoint: string;
   endPoint: string;
   stoppage: string[];
+  commute: "bus" | "car" | "train";
+};
+
+const icons = {
+  bus: "bi-bus-front",
+  train: "bi-train-lightrail-front",
+  car: "bi-car-front",
 };
 export default function Timeline(data: TimelineData) {
+  // eleminating stops with emtpy strings
+  const stops: string[] = [];
+  data.stoppage.forEach((stop) => {
+    if (!!stop) {
+      stops.push(stop);
+    }
+  });
   return (
     <>
       <div className="d-flex align-items-center justify-content-between">
-        <Time time={data.startTime} />
-        <Time time={data.endTime} />
+        {data.commute === "bus" ? (
+          <>
+            <Time time={data.startTime} />
+            <Time time={data.endTime} />
+          </>
+        ) : (
+          <>
+            <MarketTime time={data.startTime} />
+            <MarketTime time={data.endTime} />
+          </>
+        )}
       </div>
       <div className="d-flex align-items-center text-2 w-100 gap-1 justify-content-center">
         <div className="d-flex flex-column align-items-center">
-          <i className="bi bi-car-front text-1-5"></i>
+          <i className={`bi ${icons[data.commute]} text-1-5`}></i>
           <span className="text-3 text-center">{data.startPoint}</span>
         </div>
         <div className="position-relative">
           <div className="position-absolute w-100 h-100 d-flex justify-content-center gap-3">
-            {data.stoppage.map((stop) => {
+            {stops.map((stop) => {
               return (
                 <React.Fragment key={stop}>
                   <Stoppage name={stop} />
@@ -76,6 +91,15 @@ const Time = ({ time }: { time: (typeof Timestamp)[] }) => {
       })}
     </div>
   );
+};
+
+const MarketTime = ({ time }: { time: (typeof Timestamp)[] }) => {
+  const timeAvail = time[0].seconds;
+  if (isNaN(timeAvail)) {
+    return <></>;
+  }
+  const timeFormatted = firebaseTimestampToTime(time[0]);
+  return <div className="font-safe text-3 fw-bold  mt-3">{timeFormatted}</div>;
 };
 
 const Stoppage = ({ name }: { name: string }) => (
