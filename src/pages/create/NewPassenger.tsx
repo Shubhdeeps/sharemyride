@@ -27,11 +27,8 @@ export default function NewPassenger() {
 
   //All refs
   const costRef = useRef(0);
-  const numberOfPassengerRef = useRef(0); //
-  const luggageCarryingRef = useRef("");
+  const numberOfPassengerRef = useRef(0);
   const additionalData = useRef("");
-  const eventRef = useRef("");
-  const eventURLRef = useRef("");
 
   //message refS
   const messangerRef = useRef("");
@@ -39,9 +36,7 @@ export default function NewPassenger() {
   const textRef = useRef("");
 
   //Boolean refs
-  const requestDoorToDoorDetailsRef = useRef<boolean | null>(null);
   const arePetsAllowedRef = useRef<boolean | null>(null);
-  const EVCarRef = useRef<boolean | null>(null);
   const showContactDetails = useRef<boolean | null>(null);
 
   //Rehydrating the data
@@ -61,8 +56,6 @@ export default function NewPassenger() {
 
       //privacy settings
       arePetsAllowedRef.current = data.privacy.petsAllowed;
-      EVCarRef.current = data.privacy.EVCar;
-      requestDoorToDoorDetailsRef.current = data.privacy.requestDoorToDoor;
       showContactDetails.current = data.privacy.showContact;
     }
     setLoading(false);
@@ -86,10 +79,7 @@ export default function NewPassenger() {
       arriveAt,
       cost: costRef.current,
       additionalInfo: {
-        eventName: eventRef.current,
-        eventURL: eventURLRef.current,
         passengerCount: numberOfPassengerRef.current,
-        carryingLuggage: luggageCarryingRef.current,
         details: additionalData.current,
       },
       contact: {
@@ -99,8 +89,6 @@ export default function NewPassenger() {
       },
       privacy: {
         petsAllowed: arePetsAllowedRef.current,
-        EVCar: EVCarRef.current,
-        requestDoorToDoor: requestDoorToDoorDetailsRef.current,
         showContact: showContactDetails.current,
       },
     };
@@ -176,12 +164,6 @@ export default function NewPassenger() {
             title="Number of Passengers*"
             type="number"
           />
-          <InputTextFieldSecondary
-            placeholder="2 bags of 5kg"
-            textRef={luggageCarryingRef}
-            title="Are you carrying luggage"
-            type="text"
-          />
         </div>
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
@@ -228,23 +210,7 @@ export default function NewPassenger() {
             type="text"
           />
         </div>
-        <hr />
-        <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">TRAVELLING TO AN EVENT</span>
 
-          <InputTextFieldSecondary
-            placeholder="Event name"
-            textRef={eventRef}
-            title="Event name"
-            type="number"
-          />
-          <InputTextFieldSecondary
-            placeholder="https://facebook.com/event-abc"
-            textRef={eventURLRef}
-            title="Event URL (FB page or website)"
-            type="number"
-          />
-        </div>
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
           <span className="text-5 fontSecondary">ADDITIONAL INFORMATION</span>
@@ -267,16 +233,6 @@ export default function NewPassenger() {
             />
             <InputCheckboxField
               placeholder=""
-              switchRef={requestDoorToDoorDetailsRef}
-              title="Request door to door pickup and drop off."
-            />
-            <InputCheckboxField
-              placeholder=""
-              switchRef={EVCarRef}
-              title="Do you prefer Electric car?"
-            />
-            <InputCheckboxField
-              placeholder=""
               switchRef={showContactDetails}
               title="Show contact details?"
             />
@@ -287,7 +243,7 @@ export default function NewPassenger() {
           <div className="text-danger text-3 mb-3 text-center">{error}</div>
         )}
         <div className="d-flex gap-2">
-          <FilledButton title="Cancel" onClick={() => console.log("Cancel")} />
+          <FilledButton title="Cancel" onClick={() => handleCancel()} />
           <FilledButton title="Post" onClick={() => handlePost()} />
         </div>
         <br />

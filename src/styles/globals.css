@@ -197,3 +197,7 @@ button:active {
 button::after {
   border: 1px solid var(--button);
 }
+
+.mt--10 {
+  margin-top: -6px;
+}

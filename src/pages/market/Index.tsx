@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import MarketCard from "../../components/cards/MarketCard";
 import TitleHeader from "../../components/cards/TitleHeader";
 import Error from "../../components/error/Error";
 import TimeHeader from "../../components/headers/TimeHeader";
 import FloatButton from "../../components/inputFields/FloatButton";
 import Loader from "../../components/loader";
 import CreateCommuteOfferModal from "../../components/modals/CommuteOfferModal";
+import { DateHeader } from "../../components/timeline/DateTimestampHeader";
+import TimelineCardMarket from "../../components/timeline/TimelineCardMarket";
 import { Timestamp, timestamp } from "../../service/firebase/firebaseConfig";
 import { getMarketPlacePosts } from "../../service/firebase/marketPlace";
+import { firebaseTimestampToDayNumber } from "../../service/helperFunctions/firebaseTimestampToString";
 import { MarketPlaceDB } from "../../types/marketPlace";
 
 export default function MarketPlace() {
@@ -20,6 +22,9 @@ export default function MarketPlace() {
   const [filter, setFilter] = useState<"ALL" | "MINE">("ALL");
   const [marketPlaceData, setMarketPlaceData] = useState<MarketPlaceDB[]>([]);
   const [commuteOffer, setCommuteOffer] = useState("");
+
+  // for timestamp on timeline
+  const previousDateRef = useRef(timestamp.now());
 
   const handleFloatButton = () => {
     navigate("/market/create");
@@ -110,27 +115,40 @@ export default function MarketPlace() {
             )}
           </div>
         </div>
-        <div className="mt-2 d-flex flex-wrap gap-3">
-          {marketPlaceData.map((sale) => {
-            return (
-              <React.Fragment key={sale.commuteId}>
-                <MarketCard data={sale} setCommuteOffer={setCommuteOffer} />
-              </React.Fragment>
-            );
-          })}
-        </div>
-        {loading ? (
-          <Loader />
-        ) : (
-          <div className="p-3 text-center">
-            <i
-              onClick={() => fetchMore()}
-              className="bi bi-plus-circle text-1-5"
-            ></i>
+        <div className="d-flex align-items-stretch w-100 mt-3">
+          <div className="left-lining"></div>
+          <div className="right-lining d-flex flex-column gap-4">
+            {marketPlaceData.map((sale, index) => {
+              const isCurrentTimeChanged =
+                firebaseTimestampToDayNumber(previousDateRef.current) !==
+                firebaseTimestampToDayNumber(sale.startTime);
+              previousDateRef.current = sale.startTime;
+              return (
+                <React.Fragment key={sale.commuteId}>
+                  {(isCurrentTimeChanged || index === 0) && (
+                    <DateHeader date={previousDateRef.current} />
+                  )}
+                  <TimelineCardMarket
+                    data={sale}
+                    setCommuteOffer={setCommuteOffer}
+                  />
+                </React.Fragment>
+              );
+            })}
+            {loading ? (
+              <Loader />
+            ) : (
+              <div className="p-3 text-center">
+                <i
+                  onClick={() => fetchMore()}
+                  className="bi bi-plus-circle text-1-5"
+                ></i>
+              </div>
+            )}
           </div>
-        )}
-        <FloatButton onClick={handleFloatButton}>{btnSVG}</FloatButton>
+        </div>
       </div>
+      <FloatButton onClick={handleFloatButton}>{btnSVG}</FloatButton>
     </>
   );
 }

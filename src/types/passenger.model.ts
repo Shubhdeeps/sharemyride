@@ -7,10 +7,7 @@ export type PassengerModel = {
     arriveAt: string,
     cost: number,
     additionalInfo: {
-        eventName: string,
-        eventURL: string,
         passengerCount: number,
-        carryingLuggage: string;
         details: string;
     },
     contact: {
@@ -20,9 +17,7 @@ export type PassengerModel = {
     },
     privacy: {
         petsAllowed: boolean | null,
-        EVCar: boolean | null,
         showContact: boolean | null,
-        requestDoorToDoor: boolean | null;
     },
 };
 

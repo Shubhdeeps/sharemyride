@@ -42,7 +42,7 @@ export default function SingleCommutePage() {
       <div className="filled-area container d-flex flex-column gap-3 pt-3 pb-3">
         <TitleHeader heading="On sale" />
         {loading && <Loader />}
-        {data && <MarketCard data={data} setCommuteOffer={undefined} />}
+        {data && <MarketCard data={data} />}
         <TitleHeader heading="Offers" />
         {loading1 ? (
           <Loader />

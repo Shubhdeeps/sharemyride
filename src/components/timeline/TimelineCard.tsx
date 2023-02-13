@@ -10,6 +10,7 @@ import {
 import { RideDB } from "../../types/ride.model";
 import Cost from "../cards/cars/Cost";
 import Timeline from "../cards/cars/Timeline";
+import { NameAndCreated } from "./NameAndCreated";
 
 export default function TimelineCard({
   data,
@@ -103,23 +104,6 @@ export default function TimelineCard({
     </div>
   );
 }
-
-const NameAndCreated = ({
-  name,
-  date,
-}: {
-  name: string;
-  date: typeof Timestamp;
-}) => {
-  return (
-    <div className="d-flex flex-column align-items-start">
-      <span className="text-2-5 fw-bold">{capitalizeFirstLetter(name)}</span>
-      <span style={{ marginTop: "-10px" }} className="text-4">
-        {firebaseTimestampToString(date)}
-      </span>
-    </div>
-  );
-};
 
 const petSvg = (accept: boolean) => (
   <>
