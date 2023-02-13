@@ -35,8 +35,8 @@ export default function Sidebar({
           title="Dashboard"
         />
         <SideBarButton
-          onClick={() => handleClick(() => navigate("/profile"))}
-          title="Profile"
+          onClick={() => handleClick(() => navigate("/market"))}
+          title="Market Place"
         />
         <SideBarButton
           onClick={() => handleClick(() => navigate("/feedback-report"))}

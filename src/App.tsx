@@ -10,13 +10,16 @@ import NewRide from "./pages/create/NewRide";
 import NewPassenger from "./pages/create/NewPassenger";
 import ReviewRidePost from "./pages/singlePost/SingleRidePost";
 import SinglePassengerPost from "./pages/singlePost/SinglePassengerPost";
-import Profile from "./pages/profile/Index";
+import MarketPlace from "./pages/market/Index";
 import FeedbackAndReport from "./pages/feedback/FeedbackAndReport";
 import Index from "./pages/Index";
 import Favourites from "./pages/dashboard/Favourites";
 import SingleRoutePage from "./pages/singleRoute/SingleRoutePage";
 import Notification from "./pages/notifications/Notification";
 import { Notifications } from "react-push-notification";
+import NewMarketTicket from "./pages/create/NewMarketTicket";
+import SingleCommutePage from "./pages/market/commuteId/SingleCommutePage";
+import ChatMenu from "./pages/chat/ChatMenu";
 
 function App() {
   const router = createBrowserRouter([
@@ -38,8 +41,20 @@ function App() {
           element: <Favourites />,
         },
         {
-          path: "/profile",
-          element: <Profile />,
+          path: "/messages",
+          element: <ChatMenu />,
+        },
+        {
+          path: "/market",
+          element: <MarketPlace />,
+        },
+        {
+          path: "/review-ticket/:commuteId",
+          element: <SingleCommutePage />,
+        },
+        {
+          path: "/market/create",
+          element: <NewMarketTicket />,
         },
         {
           path: "/feedback-report",
