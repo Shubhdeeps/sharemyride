@@ -41,7 +41,7 @@ export default function Timeline(data: TimelineData) {
       </div>
       <div className="d-flex align-items-center text-2 w-100 gap-1 justify-content-center">
         <div className="d-flex flex-column align-items-center">
-          <i className="bi bi-car-front text-2-5"></i>
+          <i className={`bi ${icons[data.commute]} text-2-5`}></i>
 
           <span className="text-3 text-center">{data.startPoint}</span>
         </div>

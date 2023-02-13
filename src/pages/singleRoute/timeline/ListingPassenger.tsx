@@ -8,6 +8,7 @@ import Loader from "../../../components/loader";
 import RequestModal from "../../../components/modals/RequestRideModal";
 import NavButton from "../../../components/navigationBars/NavButton";
 import RouteDetails from "../../../components/route/RouteDetails";
+import { DateHeader } from "../../../components/timeline/DateTimestampHeader";
 import TimelineCardPassenger from "../../../components/timeline/TimelineCardPassenger";
 import { timestamp, Timestamp } from "../../../service/firebase/firebaseConfig";
 import { getPassengerCardsBasedOnRouteId } from "../../../service/firebase/passenger";
@@ -148,14 +149,14 @@ export default function ListingPassengers({
           <div className="d-flex align-items-stretch w-100 mt-3">
             <div className="left-lining"></div>
             <div className="right-lining d-flex flex-column gap-4">
-              {passengerCards.map((passenger) => {
+              {passengerCards.map((passenger, index) => {
                 const isCurrentTimeChanged =
                   firebaseTimestampToDayNumber(previousDateRef.current) !==
                   firebaseTimestampToDayNumber(passenger.actualStartTime);
                 previousDateRef.current = passenger.actualStartTime;
                 return (
                   <React.Fragment key={passenger.passengerTicektId}>
-                    {isCurrentTimeChanged && (
+                    {(isCurrentTimeChanged || index === 0) && (
                       <DateHeader date={previousDateRef.current} />
                     )}
                     <TimelineCardPassenger
@@ -174,7 +175,6 @@ export default function ListingPassengers({
                     onClick={() => fetchMore()}
                     className="bi bi-plus-circle text-1-5"
                   >
-                    {" "}
                     Load more
                   </i>
                 </div>
@@ -182,18 +182,12 @@ export default function ListingPassengers({
             </div>
           </div>
         </div>
-        <FloatButton onClick={() => navigation(`/route/${routeId}/new-ride`)}>
+        <FloatButton
+          onClick={() => navigation(`/route/${routeId}/new-passenger`)}
+        >
           {activeNavButton === "cars" ? floatIcon : floatIcon2}
         </FloatButton>
       </div>
     </>
   );
 }
-
-const DateHeader = ({ date }: { date: typeof Timestamp }) => {
-  return (
-    <span className="p-2 text-center primary-bg border-r3 fontLight date-stamp">
-      {firebaseTimestampToDateString(date)}
-    </span>
-  );
-};

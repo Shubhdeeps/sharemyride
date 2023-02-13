@@ -58,7 +58,11 @@
   min-width: 80%;
   width: fit-content;
 }
-
+.timelinecard-market {
+  min-height: 180px;
+  width: 100%;
+  border-radius: 5px;
+}
 .timelinecard {
   min-height: 210px;
   width: 100%;

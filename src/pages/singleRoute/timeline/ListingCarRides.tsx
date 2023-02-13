@@ -148,14 +148,14 @@ export default function ListingCarRides({
           <div className="d-flex align-items-stretch w-100 mt-3">
             <div className="left-lining"></div>
             <div className="right-lining d-flex flex-column gap-4">
-              {rides.map((ride) => {
+              {rides.map((ride, index) => {
                 const isCurrentTimeChanged =
                   firebaseTimestampToDayNumber(previousDateRef.current) !==
                   firebaseTimestampToDayNumber(ride.actualStartTime);
                 previousDateRef.current = ride.actualStartTime;
                 return (
                   <React.Fragment key={ride.rideTicektId}>
-                    {isCurrentTimeChanged && (
+                    {(isCurrentTimeChanged || index === 0) && (
                       <DateHeader date={previousDateRef.current} />
                     )}
                     <TimelineCard

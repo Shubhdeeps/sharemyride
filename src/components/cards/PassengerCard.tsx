@@ -19,31 +19,6 @@ export default function PassengerCard({ data, requestRideOnClick }: Props) {
 
   const additionalInformation = [
     {
-      value: data.privacy.EVCar ? "Yes" : "No",
-      key: "Prefer Electric Vehical?",
-      show: !!data.privacy.EVCar,
-    },
-    {
-      value: data.additionalInfo.carryingLuggage,
-      key: "Luggage",
-      show: !!data.additionalInfo.carryingLuggage,
-    },
-    {
-      value: data.additionalInfo.eventName,
-      key: "Going to event?",
-      show: !!data.additionalInfo.eventName,
-    },
-    // {
-    //   value: data.additionalInfo.passengerCount,
-    //   key: "Passenger count",
-    //   show: !!,
-    // },
-    {
-      value: data.privacy.requestDoorToDoor ? "Yes" : "No",
-      key: "Requested for door to door pickup and dropoff",
-      show: !!data.privacy.requestDoorToDoor,
-    },
-    {
       value: data.privacy.petsAllowed ? "Yes" : "No",
       key: "Travelling with pets",
       show: !!data.privacy.petsAllowed,
