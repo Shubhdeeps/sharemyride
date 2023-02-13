@@ -41,7 +41,8 @@ export default function Timeline(data: TimelineData) {
       </div>
       <div className="d-flex align-items-center text-2 w-100 gap-1 justify-content-center">
         <div className="d-flex flex-column align-items-center">
-          <i className={`bi ${icons[data.commute]} text-1-5`}></i>
+          <i className="bi bi-car-front text-2-5"></i>
+
           <span className="text-3 text-center">{data.startPoint}</span>
         </div>
         <div className="position-relative">
@@ -57,7 +58,7 @@ export default function Timeline(data: TimelineData) {
           {routeSVG}
         </div>
         <div className="d-flex flex-column align-items-center">
-          <i className="bi bi-geo-alt text-1-5"></i>
+          <i className="bi bi-geo-alt text-2-5"></i>
           <span className="text-3 text-center">{data.endPoint}</span>
         </div>
       </div>
@@ -74,7 +75,7 @@ const Time = ({ time }: { time: (typeof Timestamp)[] }) => {
     return <></>;
   }
   return (
-    <div className="d-flex flex-column align-items-center text-4 mt-3">
+    <div className="d-flex flex-column align-items-center text-5 mt-3">
       {time.map((time, ind) => {
         const timeFormatted = firebaseTimestampToTime(time);
         return (
@@ -85,7 +86,6 @@ const Time = ({ time }: { time: (typeof Timestamp)[] }) => {
             key={timeFormatted}
           >
             {timeFormatted} {ind > 0 && <>Delayed</>}
-            {timeLastIndex === 0 && <>On-time</>}
           </span>
         );
       })}

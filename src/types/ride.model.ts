@@ -8,15 +8,6 @@ export type NewRideModal = {
     arriveAt: string;
     cost: number;
     passengerSeats: number;
-    additionalInfo: {
-      carType: string;
-      carModel: string;
-      carColor: string;
-      luggageCapacity: string;
-      eventName: string;
-      eventURL: string;
-      routeDescription: string;
-    };
     contact: {
       messanger: string,
       whatsapp: string,
@@ -25,13 +16,8 @@ export type NewRideModal = {
     privacy: {
       petsAllowed: boolean | null;
       acceptParcel: boolean | null;
-      rideHistory: boolean | null;
-      customStoppageAllowed: boolean | null;
-      showCarDetails: boolean | null;
       EVCar: boolean | null;
-      cashOnly: boolean | null;
       showContact: boolean | null;
-      allowDoorToDoorPickup: boolean | null;
     };
 };
 
