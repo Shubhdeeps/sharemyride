@@ -36,6 +36,13 @@ export default function NewRide() {
   //All refs
   const costRef = useRef(0);
   const passengerSeatsRef = useRef(0);
+  const routeDescriptionRef = useRef("");
+  const carTypeRef = useRef("");
+  const carModelRef = useRef("");
+  const carColorRef = useRef("");
+  const luggageCapacityRef = useRef("");
+  const eventRef = useRef("");
+  const eventURLRef = useRef("");
 
   //message refS
   const messangerRef = useRef("");
@@ -45,8 +52,13 @@ export default function NewRide() {
   //Boolean refs
   const arePetsAllowedRef = useRef<boolean | null>(null);
   const acceptParcelRef = useRef<boolean | null>(null);
+  const reideHistoryRef = useRef<boolean | null>(null);
+  const customStoppage = useRef<boolean | null>(null);
+  const showCarDetailsRef = useRef<boolean | null>(null);
   const EVCarRef = useRef<boolean | null>(null);
+  const cashOnlyRef = useRef<boolean | null>(null);
   const showContactDetails = useRef<boolean | null>(null);
+  const allowDoorToDoorDetails = useRef<boolean | null>(null);
 
   //Rehydrating the data
   useEffect(() => {
@@ -60,6 +72,10 @@ export default function NewRide() {
 
       //car details
       passengerSeatsRef.current = data.passengerSeats;
+      carTypeRef.current = data.additionalInfo.carType;
+      carModelRef.current = data.additionalInfo.carModel;
+      carColorRef.current = data.additionalInfo.carColor;
+      luggageCapacityRef.current = data.additionalInfo.luggageCapacity;
 
       //contact details
       messangerRef.current = data.contact.messanger;
@@ -69,7 +85,11 @@ export default function NewRide() {
       //privacy settings
       arePetsAllowedRef.current = data.privacy.petsAllowed;
       acceptParcelRef.current = data.privacy.acceptParcel;
+      reideHistoryRef.current = data.privacy.rideHistory;
+      customStoppage.current = data.privacy.customStoppageAllowed;
+      showCarDetailsRef.current = data.privacy.showCarDetails;
       EVCarRef.current = data.privacy.EVCar;
+      cashOnlyRef.current = data.privacy.cashOnly;
       showContactDetails.current = data.privacy.showContact;
       // allowDoorToDoorDetails.current = data.privacy.allowDoorToDoorPickup;
     }
@@ -91,15 +111,29 @@ export default function NewRide() {
       arriveAt,
       cost: costRef.current,
       passengerSeats: passengerSeatsRef.current,
+      additionalInfo: {
+        routeDescription: routeDescriptionRef.current,
+        carType: carTypeRef.current,
+        carModel: carModelRef.current,
+        carColor: carColorRef.current,
+        luggageCapacity: luggageCapacityRef.current,
+        eventName: eventRef.current,
+        eventURL: eventURLRef.current,
+      },
       contact: {
         messanger: messangerRef.current,
         whatsapp: whatsappRef.current,
         text: textRef.current,
       },
       privacy: {
+        allowDoorToDoorPickup: allowDoorToDoorDetails.current,
         petsAllowed: arePetsAllowedRef.current,
         acceptParcel: acceptParcelRef.current,
+        rideHistory: reideHistoryRef.current,
+        customStoppageAllowed: customStoppage.current,
+        showCarDetails: showCarDetailsRef.current,
         EVCar: EVCarRef.current,
+        cashOnly: cashOnlyRef.current,
         showContact: showContactDetails.current,
       },
     };
@@ -187,8 +221,14 @@ export default function NewRide() {
             isAnArray={false}
             currValue={arriveAt}
           />
+          <InputTextFieldSecondary
+            placeholder="City 1 - City 2 - City 3"
+            textRef={routeDescriptionRef}
+            title="Describe the route"
+            type="text"
+          />
           <br />
-          <span className="text-5 fontSecondary">DESCRIBE THE ROUTE</span>
+          <span className="text-5 fontSecondary">{`Stoppages (max 3)`}</span>
           {Array.from({ length: stoppageRef.length }, (_, i) => i + 1).map(
             (stop) => {
               return (
@@ -247,12 +287,39 @@ export default function NewRide() {
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
           <span className="text-5 fontSecondary">CAR DETAILS</span>
-
+          <div className="d-flex gap-2">
+            <InputTextFieldSecondary
+              placeholder="Passenger seats"
+              textRef={passengerSeatsRef}
+              title="Seats offering"
+              type="number"
+            />
+            <InputTextFieldSecondary
+              placeholder="Sedan"
+              textRef={carTypeRef}
+              title="Car type"
+              type="text"
+            />
+          </div>
+          <div className="d-flex gap-2">
+            <InputTextFieldSecondary
+              placeholder="Camry"
+              textRef={carModelRef}
+              title="Car model"
+              type="text"
+            />
+            <InputTextFieldSecondary
+              placeholder="Black"
+              textRef={carColorRef}
+              title="Car color"
+              type="text"
+            />
+          </div>
           <InputTextFieldSecondary
-            placeholder="Passenger seats"
-            textRef={passengerSeatsRef}
-            title="Seats offering"
-            type="number"
+            placeholder="20kg - 2bags"
+            textRef={luggageCapacityRef}
+            title="Luggage capacity"
+            type="text"
           />
         </div>
         <hr />
@@ -280,6 +347,23 @@ export default function NewRide() {
         </div>
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
+          <span className="text-5 fontSecondary">TRAVELLING TO AN EVENT</span>
+
+          <InputTextFieldSecondary
+            placeholder="Event name"
+            textRef={eventRef}
+            title="Event name"
+            type="number"
+          />
+          <InputTextFieldSecondary
+            placeholder="https://facebook.com/event-abc"
+            textRef={eventURLRef}
+            title="Event URL (FB page or website)"
+            type="number"
+          />
+        </div>
+        <hr />
+        <div className="d-flex flex-column gap-1 mt-2">
           <span className="text-5 fontSecondary">PRIVACY SETTINGS</span>
           <div className="d-flex flex-wrap gap-2">
             <InputCheckboxField
@@ -289,8 +373,33 @@ export default function NewRide() {
             />
             <InputCheckboxField
               placeholder=""
+              switchRef={allowDoorToDoorDetails}
+              title="Allow door to door pickup and drop off."
+            />
+            <InputCheckboxField
+              placeholder=""
               switchRef={acceptParcelRef}
               title="Are you accepting parcels?"
+            />
+            <InputCheckboxField
+              placeholder=""
+              switchRef={reideHistoryRef}
+              title="Show my ride history?"
+            />
+            <InputCheckboxField
+              placeholder=""
+              switchRef={customStoppage}
+              title="Accepting custom stoppages?"
+            />
+            <InputCheckboxField
+              placeholder=""
+              switchRef={showCarDetailsRef}
+              title="Show my car details?"
+            />
+            <InputCheckboxField
+              placeholder=""
+              switchRef={cashOnlyRef}
+              title="I only accept cash"
             />
             <InputCheckboxField
               placeholder=""
@@ -312,6 +421,7 @@ export default function NewRide() {
           <FilledButton title="Cancel" onClick={() => handleCancel()} />
           <FilledButton title="Post" onClick={() => handlePost()} />
         </div>
+        <br />
         <br />
         <br />
       </div>

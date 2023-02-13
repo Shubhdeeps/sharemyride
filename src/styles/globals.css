@@ -180,20 +180,3 @@ body {
   color: var(--placeholder);
   font-weight: 200 !important;
 }
-
-button {
-  background: none;
-  outline: none;
-  border: 1px solid var(--button);
-  padding: 5px 10px;
-  color: var(--button);
-  border-radius: 5px;
-}
-
-button:active {
-  border: 1px solid var(--button);
-}
-
-button::after {
-  border: 1px solid var(--button);
-}
