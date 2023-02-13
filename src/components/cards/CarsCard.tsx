@@ -21,36 +21,6 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
   const isBelongToCurrentUser = data.authorId === auth.currentUser?.uid;
   const additionalInformation = [
     {
-      value: data.additionalInfo.carColor,
-      key: "Car color",
-      show: data.privacy.showCarDetails && !!data.additionalInfo.carColor,
-    },
-    {
-      value: data.additionalInfo.carModel,
-      key: "Car model",
-      show: data.privacy.showCarDetails && !!data.additionalInfo.carModel,
-    },
-    {
-      value: data.additionalInfo.carType,
-      key: "Car type",
-      show: data.privacy.showCarDetails && !!data.additionalInfo.carType,
-    },
-    {
-      value: data.additionalInfo.luggageCapacity,
-      key: "Luggage capacity",
-      show: !!data.additionalInfo.luggageCapacity,
-    },
-    {
-      value: data.additionalInfo.routeDescription,
-      key: "Route description",
-      show: !!data.additionalInfo.routeDescription,
-    },
-    {
-      value: data.additionalInfo.eventName,
-      key: "Going to event?",
-      show: !!data.additionalInfo.eventName,
-    },
-    {
       value: data.privacy.EVCar ? "Yes" : "No",
       key: "Electric Car",
       show: !!data.privacy.EVCar,
@@ -59,21 +29,6 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
       value: data.privacy.acceptParcel ? "Yes" : "No",
       key: "Accepting Parcels",
       show: !!data.privacy.acceptParcel,
-    },
-    {
-      value: data.privacy.allowDoorToDoorPickup ? "Yes" : "No",
-      key: "Allow door to door pick up",
-      show: !!data.privacy.allowDoorToDoorPickup,
-    },
-    {
-      value: data.privacy.cashOnly ? "Yes" : "No",
-      key: "Accept Cash only",
-      show: !!data.privacy.cashOnly,
-    },
-    {
-      value: data.privacy.customStoppageAllowed ? "Yes" : "No",
-      key: "Accepting custom stoppages",
-      show: !!data.privacy.customStoppageAllowed,
     },
     {
       value: data.privacy.petsAllowed ? "Yes" : "No",

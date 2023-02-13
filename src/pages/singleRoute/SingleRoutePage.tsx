@@ -1,6 +1,6 @@
 import { useState } from "react";
-import CarsList from "./CarsList";
-import PassengersList from "./PassengersList";
+import ListingCarRides from "./timeline/ListingCarRides";
+import ListingPassengers from "./timeline/ListingPassenger";
 
 export default function SingleRoutePage() {
   const [activeNavButton, setActiveNavButton] = useState<"cars" | "passenger">(
@@ -10,12 +10,12 @@ export default function SingleRoutePage() {
   return (
     <>
       {activeNavButton === "cars" ? (
-        <CarsList
+        <ListingCarRides
           setActiveNavButton={setActiveNavButton}
           activeNavButton={activeNavButton}
         />
       ) : (
-        <PassengersList
+        <ListingPassengers
           setActiveNavButton={setActiveNavButton}
           activeNavButton={activeNavButton}
         />
