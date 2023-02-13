@@ -59,6 +59,7 @@ export default function TimelineCard({
             startTime={[data.actualStartTime]}
             endTime={[data.actualEndTime]}
             stoppage={[]}
+            commute="car"
           />
         </div>
         <div className="d-flex gap-2 align-items-center">
