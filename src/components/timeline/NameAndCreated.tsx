@@ -12,7 +12,7 @@ export const NameAndCreated = ({
   return (
     <div className="d-flex flex-column align-items-start">
       <span className="text-2-5 fw-bold">{capitalizeFirstLetter(name)}</span>
-      <span style={{ marginTop: "-10px" }} className="text-4">
+      <span style={{ marginTop: "-8px" }} className="text-4">
         {firebaseTimestampToString(date)}
       </span>
     </div>

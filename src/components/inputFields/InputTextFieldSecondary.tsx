@@ -12,7 +12,6 @@ export default function InputTextFieldSecondary(props: Props) {
     setValue(CurrValue);
     props.textRef.current = CurrValue;
   };
-  const defaultValue = props.textRef.current;
   return (
     <div className="d-flex flex-column align-items-start fontPrimary gap-1">
       <span className="text-3">{props.title}</span>

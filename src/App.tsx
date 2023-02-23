@@ -2,7 +2,7 @@ import "./styles/custom.css";
 import "./styles/globals.css";
 import "./styles/cards.css";
 import "./styles/topsidebar.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ProtectedRoutes } from "./pages/ProtectedRoutes";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -12,16 +12,17 @@ import ReviewRidePost from "./pages/singlePost/SingleRidePost";
 import SinglePassengerPost from "./pages/singlePost/SinglePassengerPost";
 import MarketPlace from "./pages/market/Index";
 import FeedbackAndReport from "./pages/feedback/FeedbackAndReport";
-import Index from "./pages/Index";
 import Favourites from "./pages/dashboard/Favourites";
 import SingleRoutePage from "./pages/singleRoute/SingleRoutePage";
 import Notification from "./pages/notifications/Notification";
 import { Notifications } from "react-push-notification";
 import NewMarketTicket from "./pages/create/NewMarketTicket";
 import SingleCommutePage from "./pages/market/commuteId/SingleCommutePage";
-import ChatMenu from "./pages/chat/ChatMenu";
+import Schedule from "./pages/schedule/Schedule";
+import { language } from "./service/languages/languages";
 
 function App() {
+  language("eng");
   const router = createBrowserRouter([
     {
       path: "/",
@@ -30,7 +31,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: <Index />,
+          element: <Dashboard />,
         },
         {
           path: "/dashboard",
@@ -41,8 +42,8 @@ function App() {
           element: <Favourites />,
         },
         {
-          path: "/messages",
-          element: <ChatMenu />,
+          path: "/schedule",
+          element: <Schedule />,
         },
         {
           path: "/market",
@@ -87,6 +88,7 @@ function App() {
       ],
     },
   ]);
+
   return (
     <>
       <Notifications />

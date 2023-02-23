@@ -47,11 +47,15 @@ export const createRouteTile = async (depart: string, arrive: string, country: s
  * @param setLoading 
  * @param setData 
  */
-export const getRouteTilesData =  async (setError: Function, setLoading: Function, setData: Function, lastItemDate: typeof Timestamp | undefined, countryName: string | undefined) => {
+export const getRouteTilesData =  async (setError: Function, setLoading: Function, setData: Function, lastItemDate: typeof Timestamp | undefined, countryName: string | undefined, setNoMoreRides: Function) => {
     setLoading(true);
     try{
         const data = await fetchRouteTiles(countryName, lastItemDate);
-        setData(data.docs.map((doc: any) => doc.data()));
+        const newData = data.docs.map((doc: any) => doc.data())
+        if(!newData.length){
+            setNoMoreRides("No more routes")
+        }
+        setData(newData);
         setLoading(false);
     } catch (e: any) {
         console.log(e)
@@ -116,3 +120,31 @@ export * from "./rides";
 //Passsenger
 export * from "./passenger";
 
+// schedule
+
+export const getMyScheduledRides = async (setError: Function, setLoading: Function, setData: Function, lastItemDate: typeof Timestamp, setNoMoreRides:Function) => {
+   setLoading(true);
+   const currUserId = auth.currentUser?.uid as string;
+   try{
+       let data =  await firestore.collection("rides").where("passengerUids", "array-contains", currUserId).orderBy("actualStartTime", "asc").startAfter(lastItemDate).limit(10).get();   
+       const newData = data.docs.map((doc: any) => 
+       {
+       const data = doc.data();
+       const rideTicektId = doc.id;
+         return {
+           ...data, 
+           rideTicektId
+         } as RideDB
+       }
+       )
+       if(!newData.length){
+        setNoMoreRides("No more scheduled rides")
+       }
+       setData(newData);
+       setLoading(false);
+   } catch (e: any) {
+       console.log(e)
+       setError(e.message);
+       setLoading(false);
+   }
+}

@@ -201,3 +201,7 @@ button::after {
 .mt--10 {
   margin-top: -6px;
 }
+
+.mt--20 {
+  margin-top: -20px;
+}

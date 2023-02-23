@@ -8,6 +8,7 @@ import Loader from "../../components/loader";
 import CreateCommuteOfferModal from "../../components/modals/CommuteOfferModal";
 import { DateHeader } from "../../components/timeline/DateTimestampHeader";
 import TimelineCardMarket from "../../components/timeline/TimelineCardMarket";
+import { TimelineTag } from "../../components/timeline/TimelineTag";
 import { Timestamp, timestamp } from "../../service/firebase/firebaseConfig";
 import { getMarketPlacePosts } from "../../service/firebase/marketPlace";
 import { firebaseTimestampToDayNumber } from "../../service/helperFunctions/firebaseTimestampToString";
@@ -22,6 +23,7 @@ export default function MarketPlace() {
   const [filter, setFilter] = useState<"ALL" | "MINE">("ALL");
   const [marketPlaceData, setMarketPlaceData] = useState<MarketPlaceDB[]>([]);
   const [commuteOffer, setCommuteOffer] = useState("");
+  const [noMoreRides, setNoMoreRides] = useState("");
 
   // for timestamp on timeline
   const previousDateRef = useRef(timestamp.now());
@@ -69,7 +71,14 @@ export default function MarketPlace() {
     setData: Function,
     filterName: "ALL" | "MINE"
   ) => {
-    getMarketPlacePosts(setError, setLoading, setData, time, filterName);
+    getMarketPlacePosts(
+      setError,
+      setLoading,
+      setData,
+      time,
+      filterName,
+      setNoMoreRides
+    );
   };
 
   if (error) {
@@ -88,8 +97,7 @@ export default function MarketPlace() {
       <div className="filled-area container">
         <br />
         <TitleHeader heading="Buy and Sell Bus/Train tickets" />
-        <TimeHeader time="Filters" />
-        <div className="d-flex gap-2 noselect mb-4">
+        <div className="d-flex gap-2 noselect mt-2">
           <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
             <span
               onClick={() => {
@@ -135,20 +143,27 @@ export default function MarketPlace() {
                 </React.Fragment>
               );
             })}
-            {loading ? (
-              <Loader />
-            ) : (
-              <div className="p-3 text-center">
-                <i
-                  onClick={() => fetchMore()}
-                  className="bi bi-plus-circle text-1-5"
-                ></i>
-              </div>
+            {!!marketPlaceData.length && noMoreRides && (
+              <TimelineTag data="End" />
             )}
           </div>
         </div>
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="p-3 text-center w-100 text-3">
+            {noMoreRides ? (
+              <>{noMoreRides}</>
+            ) : (
+              <i
+                onClick={() => fetchMore()}
+                className="bi bi-arrow-clockwise text-1-5"
+              ></i>
+            )}
+          </div>
+        )}
+        <FloatButton onClick={handleFloatButton}>{btnSVG}</FloatButton>
       </div>
-      <FloatButton onClick={handleFloatButton}>{btnSVG}</FloatButton>
     </>
   );
 }

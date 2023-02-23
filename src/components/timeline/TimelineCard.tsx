@@ -1,12 +1,8 @@
 import React from "react";
 import { Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { auth, Timestamp } from "../../service/firebase/firebaseConfig";
-import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
-import {
-  firebaseTimestampToString,
-  firebaseTimestampToTime,
-} from "../../service/helperFunctions/firebaseTimestampToString";
+import { auth } from "../../service/firebase/firebaseConfig";
+import { firebaseTimestampToTime } from "../../service/helperFunctions/firebaseTimestampToString";
 import { RideDB } from "../../types/ride.model";
 import Cost from "../cards/cars/Cost";
 import Timeline from "../cards/cars/Timeline";
@@ -17,10 +13,13 @@ export default function TimelineCard({
   requestRideOnClick,
 }: {
   data: RideDB;
-  requestRideOnClick: Function;
+  requestRideOnClick: Function | undefined;
 }) {
   const isBelongToCurrentUser = data.authorId === auth.currentUser?.uid;
   const navigate = useNavigate();
+  const isCurrentUserAPassengerOfRide = data.passengerUids.includes(
+    auth.currentUser?.uid as string
+  );
 
   const handleVisitCard = () => {
     navigate(`/review-ride/${data.rideTicektId}`);
@@ -41,19 +40,19 @@ export default function TimelineCard({
   ];
 
   return (
-    <div className="secondary-bg timelinecard position-relative">
+    <div className="button-color-border secondary-bg timelinecard">
       <div className="card-time fw-bold fontPrimary">
         {firebaseTimestampToTime(data.actualStartTime)}
       </div>
       <div className="card-ring">
         <Image className="border-r3" fluid src={data.photoURL} />
       </div>
-      <div className="w-100 h-100 position-absolute p-2 ps-4 d-flex flex-column gap-2 align-items-start">
+      <div className="p-2 ps-4 d-flex flex-column gap-2 align-items-start">
         <div className="d-flex align-items-center justify-content-between w-100 ps-1">
           <NameAndCreated date={data.created} name={data.displayName} />
           <Cost cost={data.cost.toString()} title="" />
         </div>
-        <div style={{ marginTop: "-25px" }}>
+        <div style={{ marginTop: "-20px" }}>
           <Timeline
             startPoint={data.departFrom}
             endPoint={data.arriveAt}
@@ -68,9 +67,11 @@ export default function TimelineCard({
           {data.passengerUids.map((x) => {
             return (
               <React.Fragment key={x}>
-                <span className="seat-blank d-flex align-items-center justify-content-center">
-                  <i className=" bi bi-check-lg font-safe text-center text-2"></i>
-                </span>
+                {x !== data.authorId && (
+                  <span className="seat-blank d-flex align-items-center justify-content-center">
+                    <i className=" bi bi-person-fill font-safe text-center text-2"></i>
+                  </span>
+                )}
               </React.Fragment>
             );
           })}
@@ -84,17 +85,25 @@ export default function TimelineCard({
             );
           })}
         </div>
+        {isCurrentUserAPassengerOfRide && (
+          <div className="text-4 fw-bold font-safe">ACCEPTED</div>
+        )}
         <div className="d-flex align-items-center gap-3">
-          {isBelongToCurrentUser ? (
-            <button onClick={() => handleVisitCard()}>Visit</button>
-          ) : (
-            <button
-              onClick={() =>
-                requestRideOnClick(`${data.authorId}_${data.rideTicektId}`)
-              }
-            >
-              Request for seat
+          {isBelongToCurrentUser || isCurrentUserAPassengerOfRide ? (
+            <button className="btn-height" onClick={() => handleVisitCard()}>
+              Visit
             </button>
+          ) : (
+            requestRideOnClick && (
+              <button
+                className="btn-height"
+                onClick={() =>
+                  requestRideOnClick(`${data.authorId}_${data.rideTicektId}`)
+                }
+              >
+                Request for seat
+              </button>
+            )
           )}
           {additionalInformation.map((icon) => {
             return <React.Fragment key={icon.key}>{icon.icon}</React.Fragment>;

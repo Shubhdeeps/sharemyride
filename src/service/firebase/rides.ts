@@ -26,7 +26,7 @@ export const getSingleRideBasedOnRideId = async (rideId: string, setError: Funct
  * @param lastItemDate 
  * @param order 
  */
-export const getRideCardsBasedOnRouteId = async (routeId: string, setError: Function, setLoading: Function, setData: Function, lastItemDate: typeof Timestamp, order: "asc" | "desc", filter: "ALL" | "MINE") => {
+export const getRideCardsBasedOnRouteId = async (routeId: string, setError: Function, setLoading: Function, setData: Function, lastItemDate: typeof Timestamp, order: "asc" | "desc", filter: "ALL" | "MINE", setNoMoreRides: Function) => {
     setLoading(true);
     try{
         let data: any;
@@ -35,8 +35,7 @@ export const getRideCardsBasedOnRouteId = async (routeId: string, setError: Func
         } else {
             data =  await firestore.collection("rides").where("routeId", "==", routeId).where("status", "==", "ongoing").where("authorId", "==", auth.currentUser?.uid).orderBy("actualStartTime", order).startAfter(lastItemDate).limit(10).get();
         }
-           
-        setData(data.docs.map((doc: any) => 
+        const newData = data.docs.map((doc: any) => 
         {
         const data = doc.data();
         const rideTicektId = doc.id;
@@ -45,7 +44,12 @@ export const getRideCardsBasedOnRouteId = async (routeId: string, setError: Func
             rideTicektId
           } as RideDB
         }
-        ));
+        )
+        console.log(newData);
+        if(!newData.length){
+            setNoMoreRides("No more rides")
+        }
+        setData(newData);
         setLoading(false);
     } catch (e: any) {
         console.log(e)
@@ -66,7 +70,7 @@ export const createNewRideTile = (data: NewRideModal, routeId: string) => {
     firestore.collection("rides").add({
         ...data,
         routeId,
-        passengerUids: [],
+        passengerUids: [authorId],
         authorId,
         photoURL,
         displayName,

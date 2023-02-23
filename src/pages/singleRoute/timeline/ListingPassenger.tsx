@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import TitleHeader from "../../../components/cards/TitleHeader";
 import Error from "../../../components/error/Error";
 import Filter from "../../../components/filter/Filter";
+import FilterHeader from "../../../components/headers/TimeHeader";
 import FloatButton from "../../../components/inputFields/FloatButton";
 import Loader from "../../../components/loader";
 import RequestModal from "../../../components/modals/RequestRideModal";
@@ -10,12 +11,10 @@ import NavButton from "../../../components/navigationBars/NavButton";
 import RouteDetails from "../../../components/route/RouteDetails";
 import { DateHeader } from "../../../components/timeline/DateTimestampHeader";
 import TimelineCardPassenger from "../../../components/timeline/TimelineCardPassenger";
-import { timestamp, Timestamp } from "../../../service/firebase/firebaseConfig";
+import { TimelineTag } from "../../../components/timeline/TimelineTag";
+import { timestamp } from "../../../service/firebase/firebaseConfig";
 import { getPassengerCardsBasedOnRouteId } from "../../../service/firebase/passenger";
-import {
-  firebaseTimestampToDateString,
-  firebaseTimestampToDayNumber,
-} from "../../../service/helperFunctions/firebaseTimestampToString";
+import { firebaseTimestampToDayNumber } from "../../../service/helperFunctions/firebaseTimestampToString";
 import { PassengerDB } from "../../../types/passenger.model";
 import { floatIcon, floatIcon2 } from "../icons";
 
@@ -40,6 +39,8 @@ export default function ListingPassengers({
   const [fetchMoreData, setFetchMoreData] = useState<PassengerDB[]>([]);
   const [filterType, setFilterType] = useState<"ALL" | "MINE">("ALL");
 
+  const [noMoreRides, setNoMoreRides] = useState("");
+
   //Timeline headers
   const previousDateRef = useRef(timestamp.now());
   useEffect(() => {
@@ -51,10 +52,11 @@ export default function ListingPassengers({
         setData,
         timestamp.fromMillis(+new Date(dateFilter)),
         "asc",
-        filterType
+        filterType,
+        setNoMoreRides
       );
     }
-  }, [dateFilter, filterType]);
+  }, [dateFilter, filterType, routeId]);
 
   useEffect(() => {
     if (!!fetchMoreData.length) {
@@ -79,7 +81,8 @@ export default function ListingPassengers({
         setFetchMoreData,
         lastItemDate,
         "asc",
-        filterType
+        filterType,
+        setNoMoreRides
       );
     }
   };
@@ -116,9 +119,7 @@ export default function ListingPassengers({
               icon="bi-people-fill"
             />
           </div>
-
-          <div className="d-flex flex-wrap gap-3 position-relative mt-2">
-            <TitleHeader heading="Filters" />
+          <FilterHeader>
             <Filter>
               <label htmlFor="dateTime" className="fw-bold">
                 Show Rides after
@@ -144,7 +145,7 @@ export default function ListingPassengers({
                 )}
               </div>
             </div>
-          </div>
+          </FilterHeader>
 
           <div className="d-flex align-items-stretch w-100 mt-3">
             <div className="left-lining"></div>
@@ -166,21 +167,25 @@ export default function ListingPassengers({
                   </React.Fragment>
                 );
               })}
-
-              {loading ? (
-                <Loader />
-              ) : (
-                <div className="p-3 text-center w-100">
-                  <i
-                    onClick={() => fetchMore()}
-                    className="bi bi-plus-circle text-1-5"
-                  >
-                    Load more
-                  </i>
-                </div>
+              {!!passengerCards.length && noMoreRides && (
+                <TimelineTag data="End" />
               )}
             </div>
           </div>
+          {loading ? (
+            <Loader />
+          ) : (
+            <div className="p-3 text-center w-100 text-3">
+              {noMoreRides ? (
+                <>{noMoreRides}</>
+              ) : (
+                <i
+                  onClick={() => fetchMore()}
+                  className="bi bi-arrow-clockwise text-1-5"
+                ></i>
+              )}
+            </div>
+          )}
         </div>
         <FloatButton
           onClick={() => navigation(`/route/${routeId}/new-passenger`)}

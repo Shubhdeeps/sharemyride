@@ -40,6 +40,8 @@ export default function Dashboard() {
     localData
   );
 
+  const [noMoreRides, setNoMoreRides] = useState("");
+
   const handleFilterApply = () => {
     setAppliedFilters(countryRef.current);
     setFilterFlex(false);
@@ -62,14 +64,22 @@ export default function Dashboard() {
         setLoading,
         setCountrySpecificData,
         undefined,
-        appliedFilter
+        appliedFilter,
+        setNoMoreRides
       );
     }
   }, [appliedFilter]);
 
   useEffect(() => {
     if (!appliedFilter) {
-      getRouteTilesData(setError, setLoading, setData, undefined, "");
+      getRouteTilesData(
+        setError,
+        setLoading,
+        setData,
+        undefined,
+        "",
+        setNoMoreRides
+      );
     }
   }, []);
 
@@ -89,7 +99,8 @@ export default function Dashboard() {
       setLoading,
       setData,
       lastItemDate,
-      appliedFilter
+      appliedFilter,
+      setNoMoreRides
     );
   };
 
@@ -110,56 +121,63 @@ export default function Dashboard() {
       )}
       <div className="empty-area"></div>
       <div className="filled-area container">
-        <div className="w-100 d-flex justify-content-between">
-          <NavButton
-            title="Dashboard"
-            currentState={pathname.split("/")[1]}
-            onClick={() => navigate("/dashboard")}
-            icon="bi-house-fill"
-          />
-          <NavButton
-            title="Favourites"
-            currentState={pathname.split("/")[1]}
-            onClick={() => navigate("/favourites")}
-            icon="bi-star-fill"
-          />
+        <div className="top-negative">
+          <div className="w-100 d-flex justify-content-between">
+            <NavButton
+              title="Dashboard"
+              currentState={pathname.split("/")[1]}
+              onClick={() => navigate("/dashboard")}
+              icon="bi-house-fill"
+            />
+            <NavButton
+              title="Favourites"
+              currentState={pathname.split("/")[1]}
+              onClick={() => navigate("/favourites")}
+              icon="bi-star-fill"
+            />
+          </div>
+          <div className="d-flex flex-column gap-3 position-relative">
+            <br />
+            <span onClick={() => setFilterFlex(true)}>
+              <Filter>
+                <span className="text-4 fw-bold">Search</span>
+                {!!appliedFilter && (
+                  <span className="text-4 mt-1">{appliedFilter}</span>
+                )}
+              </Filter>
+            </span>
+            <TitleHeader heading="Expore routes" />
+            {routes.map((routeData) => {
+              return (
+                <React.Fragment key={routeData.routeId}>
+                  <RouteCard
+                    startPoint={routeData.depart}
+                    countryName={routeData.country}
+                    endPoint={routeData.arrive}
+                    isFavourite={false}
+                  />
+                </React.Fragment>
+              );
+            })}
+            {loading ? (
+              <Loader />
+            ) : (
+              <div className="p-3 text-center w-100 text-3">
+                {noMoreRides ? (
+                  <>{noMoreRides}</>
+                ) : (
+                  <i
+                    onClick={() => fetchMore()}
+                    className="bi bi-arrow-clockwise text-1-5"
+                  ></i>
+                )}
+              </div>
+            )}
+          </div>
+          <FloatButton onClick={() => setNewRoutePopup(true)}>
+            {floatIcon}
+          </FloatButton>
         </div>
-        <div className="d-flex flex-column gap-3 position-relative">
-          <span onClick={() => setFilterFlex(true)}>
-            <Filter>
-              <span className="text-4 fw-bold">Search</span>
-              {!!appliedFilter && (
-                <span className="text-4 mt-1">{appliedFilter}</span>
-              )}
-            </Filter>
-          </span>
-          <TitleHeader heading="Expore routes" />
-          {routes.map((routeData) => {
-            return (
-              <React.Fragment key={routeData.routeId}>
-                <RouteCard
-                  startPoint={routeData.depart}
-                  countryName={routeData.country}
-                  endPoint={routeData.arrive}
-                  isFavourite={false}
-                />
-              </React.Fragment>
-            );
-          })}
-          {loading ? (
-            <Loader />
-          ) : (
-            <div className="p-3 text-center">
-              <i
-                onClick={() => fetchMore()}
-                className="bi bi-plus-circle text-1-5"
-              ></i>
-            </div>
-          )}
-        </div>
-        <FloatButton onClick={() => setNewRoutePopup(true)}>
-          {floatIcon}
-        </FloatButton>
       </div>
     </>
   );

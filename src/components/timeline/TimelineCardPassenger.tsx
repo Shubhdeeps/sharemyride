@@ -29,7 +29,7 @@ export default function TimelineCardPassenger({
       <div className="card-ring">
         <Image className="border-r3" fluid src={data.photoURL} />
       </div>
-      <div className="w-100 h-100 position-absolute p-2 ps-4 d-flex flex-column gap-2 align-items-start">
+      <div className="p-2 ps-4 d-flex flex-column gap-2 align-items-start">
         <div className="d-flex align-items-center justify-content-between w-100 ps-1">
           <NameAndCreated date={data.created} name={data.displayName} />
           <Cost cost={data.cost.toString()} title="" />

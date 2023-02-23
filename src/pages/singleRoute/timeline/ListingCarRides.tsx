@@ -1,20 +1,19 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import TitleHeader from "../../../components/cards/TitleHeader";
 import Error from "../../../components/error/Error";
 import Filter from "../../../components/filter/Filter";
+import FilterHeader from "../../../components/headers/TimeHeader";
 import FloatButton from "../../../components/inputFields/FloatButton";
 import Loader from "../../../components/loader";
 import RequestModal from "../../../components/modals/RequestRideModal";
 import NavButton from "../../../components/navigationBars/NavButton";
 import RouteDetails from "../../../components/route/RouteDetails";
+import { DateHeader } from "../../../components/timeline/DateTimestampHeader";
 import TimelineCard from "../../../components/timeline/TimelineCard";
-import { timestamp, Timestamp } from "../../../service/firebase/firebaseConfig";
+import { TimelineTag } from "../../../components/timeline/TimelineTag";
+import { timestamp } from "../../../service/firebase/firebaseConfig";
 import { getRideCardsBasedOnRouteId } from "../../../service/firebase/rides";
-import {
-  firebaseTimestampToDateString,
-  firebaseTimestampToDayNumber,
-} from "../../../service/helperFunctions/firebaseTimestampToString";
+import { firebaseTimestampToDayNumber } from "../../../service/helperFunctions/firebaseTimestampToString";
 import { RideDB } from "../../../types/ride.model";
 import { floatIcon, floatIcon2 } from "../icons";
 
@@ -39,8 +38,11 @@ export default function ListingCarRides({
   const [fetchMoreData, setFetchMoreData] = useState<RideDB[]>([]);
   const [filterType, setFilterType] = useState<"ALL" | "MINE">("ALL");
 
+  const [noMoreRides, setNoMoreRides] = useState("");
   //Timeline headers
   const previousDateRef = useRef(timestamp.now());
+
+  // 1. on first render, this side effect runs, which changes the data state and trigger other side-effect
   useEffect(() => {
     if (!!dateFilter) {
       getRideCardsBasedOnRouteId(
@@ -50,23 +52,29 @@ export default function ListingCarRides({
         setData,
         timestamp.fromMillis(+new Date(dateFilter)),
         "asc",
-        filterType
+        filterType,
+        setNoMoreRides
       );
     }
-  }, [dateFilter, filterType]);
+    //this routeId does not have any role here
+  }, [dateFilter, filterType, routeId]);
 
+  //this gets trigger when fetchmore is called
   useEffect(() => {
     if (!!fetchMoreData.length) {
       setRides((prevState) => [...prevState, ...fetchMoreData]);
     }
   }, [fetchMoreData]);
 
+  //2. this got trigger everytime data state changes, and hence setting up new state of rides
   useEffect(() => {
     if (!!data.length) {
+      console.log("updating...");
       setRides(data);
     }
   }, [data]);
 
+  // when fetch more is called, the setFetchmore state changes and trigger side effect
   const fetchMore = () => {
     if (!!rides.length) {
       const lastItemDate = rides[rides.length - 1].actualStartTime;
@@ -77,7 +85,8 @@ export default function ListingCarRides({
         setFetchMoreData,
         lastItemDate,
         "asc",
-        filterType
+        filterType,
+        setNoMoreRides
       );
     }
   };
@@ -85,7 +94,6 @@ export default function ListingCarRides({
   if (!!error) {
     return <Error errMessage={error} />;
   }
-  console.log(rides);
 
   return (
     <>
@@ -115,9 +123,7 @@ export default function ListingCarRides({
               icon="bi-people-fill"
             />
           </div>
-
-          <div className="d-flex flex-wrap gap-3 position-relative mt-2">
-            <TitleHeader heading="Filters" />
+          <FilterHeader>
             <Filter>
               <label htmlFor="dateTime" className="fw-bold">
                 Show Rides after
@@ -143,11 +149,11 @@ export default function ListingCarRides({
                 )}
               </div>
             </div>
-          </div>
+          </FilterHeader>
 
-          <div className="d-flex align-items-stretch w-100 mt-3">
+          <div className="d-flex align-items-stretch w-100 mt-3 h-100">
             <div className="left-lining"></div>
-            <div className="right-lining d-flex flex-column gap-4">
+            <div className="right-lining d-flex flex-column gap-5 h-100">
               {rides.map((ride, index) => {
                 const isCurrentTimeChanged =
                   firebaseTimestampToDayNumber(previousDateRef.current) !==
@@ -165,22 +171,23 @@ export default function ListingCarRides({
                   </React.Fragment>
                 );
               })}
-
-              {loading ? (
-                <Loader />
-              ) : (
-                <div className="p-3 text-center w-100">
-                  <i
-                    onClick={() => fetchMore()}
-                    className="bi bi-plus-circle text-1-5"
-                  >
-                    {" "}
-                    Load more
-                  </i>
-                </div>
-              )}
+              {!!rides.length && noMoreRides && <TimelineTag data="End" />}
             </div>
           </div>
+          {loading ? (
+            <Loader />
+          ) : (
+            <div className="p-3 text-center w-100 text-3">
+              {noMoreRides ? (
+                <>{noMoreRides}</>
+              ) : (
+                <i
+                  onClick={() => fetchMore()}
+                  className="bi bi-arrow-clockwise text-1-5"
+                ></i>
+              )}
+            </div>
+          )}
         </div>
         <FloatButton onClick={() => navigation(`/route/${routeId}/new-ride`)}>
           {activeNavButton === "cars" ? floatIcon : floatIcon2}
@@ -189,11 +196,3 @@ export default function ListingCarRides({
     </>
   );
 }
-
-const DateHeader = ({ date }: { date: typeof Timestamp }) => {
-  return (
-    <span className="p-2 text-center primary-bg border-r3 fontLight date-stamp">
-      {firebaseTimestampToDateString(date)}
-    </span>
-  );
-};
