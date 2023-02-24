@@ -7,6 +7,7 @@ import Filter from "../../components/filter/Filter";
 import FilterHeader from "../../components/headers/TimeHeader";
 import FloatButton from "../../components/inputFields/FloatButton";
 import Loader from "../../components/loader";
+import TripActionModal from "../../components/modals/TripActionModal";
 import { DateHeader } from "../../components/timeline/DateTimestampHeader";
 import TimelineCard from "../../components/timeline/TimelineCard";
 import { TimelineTag } from "../../components/timeline/TimelineTag";
@@ -32,7 +33,7 @@ export default function Schedule() {
   const [noMoreRides, setNoMoreRides] = useState("");
 
   //for reporting, edit, deleting ride
-  const [ridePopUp, setRidePop] = useState<RidePopUp>(null);
+  const [schedulePop, setSchedulePopUp] = useState<RidePopUp>(null);
 
   //Timeline headers
   const previousDateRef = useRef(timestamp.now());
@@ -80,6 +81,13 @@ export default function Schedule() {
 
   return (
     <>
+      {schedulePop && (
+        <TripActionModal
+          action={schedulePop}
+          role="ride"
+          setAction={setSchedulePopUp}
+        />
+      )}
       <div className="empty-area"></div>
       <div className="filled-area ">
         <div className="container h-100 d-flex flex-column align-items-center top-negative">
@@ -113,7 +121,7 @@ export default function Schedule() {
                     <TimelineCard
                       requestRideOnClick={undefined}
                       data={ride}
-                      setRidePop={setRidePop}
+                      setRidePop={setSchedulePopUp}
                     />
                   </React.Fragment>
                 );
@@ -136,11 +144,6 @@ export default function Schedule() {
             </div>
           )}
         </div>
-        <Container>
-          <FloatButton onClick={() => navigation(`/route/${routeId}/new-ride`)}>
-            {floatIcon}
-          </FloatButton>
-        </Container>
       </div>
     </>
   );

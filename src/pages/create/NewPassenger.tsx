@@ -17,6 +17,9 @@ export default function NewPassenger() {
   const routes = routeId?.split("_") as string[];
   const navigate = useNavigate();
 
+  const departingCity = capitalizeFirstLetter(routes[0]);
+  const arrivingCity = capitalizeFirstLetter(routes[1]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -42,8 +45,8 @@ export default function NewPassenger() {
   //Rehydrating the data
   useEffect(() => {
     const storedData = localStorage.getItem("new-passenger-info");
-    setDepartFrom(capitalizeFirstLetter(routes[0]));
-    setArriveAt(capitalizeFirstLetter(routes[1]));
+    // setDepartFrom(capitalizeFirstLetter(routes[0]));
+    // setArriveAt(capitalizeFirstLetter(routes[1]));
     //stroing local data
     if (storedData) {
       const data = JSON.parse(storedData) as PassengerModel;
@@ -75,8 +78,8 @@ export default function NewPassenger() {
     const data: PassengerModel = {
       actualStartTime: timestamp.fromMillis(+new Date(departTime)),
       actualEndTime: timestamp.fromMillis(+new Date(arriveTime)),
-      departFrom,
-      arriveAt,
+      departFrom: !!departFrom ? departFrom : departingCity,
+      arriveAt: !!arriveAt ? arriveAt : arrivingCity,
       cost: costRef.current,
       additionalInfo: {
         passengerCount: numberOfPassengerRef.current,
@@ -168,22 +171,28 @@ export default function NewPassenger() {
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
           <span className="text-5 fontSecondary">LOCATION*</span>
-          <InputTextFieldwitState
-            placeholder="Kristiine, Tallinn"
-            setData={setDepartFrom}
-            title="Departing from"
-            type="text"
-            isAnArray={false}
-            currValue={departFrom}
-          />
-          <InputTextFieldwitState
-            placeholder="Old town, Tartu"
-            setData={setArriveAt}
-            title="Arriving at"
-            type="text"
-            isAnArray={false}
-            currValue={arriveAt}
-          />
+          <div className="d-flex align-items-end gap-1">
+            <InputTextFieldwitState
+              placeholder="Kristiine"
+              setData={setDepartFrom}
+              title="Departing from"
+              type="text"
+              isAnArray={false}
+              currValue={departFrom}
+            />
+            <span className="text-2">, {departingCity}</span>
+          </div>
+          <div className="d-flex align-items-end gap-1">
+            <InputTextFieldwitState
+              placeholder="Old town"
+              setData={setArriveAt}
+              title="Arriving at"
+              type="text"
+              isAnArray={false}
+              currValue={arriveAt}
+            />
+            <span className="text-2">, {arrivingCity}</span>
+          </div>
           <br />
         </div>
 

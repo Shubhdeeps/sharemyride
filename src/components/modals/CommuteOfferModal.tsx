@@ -16,14 +16,23 @@ export default function CreateCommuteOfferModal({
   setModalFlex: Function;
 }) {
   const additionalInfoRef = useRef("");
+  const messangerRef = useRef("");
+  const textRef = useRef("");
+  const whatsappRef = useRef("");
   const offerPriceRef = useRef(0);
   const [status, setStatus] = useState("pending");
   const handlePurchase = () => {
+    const contact = {
+      messenger: messangerRef.current,
+      text: textRef.current,
+      whatsapp: whatsappRef.current,
+    };
     createCommuteOffer(
       commuteId,
       offerPriceRef.current,
       additionalInfoRef.current,
-      setStatus
+      setStatus,
+      contact
     );
   };
 
@@ -38,7 +47,7 @@ export default function CreateCommuteOfferModal({
           <div className="d-flex flex-column gap-3">
             <span className="fw-bold text-4">BUY</span>
             <InputTextFieldSecondary
-              placeholder="Tallinn"
+              placeholder="$"
               title="Offer price"
               type="number"
               textRef={offerPriceRef}
@@ -48,6 +57,24 @@ export default function CreateCommuteOfferModal({
               title="Additional Information"
               type="text"
               textRef={additionalInfoRef}
+            />
+            <InputTextFieldSecondary
+              placeholder="john_simon"
+              title="Messenger"
+              type="text"
+              textRef={messangerRef}
+            />
+            <InputTextFieldSecondary
+              placeholder="+372 0330-0002"
+              title="Text"
+              type="text"
+              textRef={textRef}
+            />
+            <InputTextFieldSecondary
+              placeholder="+372 0330-0002"
+              title="WhatsApp"
+              type="text"
+              textRef={whatsappRef}
             />
             <FilledButton title="Set Offer" onClick={() => handlePurchase()} />
             <OutlinedButton title="Cancel" onClick={() => setModelPopUp()} />

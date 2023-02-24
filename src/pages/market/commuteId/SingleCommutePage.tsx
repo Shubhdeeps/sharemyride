@@ -49,13 +49,19 @@ export default function SingleCommutePage() {
           {loading1 ? (
             <Loader />
           ) : (
-            offers.map((offer) => {
-              return (
-                <React.Fragment key={offer.offerId}>
-                  <CommuteOfferCard data={offer} />
-                </React.Fragment>
-              );
-            })
+            <>
+              {data &&
+                offers.map((offer) => {
+                  return (
+                    <React.Fragment key={offer.offerId}>
+                      <CommuteOfferCard
+                        data={offer}
+                        ownerAutorId={data.authorId}
+                      />
+                    </React.Fragment>
+                  );
+                })}
+            </>
           )}
         </Container>
       </div>

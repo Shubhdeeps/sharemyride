@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Timeline from "../../components/cards/cars/Timeline";
 import FilledButton from "../../components/inputFields/FIlledButton";
 import InputTextFieldSecondary from "../../components/inputFields/InputTextFieldSecondary";
 import InputTextFieldwitState from "../../components/inputFields/InputTextFieldwithState";
-import { timestamp } from "../../service/firebase/firebaseConfig";
+import { auth, timestamp } from "../../service/firebase/firebaseConfig";
 import { setNewMarketSale } from "../../service/firebase/marketPlace";
 import { MarketPlace } from "../../types/marketPlace";
 
@@ -49,6 +49,7 @@ export default function NewMarketTicket() {
       messenger: messangerRef.current,
       text: textRef.current,
       whatsapp: whatsappRef.current,
+      authorId: auth.currentUser?.uid!,
     };
     setNewMarketSale(data);
     navigate("/market");

@@ -10,6 +10,20 @@ import Timeline from "../cards/cars/Timeline";
 import Extension from "../navigationBars/Extension";
 import { NameAndCreated } from "./NameAndCreated";
 
+const status = {
+  Onsale: {
+    color: "font-safe",
+    status: "ON SALE",
+  },
+  Sold: {
+    color: "font-safe",
+    status: "SOLD",
+  },
+  cancelled: {
+    color: "font-danger",
+    status: "SALE CANCELLED",
+  },
+};
 export default function TimelineCardMarket({
   data,
   setCommuteOffer,
@@ -80,6 +94,11 @@ export default function TimelineCardMarket({
             commute={data.commute}
           />
         </div>
+        {isBelongToCurrentUser && (
+          <div className={`${status[data.status].color} fw-bold text-3`}>
+            {status[data.status].status}
+          </div>
+        )}
         <div className="d-flex align-items-center gap-3">
           {isBelongToCurrentUser ? (
             <button className="p-2 ps-3 pe-3" onClick={() => handleVisit()}>

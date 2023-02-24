@@ -17,7 +17,8 @@ export default function NewRide() {
   const { routeId } = useParams();
   const routes = routeId?.split("_") as string[];
   const navigate = useNavigate();
-
+  const departingCity = capitalizeFirstLetter(routes[0]);
+  const arrivingCity = capitalizeFirstLetter(routes[1]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -36,7 +37,7 @@ export default function NewRide() {
 
   //All refs
   const costRef = useRef(0);
-  const passengerSeatsRef = useRef(0);
+  const passengerSeatsRef = useRef(1);
 
   //message refS
   const messangerRef = useRef("");
@@ -52,8 +53,6 @@ export default function NewRide() {
   //Rehydrating the data
   useEffect(() => {
     const storedData = localStorage.getItem("new-ride-info");
-    setDepartFrom(capitalizeFirstLetter(routes[0]));
-    setArriveAt(capitalizeFirstLetter(routes[1]));
 
     //stroing local data
     if (storedData) {
@@ -78,7 +77,12 @@ export default function NewRide() {
   }, []);
 
   const handlePost = () => {
-    if (!departTime || !arriveTime || !costRef.current) {
+    if (
+      !departTime ||
+      !arriveTime ||
+      !costRef.current ||
+      !passengerSeatsRef.current
+    ) {
       setError("All field with * are required!");
       return;
     }
@@ -88,8 +92,8 @@ export default function NewRide() {
       stoppages: stoppageRef.map((stop) => stop.current),
       departTime: [timestamp.fromMillis(+new Date(departTime[0]))],
       arriveTime: [timestamp.fromMillis(+new Date(arriveTime[0]))],
-      departFrom,
-      arriveAt,
+      departFrom: !!departFrom ? departFrom : departingCity,
+      arriveAt: !!arriveAt ? arriveAt : arrivingCity,
       cost: +costRef.current,
       passengerSeats: +passengerSeatsRef.current,
       contact: {
@@ -173,22 +177,28 @@ export default function NewRide() {
           <hr />
           <div className="d-flex flex-column gap-1 mt-2">
             <span className="text-5 fontSecondary">ROUTE</span>
-            <InputTextFieldwitState
-              placeholder="Kristiine, Tallinn"
-              setData={setDepartFrom}
-              title="Departing point"
-              type="text"
-              isAnArray={false}
-              currValue={departFrom}
-            />
-            <InputTextFieldwitState
-              placeholder="Old Town, Tartu"
-              setData={setArriveAt}
-              title="Arriving point"
-              type="text"
-              isAnArray={false}
-              currValue={arriveAt}
-            />
+            <div className="d-flex align-items-end gap-1">
+              <InputTextFieldwitState
+                placeholder="Kristiine"
+                setData={setDepartFrom}
+                title="Departing point"
+                type="text"
+                isAnArray={false}
+                currValue={departFrom}
+              />
+              <span className="text-2">, {departingCity}</span>
+            </div>
+            <div className="d-flex align-items-end gap-1">
+              <InputTextFieldwitState
+                placeholder="Old Town"
+                setData={setArriveAt}
+                title="Arriving point"
+                type="text"
+                isAnArray={false}
+                currValue={arriveAt}
+              />
+              <span className="text-2">, {arrivingCity}</span>
+            </div>
             <br />
             <span className="text-5 fontSecondary">DESCRIBE THE ROUTE</span>
             {Array.from({ length: stoppageRef.length }, (_, i) => i + 1).map(
@@ -248,12 +258,12 @@ export default function NewRide() {
           </div>
           <hr />
           <div className="d-flex flex-column gap-1 mt-2">
-            <span className="text-5 fontSecondary">CAR DETAILS</span>
+            <span className="text-5 fontSecondary">CAR DETAILS*</span>
 
             <InputTextFieldSecondary
               placeholder="Passenger seats"
               textRef={passengerSeatsRef}
-              title="Seats offering"
+              title="Seats offering (minimum 1)"
               type="number"
             />
           </div>

@@ -9,7 +9,7 @@ export type MarketPlaceDB = MarketPlace & {
   };
 
   export type MarketPlace = {
-    status: "Onsale" | "Sold";
+    status: "Onsale" | "Sold" | "cancelled";
     price: number;
     commute: "bus" | "train";
     startPoint: string;
@@ -20,6 +20,7 @@ export type MarketPlaceDB = MarketPlace & {
     messenger: string;
     whatsapp: string;
     text: string;
+    authorId: string;
   };
 
   export type CommuteOffer = {
@@ -30,4 +31,9 @@ export type MarketPlaceDB = MarketPlace & {
     parentCommute: string;
     status: "pending" | "rejected" | "accepted",
     offerId: string;
+    contact: {
+      messenger: string;
+      whatsapp: string;
+      text: string;
+    }
 }

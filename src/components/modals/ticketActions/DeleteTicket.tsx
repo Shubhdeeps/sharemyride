@@ -1,8 +1,14 @@
 import React, { useState } from "react";
+import { deleteMyAd } from "../../../service/firebase/marketPlace";
 import { canclePassengerTrip } from "../../../service/firebase/passenger";
 import { cancleMyRde } from "../../../service/firebase/rides";
 import Loader from "../../loader";
 
+const roles = {
+  ride: "Confirm cancel ride",
+  passenger: "Confirm cancel trip",
+  market: "Confirm delete advertisement",
+};
 export default function DeleteTicket({
   ticketId,
   setAction,
@@ -21,6 +27,8 @@ export default function DeleteTicket({
       await cancleMyRde(ticketId);
     } else if (role === "passenger") {
       await canclePassengerTrip(ticketId);
+    } else if (role === "market") {
+      await deleteMyAd(ticketId);
     }
     setLoading(false);
     handleClose();
@@ -34,7 +42,7 @@ export default function DeleteTicket({
       onSubmit={(e) => handleDeleteRide(e)}
       className="d-flex flex-column gap-2"
     >
-      <span>Confirm cancel ride</span>
+      <span>{roles[role]}</span>
       <div className="d-flex gap-2 justify-content-end">
         <button type="button" onClick={handleClose}>
           Close

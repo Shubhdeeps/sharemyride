@@ -42,7 +42,7 @@ export default function TimelineCardPassenger({
                 {isBelongToCurrentUser && (
                   <span
                     onClick={() => setRidePop({ edit: data.passengerTicektId })}
-                    className="cursor border-bottom width-100 text-center"
+                    className="cursor width-100 text-center"
                   >
                     Delay trip
                   </span>
@@ -52,7 +52,7 @@ export default function TimelineCardPassenger({
                     onClick={() =>
                       setRidePop({ delete: data.passengerTicektId })
                     }
-                    className="cursor border-bottom width-100 text-center"
+                    className="cursor width-100 text-center"
                   >
                     Cancel trip
                   </span>
