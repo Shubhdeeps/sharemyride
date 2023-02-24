@@ -31,7 +31,12 @@ export const getAllNotificationsByUid = async (setError: Function, setLoading: F
             notificationDoc = await notificationRef.where("recipientId", "==", uid).orderBy("created", "desc").startAfter(timeNow).limit(20).get();
             
         }
-        const notificationData = notificationDoc.docs.map((notification) =>  notification.data() as NotificationDB);
+        const notificationData = notificationDoc.docs.map((notification) => { 
+            return {
+                ...notification.data() as NotificationDB,
+                notificationId: notification.id
+            }
+        });
         setData(notificationData);
         setLoading(false);
     } catch (e: any){

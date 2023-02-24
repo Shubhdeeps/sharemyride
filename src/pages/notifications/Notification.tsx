@@ -48,7 +48,7 @@ export default function Notification() {
         <div className="mt-3 d-flex flex-column">
           {notifications.map((notification) => {
             return (
-              <React.Fragment key={notification.postId}>
+              <React.Fragment key={notification.notificationId}>
                 <NotificationCard data={notification} />
               </React.Fragment>
             );

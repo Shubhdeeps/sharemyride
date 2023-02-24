@@ -120,8 +120,8 @@ export default function Dashboard() {
         <NewRouteModal setModelPopUp={() => setNewRoutePopup(false)} />
       )}
       <div className="empty-area"></div>
-      <div className="filled-area container">
-        <div className="top-negative">
+      <div className="filled-area">
+        <div className="top-negative container">
           <div className="w-100 d-flex justify-content-between">
             <NavButton
               title="Dashboard"

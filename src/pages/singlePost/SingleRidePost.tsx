@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import CarsCard from "../../components/cards/CarsCard";
 import TitleHeader from "../../components/cards/TitleHeader";
@@ -44,27 +45,29 @@ export default function ReviewRidePost() {
   return (
     <>
       <div className="empty-area"></div>
-      <div className="filled-area container">
-        <br />
-        {loading && <Loader />}
-        {data && <CarsCard data={data} requestRideOnClick={undefined} />}
-        <br />
-        <TitleHeader heading="Requests" />
-        {loadingRequests && <Loader />}
-        <div className="d-flex flex-column gap-2 mt-2">
-          {requestsData.map((request) => {
-            return (
-              <React.Fragment key={request.uid}>
-                <RideRequestTicket
-                  data={request}
-                  rideOwner={data?.authorId as string}
-                  role="ride"
-                />
-              </React.Fragment>
-            );
-          })}
-        </div>
-        <br />
+      <div className="filled-area">
+        <Container>
+          <br />
+          {loading && <Loader />}
+          {data && <CarsCard data={data} requestRideOnClick={undefined} />}
+          <br />
+          <TitleHeader heading="Requests" />
+          {loadingRequests && <Loader />}
+          <div className="d-flex flex-column gap-2 mt-2">
+            {requestsData.map((request) => {
+              return (
+                <React.Fragment key={request.uid}>
+                  <RideRequestTicket
+                    data={request}
+                    rideOwner={data?.authorId as string}
+                    role="ride"
+                  />
+                </React.Fragment>
+              );
+            })}
+          </div>
+          <br />
+        </Container>
       </div>
     </>
   );

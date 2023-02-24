@@ -9,6 +9,21 @@ import Cost from "./cars/Cost";
 import ProfileDetails from "./cars/ProfileDetails";
 import Timeline from "./cars/Timeline";
 
+const status = {
+  ongoing: {
+    color: "font-safe",
+    status: "LIVE",
+  },
+  cancelled: {
+    color: "font-danger",
+    status: "CANCELLED",
+  },
+  full: {
+    color: "",
+    status: "RESERVED",
+  },
+};
+
 type Props = {
   data: RideDB;
   requestRideOnClick: Function | undefined;
@@ -59,6 +74,9 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
             </>
           )}
         </div>
+        <span className={`${status[data.status].color} fw-bold text-3`}>
+          {status[data.status].status}
+        </span>
         <Timeline
           startTime={data.departTime}
           endPoint={data.arriveAt}

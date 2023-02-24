@@ -13,6 +13,22 @@ type Props = {
   data: PassengerDB;
   requestRideOnClick: Function | undefined;
 };
+
+const status = {
+  ongoing: {
+    color: "font-safe",
+    status: "LIVE",
+  },
+  cancelled: {
+    color: "font-danger",
+    status: "CANCELLED",
+  },
+  occupied: {
+    color: "",
+    status: "RESERVED",
+  },
+};
+
 export default function PassengerCard({ data, requestRideOnClick }: Props) {
   const navigate = useNavigate();
   const isBelongToCurrentUser = data.authorId === auth.currentUser?.uid;
@@ -40,6 +56,9 @@ export default function PassengerCard({ data, requestRideOnClick }: Props) {
           />
         </div>
       </div>
+      <span className={`${status[data.status].color} fw-bold text-3`}>
+        {status[data.status].status}
+      </span>
       <Timeline
         startPoint={data.departFrom}
         endPoint={data.arriveAt}

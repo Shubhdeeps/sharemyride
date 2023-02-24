@@ -45,7 +45,6 @@ export const getRideCardsBasedOnRouteId = async (routeId: string, setError: Func
           } as RideDB
         }
         )
-        console.log(newData);
         if(!newData.length){
             setNoMoreRides("No more rides")
         }

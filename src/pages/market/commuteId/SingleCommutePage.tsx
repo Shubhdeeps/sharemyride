@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import CommuteOfferCard from "../../../components/cards/CommuteOfferCard";
 import MarketCard from "../../../components/cards/MarketCard";
@@ -39,22 +40,24 @@ export default function SingleCommutePage() {
   return (
     <>
       <div className="empty-area"></div>
-      <div className="filled-area container d-flex flex-column gap-3 pt-3 pb-3">
-        <TitleHeader heading="On sale" />
-        {loading && <Loader />}
-        {data && <MarketCard data={data} />}
-        <TitleHeader heading="Offers" />
-        {loading1 ? (
-          <Loader />
-        ) : (
-          offers.map((offer) => {
-            return (
-              <React.Fragment key={offer.offerId}>
-                <CommuteOfferCard data={offer} />
-              </React.Fragment>
-            );
-          })
-        )}
+      <div className="filled-area">
+        <Container className="d-flex flex-column gap-3 pt-3 pb-3">
+          <TitleHeader heading="On sale" />
+          {loading && <Loader />}
+          {data && <MarketCard data={data} />}
+          <TitleHeader heading="Offers" />
+          {loading1 ? (
+            <Loader />
+          ) : (
+            offers.map((offer) => {
+              return (
+                <React.Fragment key={offer.offerId}>
+                  <CommuteOfferCard data={offer} />
+                </React.Fragment>
+              );
+            })
+          )}
+        </Container>
       </div>
     </>
   );

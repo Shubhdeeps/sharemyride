@@ -103,8 +103,8 @@ export default function MarketPlace() {
         />
       )}
       <div className="empty-area"></div>
-      <div className="filled-area container">
-        <div className="h-100 d-flex flex-column top-negative">
+      <div className="filled-area ">
+        <div className="container h-100 d-flex flex-column top-negative">
           <TitleHeader heading="Buy and Sell Bus/Train tickets" />
           <div className="d-flex gap-2 noselect mt-2">
             <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">

@@ -21,7 +21,7 @@ export default function TimelineCardPassenger({
   const navigate = useNavigate();
 
   const handleVisitCard = () => {
-    navigate("");
+    navigate(`/review-passenger/${data.passengerTicektId}`);
   };
 
   return (
