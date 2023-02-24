@@ -4,11 +4,12 @@ import { Contact } from "../../types/Requst.modal";
 import { NotificationType } from "../../types/notification.model";
 import { sendNotification } from "./notification";
 
+const ridesRef = firestore.collection("rides");
 // Ride
-export const getSingleRideBasedOnRideId = async (rideId: string, setError: Function, setLoading: Function, setData: Function,) => {
+export const getSingleRideBasedOnRideId = async (rideId: string, setError: Function, setLoading: Function, setData: Function) => {
     setLoading(true);
     try{    
-        const rideDoc = await firestore.collection("rides").doc(rideId).get();
+        const rideDoc = await ridesRef.doc(rideId).get();
         const rideData = rideDoc.data() as RideDB;
         setData(rideData);
         setLoading(false);
@@ -31,11 +32,11 @@ export const getRideCardsBasedOnRouteId = async (routeId: string, setError: Func
     try{
         let data: any;
         if(filter === "ALL"){
-            data =  await firestore.collection("rides").where("routeId", "==", routeId).where("status", "==", "ongoing").orderBy("actualStartTime", order).startAfter(lastItemDate).limit(10).get();
+            data =  await ridesRef.where("routeId", "==", routeId).where("status", "==", "ongoing").orderBy("actualStartTime", order).startAfter(lastItemDate).limit(10).get();
         } else {
-            data =  await firestore.collection("rides").where("routeId", "==", routeId).where("status", "==", "ongoing").where("authorId", "==", auth.currentUser?.uid).orderBy("actualStartTime", order).startAfter(lastItemDate).limit(10).get();
+            data =  await ridesRef.where("routeId", "==", routeId).where("status", "==", "ongoing").where("authorId", "==", auth.currentUser?.uid).orderBy("actualStartTime", order).startAfter(lastItemDate).limit(10).get();
         }
-        const newData = data.docs.map((doc: any) => 
+        const newData: RideDB[] = data.docs.map((doc: any) => 
         {
         const data = doc.data();
         const rideTicektId = doc.id;
@@ -60,8 +61,21 @@ export const getRideCardsBasedOnRouteId = async (routeId: string, setError: Func
 export const delayMyRide = async (rideId: string, actualStartTime: typeof Timestamp, actualEndTime: typeof Timestamp, setLoading: Function) => {
     try{
         setLoading("pending");
+        // get passengers of ride
+        const data = (await ridesRef.doc(rideId).get()).data() as RideDB;
+        data.passengerUids.forEach((passengerId) => {
+            const notificationData: NotificationType = {
+                content: `Ride from ${data.departFrom} to ${data.arriveAt} has been updated from its original time.`,
+                displayName: data.displayName,
+                parent: "ride",
+                photoURL: data.photoURL,
+                postId: rideId,
+                recipientId: passengerId
+            }
+          sendNotification(passengerId, notificationData)
+        })
         //ride delay, update actualStartTime actualEndTime
-        await firestore.collection("rides").doc(rideId).update({
+        await ridesRef.doc(rideId).update({
             actualStartTime, 
             actualEndTime,
             departTime: FieldValue.arrayUnion(actualStartTime),
@@ -76,7 +90,7 @@ export const delayMyRide = async (rideId: string, actualStartTime: typeof Timest
 export const cancleMyRde = async (rideId: string) => {
     try{
         // get data of delayed ride
-        const data = (await firestore.collection("rides").doc(rideId).get()).data() as RideDB;
+        const data = (await ridesRef.doc(rideId).get()).data() as RideDB;
         // send notification to all travellers
         data.passengerUids.forEach((passengerId) => {
             const notificationData: NotificationType = {
@@ -90,7 +104,7 @@ export const cancleMyRde = async (rideId: string) => {
           sendNotification(passengerId, notificationData)
         })
         // update ride status
-        await firestore.collection("rides").doc(rideId).update({
+        await ridesRef.doc(rideId).update({
             status: "cancelled"
         })
     } catch (e){
@@ -103,7 +117,7 @@ export const createNewRideTile = (data: NewRideModal, routeId: string) => {
     const photoURL = auth.currentUser?.photoURL as string;
     const displayName = auth.currentUser?.displayName as string;
 
-    firestore.collection("rides").add({
+    ridesRef.add({
         ...data,
         routeId,
         passengerUids: [authorId],
@@ -185,7 +199,7 @@ export const requestIdUpdateStatus = async (userId: string, rideId: string, stat
         status
     })
     if(status === "accepted" && parent === "ride"){
-        await firestore.collection("rides").doc(rideId).update({
+        await ridesRef.doc(rideId).update({
             passengerUids: FieldValue.arrayUnion(userId)
         })
     }

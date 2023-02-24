@@ -19,6 +19,12 @@ export default function TimelineCard({
   setRidePop: Function;
 }) {
   const isBelongToCurrentUser = data.authorId === auth.currentUser?.uid;
+  let emptySeatCount = data.passengerSeats - data.passengerUids.length + 1;
+  // if passengers seat is unset
+  if (data.passengerSeats === 0) {
+    emptySeatCount = 0;
+  }
+  const isCarFull = emptySeatCount === 0;
   const navigate = useNavigate();
   const isCurrentUserAPassengerOfRide = data.passengerUids.includes(
     auth.currentUser?.uid as string
@@ -108,17 +114,18 @@ export default function TimelineCard({
               </React.Fragment>
             );
           })}
-          {Array.from(
-            Array(data.passengerSeats - data.passengerUids.length).keys()
-          ).map((x) => {
+          {Array.from(Array(emptySeatCount).keys()).map((x) => {
             return (
               <React.Fragment key={x}>
                 <span className="seat-blank"></span>
               </React.Fragment>
             );
           })}
+          <span className="fw-bold">
+            {emptySeatCount}/{data.passengerSeats}
+          </span>
         </div>
-        {isCurrentUserAPassengerOfRide && (
+        {isCurrentUserAPassengerOfRide && !isBelongToCurrentUser && (
           <div className="text-4 fw-bold font-safe">ACCEPTED</div>
         )}
         <div className="d-flex align-items-center gap-3">
@@ -127,7 +134,8 @@ export default function TimelineCard({
               Visit
             </button>
           ) : (
-            requestRideOnClick && (
+            requestRideOnClick &&
+            !isCarFull && (
               <button
                 className="btn-height"
                 onClick={() =>

@@ -11,6 +11,7 @@ import RouteDetails from "../../components/route/RouteDetails";
 import { createNewRideTile } from "../../service/firebase/collectionOperations";
 import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
 import { timestamp } from "../../service/firebase/firebaseConfig";
+import { Container } from "react-bootstrap";
 
 export default function NewRide() {
   const { routeId } = useParams();
@@ -89,8 +90,8 @@ export default function NewRide() {
       arriveTime: [timestamp.fromMillis(+new Date(arriveTime[0]))],
       departFrom,
       arriveAt,
-      cost: costRef.current,
-      passengerSeats: passengerSeatsRef.current,
+      cost: +costRef.current,
+      passengerSeats: +passengerSeatsRef.current,
       contact: {
         messanger: messangerRef.current,
         whatsapp: whatsappRef.current,
@@ -126,194 +127,196 @@ export default function NewRide() {
       <div className="empty-area">
         <RouteDetails />
       </div>
-      <div className="filled-area container noselect">
-        <span className="text-2 fw-bold fontLigh">New Ride</span>
-        <Timeline
-          endPoint={arriveAt}
-          startPoint={departFrom}
-          startTime={[timestamp.fromMillis(+new Date(departTime[0]))]}
-          endTime={[timestamp.fromMillis(+new Date(arriveTime[0]))]}
-          stoppage={[...stoppageRef.map((eachRef) => eachRef.current)]}
-          commute="car"
-        />
+      <div className="filled-area">
+        <Container>
+          <span className="text-2 fw-bold fontLigh">New Ride</span>
+          <Timeline
+            endPoint={arriveAt}
+            startPoint={departFrom}
+            startTime={[timestamp.fromMillis(+new Date(departTime[0]))]}
+            endTime={[timestamp.fromMillis(+new Date(arriveTime[0]))]}
+            stoppage={[...stoppageRef.map((eachRef) => eachRef.current)]}
+            commute="car"
+          />
 
-        <br />
-        <div className="d-flex flex-column gap-1">
-          <span className="text-5 fontSecondary">TIME*</span>
-
-          <InputTextFieldwitState
-            placeholder="14:00"
-            setData={setDepartTime}
-            title="Depart time*"
-            type="datetime-local"
-            isAnArray={true}
-            currValue={departTime}
-          />
-          <InputTextFieldwitState
-            placeholder="20:00"
-            setData={setArriveTime}
-            title="Arriving time*"
-            type="datetime-local"
-            isAnArray={true}
-            currValue={arriveTime}
-          />
-        </div>
-        <hr />
-        <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">EXPENSES*</span>
-          <InputTextFieldSecondary
-            placeholder="$15"
-            textRef={costRef}
-            title="Cost*"
-            type="number"
-          />
-        </div>
-        <hr />
-        <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">ROUTE</span>
-          <InputTextFieldwitState
-            placeholder="Kristiine, Tallinn"
-            setData={setDepartFrom}
-            title="Departing point"
-            type="text"
-            isAnArray={false}
-            currValue={departFrom}
-          />
-          <InputTextFieldwitState
-            placeholder="Old Town, Tartu"
-            setData={setArriveAt}
-            title="Arriving point"
-            type="text"
-            isAnArray={false}
-            currValue={arriveAt}
-          />
           <br />
-          <span className="text-5 fontSecondary">DESCRIBE THE ROUTE</span>
-          {Array.from({ length: stoppageRef.length }, (_, i) => i + 1).map(
-            (stop) => {
-              return (
-                <React.Fragment key={stop}>
-                  <InputTextFieldSecondary
-                    placeholder={`Xyz city ${stop}`}
-                    textRef={stoppageRef[stop - 1]}
-                    title={`Stoppage ${stop}`}
-                    type="text"
-                  />
-                </React.Fragment>
-              );
-            }
-          )}
+          <div className="d-flex flex-column gap-1">
+            <span className="text-5 fontSecondary">TIME*</span>
 
-          <span className="mt-2 d-flex justify-content-center noselect">
-            <i
-              onClick={() => {
-                if (stoppageRef.length < 3) {
-                  setStoppageRef((prevState) => [
-                    ...prevState,
-                    stopRefs[prevState.length],
-                  ]);
-                } else {
-                  setStoppageRef((prevState) => [...prevState]);
-                }
-              }}
-              className="cursor bi bi-plus-circle text-2 p-2 primary-bg border-r1 fontLight d-flex gap-2 justify-content-center align-items-center w-75"
-            >
-              Add Stoppage
-            </i>
-          </span>
-          <span className="mt-2 d-flex justify-content-center noselect">
-            <i
-              onClick={() => {
-                if (stoppageRef.length === 1) {
-                  stoppageRef[0].current = "";
-                  setStoppageRef([stoppageRef[0]]);
-                }
-                if (stoppageRef.length > 1) {
-                  console.log("clicking..");
-                  const newStopRefs = stoppageRef;
-                  const removedRef = newStopRefs.pop();
-                  if (removedRef && removedRef.current) {
-                    removedRef.current = "";
-                  }
-                  setStoppageRef([...newStopRefs]);
-                }
-              }}
-              className="cursor bi bi-x-circle text-2 p-2 primary-bg border-r1 fontLight d-flex gap-2 justify-content-center align-items-center w-75"
-            >
-              Remove Stoppage
-            </i>
-          </span>
-        </div>
-        <hr />
-        <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">CAR DETAILS</span>
-
-          <InputTextFieldSecondary
-            placeholder="Passenger seats"
-            textRef={passengerSeatsRef}
-            title="Seats offering"
-            type="number"
-          />
-        </div>
-        <hr />
-        <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">CONTACT DETAILS</span>
-
-          <InputTextFieldSecondary
-            placeholder="john01"
-            textRef={messangerRef}
-            title="Messanger Username"
-            type="text"
-          />
-          <InputTextFieldSecondary
-            placeholder="+372 3994 ...."
-            textRef={whatsappRef}
-            title="WhatsApp Number"
-            type="text"
-          />
-          <InputTextFieldSecondary
-            placeholder="+372 3994 ...."
-            textRef={textRef}
-            title="Text Message"
-            type="text"
-          />
-        </div>
-        <hr />
-        <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">PRIVACY SETTINGS</span>
-          <div className="d-flex flex-wrap gap-2">
-            <InputCheckboxField
-              placeholder=""
-              switchRef={arePetsAllowedRef}
-              title="Are pets allowed in your car?"
+            <InputTextFieldwitState
+              placeholder="14:00"
+              setData={setDepartTime}
+              title="Depart time*"
+              type="datetime-local"
+              isAnArray={true}
+              currValue={departTime}
             />
-            <InputCheckboxField
-              placeholder=""
-              switchRef={acceptParcelRef}
-              title="Are you accepting parcels?"
-            />
-            <InputCheckboxField
-              placeholder=""
-              switchRef={EVCarRef}
-              title="I am travelling with electric car"
-            />
-            <InputCheckboxField
-              placeholder=""
-              switchRef={showContactDetails}
-              title="Show contact details"
+            <InputTextFieldwitState
+              placeholder="20:00"
+              setData={setArriveTime}
+              title="Arriving time*"
+              type="datetime-local"
+              isAnArray={true}
+              currValue={arriveTime}
             />
           </div>
-        </div>
-        <hr />
-        {error && (
-          <div className="text-danger text-3 mb-3 text-center">{error}</div>
-        )}
-        <div className="d-flex gap-2">
-          <FilledButton title="Cancel" onClick={() => handleCancel()} />
-          <FilledButton title="Post" onClick={() => handlePost()} />
-        </div>
-        <br />
-        <br />
+          <hr />
+          <div className="d-flex flex-column gap-1 mt-2">
+            <span className="text-5 fontSecondary">EXPENSES*</span>
+            <InputTextFieldSecondary
+              placeholder="$15"
+              textRef={costRef}
+              title="Cost*"
+              type="number"
+            />
+          </div>
+          <hr />
+          <div className="d-flex flex-column gap-1 mt-2">
+            <span className="text-5 fontSecondary">ROUTE</span>
+            <InputTextFieldwitState
+              placeholder="Kristiine, Tallinn"
+              setData={setDepartFrom}
+              title="Departing point"
+              type="text"
+              isAnArray={false}
+              currValue={departFrom}
+            />
+            <InputTextFieldwitState
+              placeholder="Old Town, Tartu"
+              setData={setArriveAt}
+              title="Arriving point"
+              type="text"
+              isAnArray={false}
+              currValue={arriveAt}
+            />
+            <br />
+            <span className="text-5 fontSecondary">DESCRIBE THE ROUTE</span>
+            {Array.from({ length: stoppageRef.length }, (_, i) => i + 1).map(
+              (stop) => {
+                return (
+                  <React.Fragment key={stop}>
+                    <InputTextFieldSecondary
+                      placeholder={`Xyz city ${stop}`}
+                      textRef={stoppageRef[stop - 1]}
+                      title={`Stoppage ${stop}`}
+                      type="text"
+                    />
+                  </React.Fragment>
+                );
+              }
+            )}
+
+            <span className="mt-2 d-flex justify-content-center noselect">
+              <i
+                onClick={() => {
+                  if (stoppageRef.length < 3) {
+                    setStoppageRef((prevState) => [
+                      ...prevState,
+                      stopRefs[prevState.length],
+                    ]);
+                  } else {
+                    setStoppageRef((prevState) => [...prevState]);
+                  }
+                }}
+                className="cursor bi bi-plus-circle text-2 p-2 primary-bg border-r1 fontLight d-flex gap-2 justify-content-center align-items-center w-75"
+              >
+                Add Stoppage
+              </i>
+            </span>
+            <span className="mt-2 d-flex justify-content-center noselect">
+              <i
+                onClick={() => {
+                  if (stoppageRef.length === 1) {
+                    stoppageRef[0].current = "";
+                    setStoppageRef([stoppageRef[0]]);
+                  }
+                  if (stoppageRef.length > 1) {
+                    console.log("clicking..");
+                    const newStopRefs = stoppageRef;
+                    const removedRef = newStopRefs.pop();
+                    if (removedRef && removedRef.current) {
+                      removedRef.current = "";
+                    }
+                    setStoppageRef([...newStopRefs]);
+                  }
+                }}
+                className="cursor bi bi-x-circle text-2 p-2 primary-bg border-r1 fontLight d-flex gap-2 justify-content-center align-items-center w-75"
+              >
+                Remove Stoppage
+              </i>
+            </span>
+          </div>
+          <hr />
+          <div className="d-flex flex-column gap-1 mt-2">
+            <span className="text-5 fontSecondary">CAR DETAILS</span>
+
+            <InputTextFieldSecondary
+              placeholder="Passenger seats"
+              textRef={passengerSeatsRef}
+              title="Seats offering"
+              type="number"
+            />
+          </div>
+          <hr />
+          <div className="d-flex flex-column gap-1 mt-2">
+            <span className="text-5 fontSecondary">CONTACT DETAILS</span>
+
+            <InputTextFieldSecondary
+              placeholder="john01"
+              textRef={messangerRef}
+              title="Messanger Username"
+              type="text"
+            />
+            <InputTextFieldSecondary
+              placeholder="+372 3994 ...."
+              textRef={whatsappRef}
+              title="WhatsApp Number"
+              type="text"
+            />
+            <InputTextFieldSecondary
+              placeholder="+372 3994 ...."
+              textRef={textRef}
+              title="Text Message"
+              type="text"
+            />
+          </div>
+          <hr />
+          <div className="d-flex flex-column gap-1 mt-2">
+            <span className="text-5 fontSecondary">PRIVACY SETTINGS</span>
+            <div className="d-flex flex-wrap gap-2">
+              <InputCheckboxField
+                placeholder=""
+                switchRef={arePetsAllowedRef}
+                title="Are pets allowed in your car?"
+              />
+              <InputCheckboxField
+                placeholder=""
+                switchRef={acceptParcelRef}
+                title="Are you accepting parcels?"
+              />
+              <InputCheckboxField
+                placeholder=""
+                switchRef={EVCarRef}
+                title="I am travelling with electric car"
+              />
+              <InputCheckboxField
+                placeholder=""
+                switchRef={showContactDetails}
+                title="Show contact details"
+              />
+            </div>
+          </div>
+          <hr />
+          {error && (
+            <div className="text-danger text-3 mb-3 text-center">{error}</div>
+          )}
+          <div className="d-flex gap-2">
+            <FilledButton title="Cancel" onClick={() => handleCancel()} />
+            <FilledButton title="Post" onClick={() => handlePost()} />
+          </div>
+          <br />
+          <br />
+        </Container>
       </div>
     </>
   );
