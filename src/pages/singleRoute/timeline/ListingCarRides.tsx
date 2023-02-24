@@ -6,6 +6,8 @@ import FilterHeader from "../../../components/headers/TimeHeader";
 import FloatButton from "../../../components/inputFields/FloatButton";
 import Loader from "../../../components/loader";
 import RequestModal from "../../../components/modals/RequestRideModal";
+import TripActionModal from "../../../components/modals/TripActionModal";
+import RideActionModal from "../../../components/modals/TripActionModal";
 import NavButton from "../../../components/navigationBars/NavButton";
 import RouteDetails from "../../../components/route/RouteDetails";
 import { DateHeader } from "../../../components/timeline/DateTimestampHeader";
@@ -14,6 +16,7 @@ import { TimelineTag } from "../../../components/timeline/TimelineTag";
 import { timestamp } from "../../../service/firebase/firebaseConfig";
 import { getRideCardsBasedOnRouteId } from "../../../service/firebase/rides";
 import { firebaseTimestampToDayNumber } from "../../../service/helperFunctions/firebaseTimestampToString";
+import { RidePopUp } from "../../../types/customTypes.model";
 import { RideDB } from "../../../types/ride.model";
 import { floatIcon, floatIcon2 } from "../icons";
 
@@ -27,7 +30,12 @@ export default function ListingCarRides({
   const { routeId } = useParams();
 
   const navigation = useNavigate();
+
+  // for card action
+  const [ridePopUp, setRidePop] = useState<RidePopUp>(null);
+
   const [requestRideFlex, setRequestRideFlex] = useState(""); // authorId_rideId
+
   const [data, setData] = useState<RideDB[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -97,6 +105,13 @@ export default function ListingCarRides({
 
   return (
     <>
+      {!!ridePopUp && (
+        <TripActionModal
+          role="ride"
+          setAction={setRidePop}
+          action={ridePopUp}
+        />
+      )}
       {!!requestRideFlex && (
         <RequestModal
           setRequestRideFlex={setRequestRideFlex}
@@ -150,7 +165,6 @@ export default function ListingCarRides({
               </div>
             </div>
           </FilterHeader>
-
           <div className="d-flex align-items-stretch w-100 mt-3 h-100">
             <div className="left-lining"></div>
             <div className="right-lining d-flex flex-column gap-5 h-100">
@@ -167,6 +181,7 @@ export default function ListingCarRides({
                     <TimelineCard
                       requestRideOnClick={setRequestRideFlex}
                       data={ride}
+                      setRidePop={setRidePop}
                     />
                   </React.Fragment>
                 );

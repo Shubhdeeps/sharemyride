@@ -7,6 +7,7 @@ import FilterHeader from "../../../components/headers/TimeHeader";
 import FloatButton from "../../../components/inputFields/FloatButton";
 import Loader from "../../../components/loader";
 import RequestModal from "../../../components/modals/RequestRideModal";
+import TripActionModal from "../../../components/modals/TripActionModal";
 import NavButton from "../../../components/navigationBars/NavButton";
 import RouteDetails from "../../../components/route/RouteDetails";
 import { DateHeader } from "../../../components/timeline/DateTimestampHeader";
@@ -15,6 +16,7 @@ import { TimelineTag } from "../../../components/timeline/TimelineTag";
 import { timestamp } from "../../../service/firebase/firebaseConfig";
 import { getPassengerCardsBasedOnRouteId } from "../../../service/firebase/passenger";
 import { firebaseTimestampToDayNumber } from "../../../service/helperFunctions/firebaseTimestampToString";
+import { RidePopUp } from "../../../types/customTypes.model";
 import { PassengerDB } from "../../../types/passenger.model";
 import { floatIcon, floatIcon2 } from "../icons";
 
@@ -26,8 +28,11 @@ export default function ListingPassengers({
   activeNavButton: "cars" | "passenger";
 }) {
   const { routeId } = useParams();
-
   const navigation = useNavigate();
+
+  // for card action
+  const [tripPopUp, setTripPopup] = useState<RidePopUp>(null);
+
   const [requestPassengerFlex, setRequestPassengerFlex] = useState("");
   const [data, setData] = useState<PassengerDB[]>([]);
   const [error, setError] = useState("");
@@ -93,6 +98,13 @@ export default function ListingPassengers({
 
   return (
     <>
+      {!!tripPopUp && (
+        <TripActionModal
+          role="passenger"
+          setAction={setTripPopup}
+          action={tripPopUp}
+        />
+      )}
       {!!requestPassengerFlex && (
         <RequestModal
           setRequestRideFlex={setRequestPassengerFlex}
@@ -163,6 +175,7 @@ export default function ListingPassengers({
                     <TimelineCardPassenger
                       requestRideOnClick={setRequestPassengerFlex}
                       data={passenger}
+                      setRidePop={setTripPopup}
                     />
                   </React.Fragment>
                 );

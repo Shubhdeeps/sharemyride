@@ -2,16 +2,17 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import TitleHeader from "../../components/cards/TitleHeader";
 import Error from "../../components/error/Error";
-import TimeHeader from "../../components/headers/TimeHeader";
 import FloatButton from "../../components/inputFields/FloatButton";
 import Loader from "../../components/loader";
 import CreateCommuteOfferModal from "../../components/modals/CommuteOfferModal";
+import DeleteMarketPlaceAdConfirmation from "../../components/modals/DeleteMarketPlaceAdConfirmation";
 import { DateHeader } from "../../components/timeline/DateTimestampHeader";
 import TimelineCardMarket from "../../components/timeline/TimelineCardMarket";
 import { TimelineTag } from "../../components/timeline/TimelineTag";
 import { Timestamp, timestamp } from "../../service/firebase/firebaseConfig";
 import { getMarketPlacePosts } from "../../service/firebase/marketPlace";
 import { firebaseTimestampToDayNumber } from "../../service/helperFunctions/firebaseTimestampToString";
+import { RidePopUp } from "../../types/customTypes.model";
 import { MarketPlaceDB } from "../../types/marketPlace";
 
 export default function MarketPlace() {
@@ -24,6 +25,8 @@ export default function MarketPlace() {
   const [marketPlaceData, setMarketPlaceData] = useState<MarketPlaceDB[]>([]);
   const [commuteOffer, setCommuteOffer] = useState("");
   const [noMoreRides, setNoMoreRides] = useState("");
+
+  const [marketPopUp, setMarketPopUp] = useState<string | null>(null);
 
   // for timestamp on timeline
   const previousDateRef = useRef(timestamp.now());
@@ -87,6 +90,12 @@ export default function MarketPlace() {
 
   return (
     <>
+      {!!marketPopUp && (
+        <DeleteMarketPlaceAdConfirmation
+          marketTicketId={marketPopUp}
+          setAction={setMarketPopUp}
+        />
+      )}
       {!!commuteOffer && (
         <CreateCommuteOfferModal
           commuteId={commuteOffer}
@@ -95,74 +104,76 @@ export default function MarketPlace() {
       )}
       <div className="empty-area"></div>
       <div className="filled-area container">
-        <br />
-        <TitleHeader heading="Buy and Sell Bus/Train tickets" />
-        <div className="d-flex gap-2 noselect mt-2">
-          <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
-            <span
-              onClick={() => {
-                handleFilterChange("ALL");
-              }}
-            >
-              ALL
-            </span>
-            {filter === "ALL" && (
-              <i className="bi bi-check font-safe text-2"></i>
-            )}
+        <div className="h-100 d-flex flex-column top-negative">
+          <TitleHeader heading="Buy and Sell Bus/Train tickets" />
+          <div className="d-flex gap-2 noselect mt-2">
+            <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
+              <span
+                onClick={() => {
+                  handleFilterChange("ALL");
+                }}
+              >
+                ALL
+              </span>
+              {filter === "ALL" && (
+                <i className="bi bi-check font-safe text-2"></i>
+              )}
+            </div>
+            <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
+              <span
+                onClick={() => {
+                  handleFilterChange("MINE");
+                }}
+              >
+                MINE
+              </span>
+              {filter === "MINE" && (
+                <i className="bi bi-check font-safe text-2"></i>
+              )}
+            </div>
           </div>
-          <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
-            <span
-              onClick={() => {
-                handleFilterChange("MINE");
-              }}
-            >
-              MINE
-            </span>
-            {filter === "MINE" && (
-              <i className="bi bi-check font-safe text-2"></i>
-            )}
+          <div className="d-flex align-items-stretch w-100 mt-3">
+            <div className="left-lining"></div>
+            <div className="right-lining d-flex flex-column gap-4">
+              {marketPlaceData.map((sale, index) => {
+                const isCurrentTimeChanged =
+                  firebaseTimestampToDayNumber(previousDateRef.current) !==
+                  firebaseTimestampToDayNumber(sale.startTime);
+                previousDateRef.current = sale.startTime;
+                return (
+                  <React.Fragment key={sale.commuteId}>
+                    {(isCurrentTimeChanged || index === 0) && (
+                      <DateHeader date={previousDateRef.current} />
+                    )}
+                    <TimelineCardMarket
+                      data={sale}
+                      setCommuteOffer={setCommuteOffer}
+                      setRidePop={setMarketPopUp}
+                    />
+                  </React.Fragment>
+                );
+              })}
+              {!!marketPlaceData.length && noMoreRides && (
+                <TimelineTag data="End" />
+              )}
+            </div>
           </div>
+          {loading ? (
+            <Loader />
+          ) : (
+            <div className="p-3 text-center w-100 text-3">
+              {noMoreRides ? (
+                <>{noMoreRides}</>
+              ) : (
+                <i
+                  onClick={() => fetchMore()}
+                  className="bi bi-arrow-clockwise text-1-5"
+                ></i>
+              )}
+            </div>
+          )}
+          <FloatButton onClick={handleFloatButton}>{btnSVG}</FloatButton>
         </div>
-        <div className="d-flex align-items-stretch w-100 mt-3">
-          <div className="left-lining"></div>
-          <div className="right-lining d-flex flex-column gap-4">
-            {marketPlaceData.map((sale, index) => {
-              const isCurrentTimeChanged =
-                firebaseTimestampToDayNumber(previousDateRef.current) !==
-                firebaseTimestampToDayNumber(sale.startTime);
-              previousDateRef.current = sale.startTime;
-              return (
-                <React.Fragment key={sale.commuteId}>
-                  {(isCurrentTimeChanged || index === 0) && (
-                    <DateHeader date={previousDateRef.current} />
-                  )}
-                  <TimelineCardMarket
-                    data={sale}
-                    setCommuteOffer={setCommuteOffer}
-                  />
-                </React.Fragment>
-              );
-            })}
-            {!!marketPlaceData.length && noMoreRides && (
-              <TimelineTag data="End" />
-            )}
-          </div>
-        </div>
-        {loading ? (
-          <Loader />
-        ) : (
-          <div className="p-3 text-center w-100 text-3">
-            {noMoreRides ? (
-              <>{noMoreRides}</>
-            ) : (
-              <i
-                onClick={() => fetchMore()}
-                className="bi bi-arrow-clockwise text-1-5"
-              ></i>
-            )}
-          </div>
-        )}
-        <FloatButton onClick={handleFloatButton}>{btnSVG}</FloatButton>
       </div>
     </>
   );

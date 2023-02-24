@@ -6,14 +6,17 @@ import { firebaseTimestampToTime } from "../../service/helperFunctions/firebaseT
 import { RideDB } from "../../types/ride.model";
 import Cost from "../cards/cars/Cost";
 import Timeline from "../cards/cars/Timeline";
+import Extension from "../navigationBars/Extension";
 import { NameAndCreated } from "./NameAndCreated";
 
 export default function TimelineCard({
   data,
   requestRideOnClick,
+  setRidePop,
 }: {
   data: RideDB;
   requestRideOnClick: Function | undefined;
+  setRidePop: Function;
 }) {
   const isBelongToCurrentUser = data.authorId === auth.currentUser?.uid;
   const navigate = useNavigate();
@@ -50,15 +53,45 @@ export default function TimelineCard({
       <div className="p-2 ps-4 d-flex flex-column gap-2 align-items-start">
         <div className="d-flex align-items-center justify-content-between w-100 ps-1">
           <NameAndCreated date={data.created} name={data.displayName} />
-          <Cost cost={data.cost.toString()} title="" />
+          <div className="d-flex gap-1">
+            <Cost cost={data.cost.toString()} title="" />
+            <Extension>
+              <div className="d-flex flex-column gap-1 noselect width-100">
+                {isBelongToCurrentUser && (
+                  <span
+                    onClick={() => setRidePop({ edit: data.rideTicektId })}
+                    className="cursor border-bottom width-100 text-center"
+                  >
+                    Delay ride
+                  </span>
+                )}
+                {isBelongToCurrentUser && (
+                  <span
+                    onClick={() => setRidePop({ delete: data.rideTicektId })}
+                    className="cursor border-bottom width-100 text-center"
+                  >
+                    Cancel ride
+                  </span>
+                )}
+                {!isBelongToCurrentUser && (
+                  <span
+                    onClick={() => setRidePop({ report: data.rideTicektId })}
+                    className="cursor font-danger width-100 text-center"
+                  >
+                    Report ride
+                  </span>
+                )}
+              </div>
+            </Extension>
+          </div>
         </div>
         <div style={{ marginTop: "-20px" }}>
           <Timeline
             startPoint={data.departFrom}
             endPoint={data.arriveAt}
-            startTime={[data.actualStartTime]}
-            endTime={[data.actualEndTime]}
-            stoppage={[]}
+            startTime={data.departTime}
+            endTime={data.arriveTime}
+            stoppage={data.stoppages}
             commute="car"
           />
         </div>

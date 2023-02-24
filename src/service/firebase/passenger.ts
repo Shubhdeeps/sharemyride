@@ -1,5 +1,7 @@
-import { auth, FieldValue, firestore, timestamp, Timestamp } from "./firebaseConfig"
+import { auth, firestore, timestamp, Timestamp } from "./firebaseConfig"
 import { PassengerDB, PassengerModel } from "../../types/passenger.model";
+import { NotificationType } from "../../types/notification.model";
+import { sendNotification } from "./notification";
 
 
 // Ride
@@ -72,6 +74,41 @@ export const createNewPassengerTile = (data: PassengerModel, routeId: string) =>
         status: "ongoing"
     })
     
+}
+export const delayMyTrip = async (tripId: string, actualStartTime: typeof Timestamp, actualEndTime: typeof Timestamp, setLoading: Function) => {
+    try{
+        setLoading("pending");
+        //ride delay, update actualStartTime actualEndTime
+        await firestore.collection("passengers").doc(tripId).update({
+            actualStartTime, 
+            actualEndTime,
+        })
+        setLoading("success");
+    } catch (e){
+        setLoading("something went wrong!")
+    }
+}
+export const canclePassengerTrip = async (passenterTicketId: string) => {
+    try{
+        const currUser = auth.currentUser;
+        // get data of delayed ride
+        // send notification to all travellers
+        const notificationData: NotificationType = {
+            content: `Trip ticket has been cancelled.`,
+            displayName: currUser?.displayName!,
+            parent: "passenger",
+            photoURL: currUser?.photoURL!,
+            postId: passenterTicketId,
+            recipientId: currUser?.uid!
+         }
+          sendNotification(currUser?.uid!, notificationData)
+        // update ride status
+        await firestore.collection("passengers").doc(passenterTicketId).update({
+            status: "cancelled"
+        })
+    } catch (e){
+        console.log("something went wrong")
+    }
 }
 
 //Requests

@@ -148,3 +148,15 @@ export const getMyScheduledRides = async (setError: Function, setLoading: Functi
        setLoading(false);
    }
 }
+
+export const reportATicket = async (ticketId: string, comment: string, type: "ride" | "passenger" | "market") => {
+    const currUserId = auth.currentUser?.uid as string;
+    await firestore.collection("reports").add({
+        created: timestamp.now(),
+        type,
+        comment,
+        ticketId,
+        reportedBy: currUserId,
+        
+    })
+}

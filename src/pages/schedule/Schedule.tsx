@@ -12,6 +12,7 @@ import { TimelineTag } from "../../components/timeline/TimelineTag";
 import { getMyScheduledRides } from "../../service/firebase/collectionOperations";
 import { timestamp } from "../../service/firebase/firebaseConfig";
 import { firebaseTimestampToDayNumber } from "../../service/helperFunctions/firebaseTimestampToString";
+import { RidePopUp } from "../../types/customTypes.model";
 import { RideDB } from "../../types/ride.model";
 import { floatIcon } from "../dashboard/floatIcon";
 
@@ -28,6 +29,9 @@ export default function Schedule() {
   const [dateFilter, setDateFilter] = useState(now.toISOString().slice(0, 16));
   const [fetchMoreData, setFetchMoreData] = useState<RideDB[]>([]);
   const [noMoreRides, setNoMoreRides] = useState("");
+
+  //for reporting, edit, deleting ride
+  const [ridePopUp, setRidePop] = useState<RidePopUp>(null);
 
   //Timeline headers
   const previousDateRef = useRef(timestamp.now());
@@ -105,7 +109,11 @@ export default function Schedule() {
                     {(isCurrentTimeChanged || index === 0) && (
                       <DateHeader date={previousDateRef.current} />
                     )}
-                    <TimelineCard requestRideOnClick={undefined} data={ride} />
+                    <TimelineCard
+                      requestRideOnClick={undefined}
+                      data={ride}
+                      setRidePop={setRidePop}
+                    />
                   </React.Fragment>
                 );
               })}

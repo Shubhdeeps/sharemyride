@@ -5,14 +5,17 @@ import { auth } from "../../service/firebase/firebaseConfig";
 import { firebaseTimestampToTime } from "../../service/helperFunctions/firebaseTimestampToString";
 import { PassengerDB } from "../../types/passenger.model";
 import Cost from "../cards/cars/Cost";
+import Extension from "../navigationBars/Extension";
 import { NameAndCreated } from "./NameAndCreated";
 
 export default function TimelineCardPassenger({
   data,
   requestRideOnClick,
+  setRidePop,
 }: {
   data: PassengerDB;
   requestRideOnClick: Function;
+  setRidePop: Function;
 }) {
   const isBelongToCurrentUser = data.authorId === auth.currentUser?.uid;
   const navigate = useNavigate();
@@ -32,7 +35,41 @@ export default function TimelineCardPassenger({
       <div className="p-2 ps-4 d-flex flex-column gap-2 align-items-start">
         <div className="d-flex align-items-center justify-content-between w-100 ps-1">
           <NameAndCreated date={data.created} name={data.displayName} />
-          <Cost cost={data.cost.toString()} title="" />
+          <div className="d-flex gap-2">
+            <Cost cost={data.cost.toString()} title="" />
+            <Extension>
+              <div className="d-flex flex-column gap-1 noselect width-100">
+                {isBelongToCurrentUser && (
+                  <span
+                    onClick={() => setRidePop({ edit: data.passengerTicektId })}
+                    className="cursor border-bottom width-100 text-center"
+                  >
+                    Delay trip
+                  </span>
+                )}
+                {isBelongToCurrentUser && (
+                  <span
+                    onClick={() =>
+                      setRidePop({ delete: data.passengerTicektId })
+                    }
+                    className="cursor border-bottom width-100 text-center"
+                  >
+                    Cancel trip
+                  </span>
+                )}
+                {!isBelongToCurrentUser && (
+                  <span
+                    onClick={() =>
+                      setRidePop({ report: data.passengerTicektId })
+                    }
+                    className="cursor font-danger width-100 text-center"
+                  >
+                    Report trip
+                  </span>
+                )}
+              </div>
+            </Extension>
+          </div>
         </div>
         <span className="text-4 fw-bold">
           {data.departFrom.toUpperCase()} TO {data.arriveAt.toUpperCase()}

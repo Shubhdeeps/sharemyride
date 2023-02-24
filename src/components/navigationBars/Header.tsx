@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Image, Container } from "react-bootstrap";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { auth, database } from "../../service/firebase/firebaseConfig";
 import addNotification from "react-push-notification";
 
@@ -16,9 +16,13 @@ export default function Header({
   displayName: string;
 }) {
   const route = useParams();
+  const location = useLocation();
+  const isOnDashboard =
+    location.pathname === "/favourites" ||
+    location.pathname === "/dashboard" ||
+    location.pathname === "/";
   const navigation = useNavigate();
   const [newNotification, setNewNotification] = useState(false);
-  console.log(newNotification);
   useEffect(() => {
     const uid = auth.currentUser?.uid as string;
     const dataRef = database.ref(`notification/${uid}`);
@@ -49,7 +53,7 @@ export default function Header({
     <div className="d-flex justify-content-center topbar">
       <Container className="position-fixed d-flex justify-content-between mt-2 fontLight">
         <div className="d-flex gap-1 align-items-center ">
-          {!!Object.keys(route).length && (
+          {!isOnDashboard && (
             <i
               onClick={() => navigation(-1)}
               className="bi bi-caret-left text-2"
