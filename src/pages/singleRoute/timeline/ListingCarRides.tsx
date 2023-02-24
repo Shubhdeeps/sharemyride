@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Container } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Error from "../../../components/error/Error";
 import Filter from "../../../components/filter/Filter";
@@ -122,8 +123,8 @@ export default function ListingCarRides({
       <div className="empty-area">
         <RouteDetails />
       </div>
-      <div className="filled-area container">
-        <div className="h-100 d-flex flex-column align-items-center top-negative">
+      <div className="filled-area">
+        <div className="h-100 d-flex flex-column align-items-center top-negative container">
           <div className="w-100 d-flex justify-content-between">
             <NavButton
               title="Cars"
@@ -204,9 +205,11 @@ export default function ListingCarRides({
             </div>
           )}
         </div>
-        <FloatButton onClick={() => navigation(`/route/${routeId}/new-ride`)}>
-          {activeNavButton === "cars" ? floatIcon : floatIcon2}
-        </FloatButton>
+        <Container>
+          <FloatButton onClick={() => navigation(`/route/${routeId}/new-ride`)}>
+            {activeNavButton === "cars" ? floatIcon : floatIcon2}
+          </FloatButton>
+        </Container>
       </div>
     </>
   );

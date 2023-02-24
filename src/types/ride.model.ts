@@ -32,5 +32,5 @@ export type RideDB = NewRideModal &
   displayName: string;
   actualStartTime: typeof Timestamp;
   actualEndTime: typeof Timestamp;
-  status: "ongoing" | "cancelled"
+  status: "ongoing" | "cancelled" | "full"
 }

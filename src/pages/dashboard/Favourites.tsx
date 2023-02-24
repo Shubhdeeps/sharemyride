@@ -33,8 +33,8 @@ export default function Favourites() {
         <NewRouteModal setModelPopUp={() => setNewRoutePopup(false)} />
       )}
       <div className="empty-area"></div>
-      <div className="filled-area container">
-        <div className="top-negative d-flex flex-column gap-3">
+      <div className="filled-area">
+        <div className="container top-negative d-flex flex-column gap-3">
           <div className="w-100 d-flex justify-content-between">
             <NavButton
               title="Dashboard"

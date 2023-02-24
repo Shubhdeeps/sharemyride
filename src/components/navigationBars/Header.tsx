@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Image, Container } from "react-bootstrap";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { auth, database } from "../../service/firebase/firebaseConfig";
 import addNotification from "react-push-notification";
 
@@ -15,7 +15,6 @@ export default function Header({
   photoURL: string;
   displayName: string;
 }) {
-  const route = useParams();
   const location = useLocation();
   const isOnDashboard =
     location.pathname === "/favourites" ||
@@ -23,6 +22,11 @@ export default function Header({
     location.pathname === "/";
   const navigation = useNavigate();
   const [newNotification, setNewNotification] = useState(false);
+
+  const element = document.body;
+  console.log(element.offsetHeight);
+  console.log(element.scrollTop);
+
   useEffect(() => {
     const uid = auth.currentUser?.uid as string;
     const dataRef = database.ref(`notification/${uid}`);
@@ -35,7 +39,7 @@ export default function Header({
           title: "Share My Ride",
           message: "New Request from the user",
           theme: "darkblue",
-          native: true, // when using native, your OS will handle theming.
+          native: true,
         });
       }
     });
@@ -50,8 +54,8 @@ export default function Header({
     navigation(`/notification`);
   };
   return (
-    <div className="d-flex justify-content-center topbar">
-      <Container className="position-fixed d-flex justify-content-between mt-2 fontLight">
+    <div className="primary-bg d-flex justify-content-center topbar position-fixed">
+      <Container className="d-flex justify-content-between pt-1 pb-1 fontLight">
         <div className="d-flex gap-1 align-items-center ">
           {!isOnDashboard && (
             <i

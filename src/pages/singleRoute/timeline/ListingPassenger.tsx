@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Container } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import TitleHeader from "../../../components/cards/TitleHeader";
 import Error from "../../../components/error/Error";
@@ -115,8 +116,8 @@ export default function ListingPassengers({
       <div className="empty-area">
         <RouteDetails />
       </div>
-      <div className="filled-area container">
-        <div className="h-100 d-flex flex-column align-items-center top-negative">
+      <div className="filled-area">
+        <div className="container h-100 d-flex flex-column align-items-center top-negative">
           <div className="w-100 d-flex justify-content-between">
             <NavButton
               title="Cars"
@@ -200,11 +201,13 @@ export default function ListingPassengers({
             </div>
           )}
         </div>
-        <FloatButton
-          onClick={() => navigation(`/route/${routeId}/new-passenger`)}
-        >
-          {activeNavButton === "cars" ? floatIcon : floatIcon2}
-        </FloatButton>
+        <Container>
+          <FloatButton
+            onClick={() => navigation(`/route/${routeId}/new-passenger`)}
+          >
+            {activeNavButton === "cars" ? floatIcon : floatIcon2}
+          </FloatButton>
+        </Container>
       </div>
     </>
   );

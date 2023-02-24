@@ -18,7 +18,6 @@ export const ProtectedRoutesFN = () => {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      console.log("state change");
       if (user) {
         currentUserProfile.value = user;
         setCurrUser(user);

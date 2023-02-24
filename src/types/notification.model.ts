@@ -9,4 +9,4 @@ export type NotificationType = {
     recipientId: string;
 }
 
-export type NotificationDB = NotificationType & { created: typeof Timestamp; }
+export type NotificationDB = NotificationType & { created: typeof Timestamp; notificationId: string }
