@@ -40,3 +40,14 @@ textarea {
   width: 70px;
   bottom: 50px;
 }
+
+select {
+  background: none !important;
+  border: none;
+  width: 100%;
+}
+
+select:focus {
+  outline: none;
+  background: none !important;
+}

@@ -17,6 +17,7 @@ export default function InputTextFieldwitState(props: Props) {
           className="fontPrimary"
           autoComplete="new-password"
           type={props.type}
+          value={props.currValue}
           placeholder={props.placeholder}
           onChange={(e) => {
             if (props.isAnArray) {

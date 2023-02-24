@@ -23,6 +23,7 @@ export default function Favourites() {
   useEffect(() => {
     getFavouriteRouteTiles(setError, setLoading, setData);
   }, []);
+
   if (!!error) {
     return <Error errMessage={error} />;
   }
@@ -33,39 +34,41 @@ export default function Favourites() {
       )}
       <div className="empty-area"></div>
       <div className="filled-area container">
-        <div className="w-100 d-flex justify-content-between">
-          <NavButton
-            title="Dashboard"
-            currentState={pathname.split("/")[1]}
-            onClick={() => navigate("/dashboard")}
-            icon="bi-house-fill"
-          />
-          <NavButton
-            title="Favourites"
-            currentState={pathname.split("/")[1]}
-            onClick={() => navigate("/favourites")}
-            icon="bi-star-fill"
-          />
+        <div className="top-negative d-flex flex-column gap-3">
+          <div className="w-100 d-flex justify-content-between">
+            <NavButton
+              title="Dashboard"
+              currentState={pathname.split("/")[1]}
+              onClick={() => navigate("/dashboard")}
+              icon="bi-house-fill"
+            />
+            <NavButton
+              title="Favourites"
+              currentState={pathname.split("/")[1]}
+              onClick={() => navigate("/favourites")}
+              icon="bi-star-fill"
+            />
+          </div>
+          <div className="d-flex flex-column gap-3 position-relative">
+            <TitleHeader heading="Favourite routes" />
+            {data.map((routeData) => {
+              return (
+                <React.Fragment key={routeData.routeId}>
+                  <RouteCard
+                    startPoint={routeData.depart}
+                    countryName={routeData.country}
+                    endPoint={routeData.arrive}
+                    isFavourite={true}
+                  />
+                </React.Fragment>
+              );
+            })}
+            {loading && <Loader />}
+          </div>
+          <FloatButton onClick={() => setNewRoutePopup(true)}>
+            {floatIcon}
+          </FloatButton>
         </div>
-        <div className="d-flex flex-column gap-3 position-relative">
-          <TitleHeader heading="Favourite routes" />
-          {data.map((routeData) => {
-            return (
-              <React.Fragment key={routeData.routeId}>
-                <RouteCard
-                  startPoint={routeData.depart}
-                  countryName={routeData.country}
-                  endPoint={routeData.arrive}
-                  isFavourite={true}
-                />
-              </React.Fragment>
-            );
-          })}
-          {loading && <Loader />}
-        </div>
-        <FloatButton onClick={() => setNewRoutePopup(true)}>
-          {floatIcon}
-        </FloatButton>
       </div>
     </>
   );

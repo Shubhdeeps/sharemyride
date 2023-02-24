@@ -28,7 +28,7 @@ export const setNewMarketSale = async (data: MarketPlace) => {
     sendNotification(authorId, notificationData);
 }
 
-export const getMarketPlacePosts = async (setError: Function, setLoading: Function, setData: Function, lastItemDate: typeof Timestamp, filter: "ALL" | "MINE") => {
+export const getMarketPlacePosts = async (setError: Function, setLoading: Function, setData: Function, lastItemDate: typeof Timestamp, filter: "ALL" | "MINE", setNoMoreRides: Function) => {
     setLoading(true);
     const authorId = auth.currentUser?.uid as string;
     try{
@@ -38,8 +38,11 @@ export const getMarketPlacePosts = async (setError: Function, setLoading: Functi
         } else {
             data =  await marketPlaceRef.where("status", "==", "Onsale").where("authorId", "==", authorId).orderBy("startTime", "asc").startAfter(lastItemDate).limit(20).get();
         }
-           
-        setData(data.docs.map((doc: any) => doc.data() as MarketPlaceDB));
+        const newData = data.docs.map((doc: any) => doc.data() as MarketPlaceDB)
+        setData(newData);
+        if(!newData.length){
+            setNoMoreRides("No more sales")
+        }
         setLoading(false);
 
     } catch (e: any) {

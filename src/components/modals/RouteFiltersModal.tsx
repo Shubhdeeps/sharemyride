@@ -1,5 +1,5 @@
-import React from "react";
-import InputTextFieldSecondary from "../inputFields/InputTextFieldSecondary";
+import React, { useState } from "react";
+import InputDropDown from "../inputFields/InputDropDown";
 import OutlinedButton from "../inputFields/OutlinedButton";
 import ModalWrapper from "./ModalWrapper";
 
@@ -12,16 +12,18 @@ export default function RouteFiltersModal({
   onClick: Function;
   handleClear: Function;
 }) {
+  const [selectedCountry, setSelectedCountry] = useState(countryRef.current);
   return (
     <ModalWrapper>
       <span className="text-3 fw-bold">Apply filter</span>
       <br />
       <div className="d-flex flex-column gap-3 ">
-        <InputTextFieldSecondary
-          placeholder="Estonia"
-          title="Country"
-          type="text"
-          textRef={countryRef}
+        <InputDropDown
+          currValue={selectedCountry}
+          setValue={(val: string) => {
+            setSelectedCountry(val);
+            countryRef.current = val;
+          }}
         />
         <OutlinedButton onClick={() => onClick()} title="Apply" />
         <OutlinedButton onClick={() => handleClear()} title="Clear" />

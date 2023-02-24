@@ -36,7 +36,7 @@ export default function CreateCommuteOfferModal({
       <div style={{ minWidth: "300px" }}>
         {status === "pending" ? (
           <div className="d-flex flex-column gap-3">
-            <TimeHeader time="New Offer" />
+            <span className="fw-bold text-4">BUY</span>
             <InputTextFieldSecondary
               placeholder="Tallinn"
               title="Offer price"

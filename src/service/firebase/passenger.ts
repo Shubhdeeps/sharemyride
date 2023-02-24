@@ -1,5 +1,7 @@
-import { auth, FieldValue, firestore, timestamp, Timestamp } from "./firebaseConfig"
+import { auth, firestore, timestamp, Timestamp } from "./firebaseConfig"
 import { PassengerDB, PassengerModel } from "../../types/passenger.model";
+import { NotificationType } from "../../types/notification.model";
+import { sendNotification } from "./notification";
 
 
 // Ride
@@ -24,7 +26,7 @@ export const getSinglePassengerBasedOnRideId = async (passengerId: string, setEr
  * @param lastItemDate 
  * @param order 
  */
-export const getPassengerCardsBasedOnRouteId = async (routeId: string, setError: Function, setLoading: Function, setData: Function, lastItemDate: typeof Timestamp, order: "asc" | "desc", filter: "ALL" | "MINE") => {
+export const getPassengerCardsBasedOnRouteId = async (routeId: string, setError: Function, setLoading: Function, setData: Function, lastItemDate: typeof Timestamp, order: "asc" | "desc", filter: "ALL" | "MINE", setNoMoreRides: Function) => {
     setLoading(true);
     try{
         let data: any;
@@ -33,8 +35,7 @@ export const getPassengerCardsBasedOnRouteId = async (routeId: string, setError:
         } else {
             data =  await firestore.collection("passengers").where("routeId", "==", routeId).where("status", "==", "ongoing").where("authorId", "==", auth.currentUser?.uid).orderBy("actualStartTime", order).startAfter(lastItemDate).limit(10).get();
         }
-           
-        setData(data.docs.map((doc: any) => 
+        const newData = data.docs.map((doc: any) => 
         {
         const data = doc.data();
         const passengerTicektId = doc.id;
@@ -43,7 +44,12 @@ export const getPassengerCardsBasedOnRouteId = async (routeId: string, setError:
             passengerTicektId
           } as PassengerDB
         }
-        ));
+        )
+
+        if(!newData.length){
+            setNoMoreRides("No more requests")
+        }
+        setData(newData);
         setLoading(false);
     } catch (e: any) {
         console.log(e)
@@ -68,6 +74,41 @@ export const createNewPassengerTile = (data: PassengerModel, routeId: string) =>
         status: "ongoing"
     })
     
+}
+export const delayMyTrip = async (tripId: string, actualStartTime: typeof Timestamp, actualEndTime: typeof Timestamp, setLoading: Function) => {
+    try{
+        setLoading("pending");
+        //ride delay, update actualStartTime actualEndTime
+        await firestore.collection("passengers").doc(tripId).update({
+            actualStartTime, 
+            actualEndTime,
+        })
+        setLoading("success");
+    } catch (e){
+        setLoading("something went wrong!")
+    }
+}
+export const canclePassengerTrip = async (passenterTicketId: string) => {
+    try{
+        const currUser = auth.currentUser;
+        // get data of delayed ride
+        // send notification to all travellers
+        const notificationData: NotificationType = {
+            content: `Trip ticket has been cancelled.`,
+            displayName: currUser?.displayName!,
+            parent: "passenger",
+            photoURL: currUser?.photoURL!,
+            postId: passenterTicketId,
+            recipientId: currUser?.uid!
+         }
+          sendNotification(currUser?.uid!, notificationData)
+        // update ride status
+        await firestore.collection("passengers").doc(passenterTicketId).update({
+            status: "cancelled"
+        })
+    } catch (e){
+        console.log("something went wrong")
+    }
 }
 
 //Requests

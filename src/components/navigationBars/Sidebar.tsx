@@ -35,6 +35,10 @@ export default function Sidebar({
           title="Dashboard"
         />
         <SideBarButton
+          onClick={() => handleClick(() => navigate("/schedule"))}
+          title="My Schedule"
+        />
+        <SideBarButton
           onClick={() => handleClick(() => navigate("/market"))}
           title="Market Place"
         />

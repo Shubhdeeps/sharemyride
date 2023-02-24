@@ -201,3 +201,27 @@ button::after {
 .mt--10 {
   margin-top: -6px;
 }
+
+.mt--20 {
+  margin-top: -20px;
+}
+
+.z-2 {
+  z-index: 2;
+}
+
+.width-50 {
+  width: 50px;
+}
+
+.width-100 {
+  width: 100px;
+}
+
+.width-150 {
+  width: 150px;
+}
+
+.width-30 {
+  width: 30px;
+}

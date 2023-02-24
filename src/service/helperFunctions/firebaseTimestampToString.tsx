@@ -6,13 +6,13 @@ export const firebaseTimestampToString = (time: typeof Timestamp) => {
   const seconds = currentTime - timestampSeconds;
 
   if (seconds < 60) {
-    return `${seconds} secs ago`;
+    return `< 1 minute ago`;
   }
   if (seconds < 3600) {
-    return `${Math.round(seconds / 60)} mins ago`;
+    return `${Math.round(seconds / 60)} minutes ago`;
   }
   if (seconds < 24 * 3600) {
-    return `${Math.round(seconds / 3600)} hrs ago`;
+    return `${Math.round(seconds / 3600)} hours ago`;
   }
   if (seconds < 30 * 24 * 3600) {
     return `${Math.round(seconds / (24 * 3600))} days ago`;

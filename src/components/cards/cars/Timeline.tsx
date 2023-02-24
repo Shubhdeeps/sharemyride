@@ -27,10 +27,10 @@ export default function Timeline(data: TimelineData) {
   return (
     <>
       <div className="d-flex align-items-center justify-content-between">
-        {data.commute === "bus" ? (
+        {data.commute === "car" ? (
           <>
-            <Time time={data.startTime} />
-            <Time time={data.endTime} />
+            <Time align="start" time={data.startTime} />
+            <Time align="end" time={data.endTime} />
           </>
         ) : (
           <>
@@ -68,24 +68,30 @@ export default function Timeline(data: TimelineData) {
 
 // if current index is greater than zero, then make it red otherwise green
 // index greater than zero means, there are multple enteries in array, so delayed.
-const Time = ({ time }: { time: (typeof Timestamp)[] }) => {
+const Time = ({
+  time,
+  align,
+}: {
+  time: (typeof Timestamp)[];
+  align: string;
+}) => {
   const timeLastIndex = time.length - 1;
   const timeAvail = time[0].seconds;
   if (isNaN(timeAvail)) {
     return <></>;
   }
   return (
-    <div className="d-flex flex-column align-items-center text-5 mt-3">
+    <div className={`d-flex flex-column text-5 mt-3 align-items-${align}`}>
       {time.map((time, ind) => {
         const timeFormatted = firebaseTimestampToTime(time);
         return (
           <span
-            className={` ${ind > 0 ? "font-danger" : "font-safe "} ${
-              ind === timeLastIndex && "text-3 fw-bold"
+            className={` ${
+              ind === timeLastIndex ? "font-safe text-3 fw-bold" : "font-danger"
             }`}
-            key={timeFormatted}
+            key={time.seconds}
           >
-            {timeFormatted} {ind > 0 && <>Delayed</>}
+            {timeFormatted} {ind > 0 && ind === timeLastIndex && <>Updated</>}
           </span>
         );
       })}

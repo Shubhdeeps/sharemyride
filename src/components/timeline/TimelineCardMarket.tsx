@@ -1,24 +1,23 @@
 import React from "react";
 import { Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { auth, Timestamp } from "../../service/firebase/firebaseConfig";
-import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
-import {
-  firebaseTimestampToString,
-  firebaseTimestampToTime,
-} from "../../service/helperFunctions/firebaseTimestampToString";
+import { auth } from "../../service/firebase/firebaseConfig";
+import { firebaseTimestampToTime } from "../../service/helperFunctions/firebaseTimestampToString";
 import { MarketPlaceDB } from "../../types/marketPlace";
 import ContactRow from "../cards/cars/ContactRow";
 import Cost from "../cards/cars/Cost";
 import Timeline from "../cards/cars/Timeline";
+import Extension from "../navigationBars/Extension";
 import { NameAndCreated } from "./NameAndCreated";
 
 export default function TimelineCardMarket({
   data,
   setCommuteOffer,
+  setRidePop,
 }: {
   data: MarketPlaceDB;
   setCommuteOffer: Function | undefined;
+  setRidePop: Function;
 }) {
   const isBelongToCurrentUser = data.authorId === auth.currentUser?.uid;
   const navigate = useNavigate();
@@ -51,13 +50,25 @@ export default function TimelineCardMarket({
           }`}
         />
       </div>
-      <div className="w-100 h-100 position-absolute p-2 ps-4 d-flex flex-column gap-2 align-items-start">
+      <div className="p-2 ps-4 d-flex flex-column gap-2 align-items-start">
         <div className="d-flex align-items-center justify-content-between w-100 ps-1">
           <NameAndCreated
             date={data.created}
             name={data.authorName.split(" ")[0]}
           />
-          <Cost cost={data.price.toString()} title="" />
+          <div className="d-flex gap-2">
+            <Cost cost={data.price.toString()} title="" />
+            {isBelongToCurrentUser && (
+              <Extension>
+                <div
+                  onClick={() => setRidePop(data.commuteId)}
+                  className="cursor font-danger text-center width-100"
+                >
+                  Delete ad.
+                </div>
+              </Extension>
+            )}
+          </div>
         </div>
         <div style={{ marginTop: "-25px" }}>
           <Timeline
