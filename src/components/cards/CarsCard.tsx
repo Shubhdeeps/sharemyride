@@ -30,6 +30,8 @@ type Props = {
 };
 export default function CarsCard({ data, requestRideOnClick }: Props) {
   const navigate = useNavigate();
+  const emptySeatCount = data.passengerSeats - data.passengerUids.length + 1;
+
   const isCurrUserAccepted = data.passengerUids.includes(
     auth.currentUser?.uid as string
   );
@@ -68,8 +70,7 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
             <>
               <span className="text-4 fw-bold">Seats left</span>
               <span className="text-1-5 highlight-color">
-                {data.passengerSeats - data.passengerUids.length}/
-                {data.passengerSeats}
+                {emptySeatCount}/{data.passengerSeats}
               </span>
             </>
           )}
