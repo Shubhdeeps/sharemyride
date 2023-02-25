@@ -16,10 +16,10 @@ import { floatIcon } from "./floatIcon";
 export default function Dashboard() {
   // get localstorage filter name
   const storedRouteName = localStorage.getItem("route-filter");
-  let localData = undefined;
+  let localData: string | undefined = undefined;
   const countryRef = useRef("");
   if (storedRouteName) {
-    localData = JSON.parse(storedRouteName);
+    localData = JSON.parse(storedRouteName) as string;
     countryRef.current = localData;
   }
   const { pathname } = useLocation();
@@ -57,6 +57,7 @@ export default function Dashboard() {
     localStorage.setItem("route-filter", JSON.stringify(""));
   };
 
+  // run on filter change
   useEffect(() => {
     if (appliedFilter !== undefined) {
       getRouteTilesData(
@@ -71,7 +72,7 @@ export default function Dashboard() {
   }, [appliedFilter]);
 
   useEffect(() => {
-    if (!appliedFilter) {
+    if (!localData) {
       getRouteTilesData(
         setError,
         setLoading,
@@ -81,7 +82,7 @@ export default function Dashboard() {
         setNoMoreRides
       );
     }
-  }, []);
+  }, [localData]);
 
   useEffect(() => {
     setRoutes((prevState) => [...prevState, ...data]);

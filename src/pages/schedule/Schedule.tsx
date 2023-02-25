@@ -1,11 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Container } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
 import TitleHeader from "../../components/cards/TitleHeader";
 import Error from "../../components/error/Error";
 import Filter from "../../components/filter/Filter";
 import FilterHeader from "../../components/headers/TimeHeader";
-import FloatButton from "../../components/inputFields/FloatButton";
 import Loader from "../../components/loader";
 import TripActionModal from "../../components/modals/TripActionModal";
 import { DateHeader } from "../../components/timeline/DateTimestampHeader";
@@ -16,7 +13,6 @@ import { timestamp } from "../../service/firebase/firebaseConfig";
 import { firebaseTimestampToDayNumber } from "../../service/helperFunctions/firebaseTimestampToString";
 import { RidePopUp } from "../../types/customTypes.model";
 import { RideDB } from "../../types/ride.model";
-import { floatIcon } from "../dashboard/floatIcon";
 
 export default function Schedule() {
   const [data, setData] = useState<RideDB[]>([]);

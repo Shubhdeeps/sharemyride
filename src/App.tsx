@@ -2,7 +2,7 @@ import "./styles/custom.css";
 import "./styles/globals.css";
 import "./styles/cards.css";
 import "./styles/topsidebar.css";
-import React, { useEffect } from "react";
+import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ProtectedRoutes } from "./pages/ProtectedRoutes";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -20,6 +20,7 @@ import NewMarketTicket from "./pages/create/NewMarketTicket";
 import SingleCommutePage from "./pages/market/commuteId/SingleCommutePage";
 import Schedule from "./pages/schedule/Schedule";
 import { language } from "./service/languages/languages";
+import Error404 from "./components/error/Error404";
 
 function App() {
   language("eng");
@@ -27,7 +28,7 @@ function App() {
     {
       path: "/",
       element: <ProtectedRoutes />,
-      errorElement: <div>Error</div>,
+      errorElement: <Error404 />,
       children: [
         {
           path: "/",

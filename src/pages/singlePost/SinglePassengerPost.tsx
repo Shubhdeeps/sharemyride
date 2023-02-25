@@ -30,7 +30,7 @@ export default function SinglePassengerPost() {
       setLoading,
       setData
     );
-  }, []);
+  }, [passengerId]);
 
   useEffect(() => {
     if (data) {
@@ -41,7 +41,7 @@ export default function SinglePassengerPost() {
         setRequestsData
       );
     }
-  }, [data]);
+  }, [data, passengerId]);
 
   if (!!error) {
     return <Error errMessage={error} />;

@@ -42,7 +42,7 @@ export default function EditRide({
     } else if (role === "passenger") {
       getSinglePassengerBasedOnRideId(ticketId, setError, setLoading, setData);
     }
-  }, []);
+  }, [role, ticketId]);
 
   useEffect(() => {
     if (data) {

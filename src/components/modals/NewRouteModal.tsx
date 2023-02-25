@@ -35,7 +35,7 @@ export default function NewRouteModal({ setModelPopUp }: Props) {
     if (success) {
       setModelPopUp();
     }
-  }, [success]);
+  }, [setModelPopUp, success]);
 
   return (
     <ModalWrapper>
