@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Container } from "react-bootstrap";
 import Error from "../../components/error/Error";
 import Loader from "../../components/loader";
 import { Timestamp } from "../../service/firebase/firebaseConfig";
@@ -43,9 +44,9 @@ export default function Notification() {
   return (
     <>
       <div className="empty-area"></div>
-      <div className="filled-area container">
-        <div className="ps-2 text-4 mt-1 fw-bold">NOTIFICATIONS</div>
-        <div className="mt-3 d-flex flex-column">
+      <div className="filled-area">
+        <div className="ps-2 text-4 mt-1 fw-bold container">NOTIFICATIONS</div>
+        <div className="mt-3 d-flex flex-column container">
           {notifications.map((notification) => {
             return (
               <React.Fragment key={notification.notificationId}>

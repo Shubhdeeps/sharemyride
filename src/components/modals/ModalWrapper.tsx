@@ -7,11 +7,13 @@ export default function ModalWrapper({
 }) {
   //disable bg scroll while popup
   useEffect(() => {
-    const body = document.body;
-    body.scrollTop = document.documentElement.scrollTop = 0;
-    body.style.overflow = "hidden";
+    const main = document.querySelector(".main");
+    if (main) {
+      main.scrollTo({ top: 0, behavior: "smooth" });
+      main.classList.add("no-scroll");
+    }
     return () => {
-      body.style.overflow = "auto";
+      main?.classList.remove("no-scroll");
     };
   }, []);
   return (

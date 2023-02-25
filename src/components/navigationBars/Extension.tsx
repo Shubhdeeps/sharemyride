@@ -11,11 +11,11 @@ export default function Extension({ children }: { children: React.ReactNode }) {
         />
         {isFlexed && (
           <>
+            {/* <div className="screen-overlap"></div> */}
             <div
               onClick={() => setFlex(false)}
-              className="screen-overlap"
-            ></div>
-            <div className="position-relative d-flex flex-column align-items-end z-2">
+              className="position-relative d-flex flex-column align-items-end z-2"
+            >
               <div
                 style={{ marginTop: "" }}
                 className="secondary-bg border-r1 position-absolute z-2 button-color-border p-2 text-3"

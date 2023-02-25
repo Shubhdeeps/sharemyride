@@ -49,20 +49,21 @@ export default function Login({ setIsLogIn }: { setIsLogIn: Function }) {
           </span>
         </div>
       </form>
-      {/* <div className="d-flex flex-column align-items-center pb-2">
-        <div className="text-2 text-center pb-2">Or</div>
-        <span className="text-3">Log me in with google account</span>
-        <div className="border-r2 textField1 w-50 p-1 mt-2 d-flex justify-content-center align-items-center gap-2">
-          <i className="bi bi-google"></i>
-          Google
-        </div>
-      </div> */}
+      <br />
+      <div className="text-3 text-center">
+        <span
+          onClick={() => setIsLogIn("password")}
+          className="border-r3 p-2 ps-4 pe-4 border cursor"
+        >
+          Reset password
+        </span>
+      </div>
       <br />
       <div className="d-flex flex-column align-items-center pb-4">
         <span>
           I want to register a new account
           <span
-            onClick={() => setIsLogIn(false)}
+            onClick={() => setIsLogIn("register")}
             className="highlight-color noselect cursor"
           >
             {" "}

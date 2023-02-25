@@ -86,7 +86,7 @@ export default function Signup({ setIsLogIn }: { setIsLogIn: Function }) {
         <span>
           I already have an account
           <span
-            onClick={() => setIsLogIn(true)}
+            onClick={() => setIsLogIn("login")}
             className="highlight-color noselect cursor"
           >
             {" "}

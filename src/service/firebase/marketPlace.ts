@@ -36,7 +36,7 @@ export const getMarketPlacePosts = async (setError: Function, setLoading: Functi
         if(filter === "ALL"){
             data =  await marketPlaceRef.where("status", "==", "Onsale").orderBy("startTime", "asc").startAfter(lastItemDate).limit(20).get();
         } else {
-            data =  await marketPlaceRef.where("status", "==", "Onsale").where("authorId", "==", authorId).orderBy("startTime", "asc").startAfter(lastItemDate).limit(20).get();
+            data =  await marketPlaceRef.where("authorId", "==", authorId).orderBy("startTime", "asc").startAfter(lastItemDate).limit(20).get();
         }
         const newData = data.docs.map((doc: any) => doc.data() as MarketPlaceDB)
         setData(newData);
@@ -69,7 +69,18 @@ export const getSingleCommute = async (setError: Function, setLoading: Function,
 
 
 
-export const createCommuteOffer = async (commuteId: string, price: number, additionalInfo: string, setStatus: Function) => {
+export const deleteMyAd = async (marketId: string) => {
+    try{
+        // update ride status
+        await marketPlaceRef.doc(marketId).update({
+            status: "cancelled"
+        })
+    } catch (e){
+        console.log("something went wrong")
+    }
+}
+
+export const createCommuteOffer = async (commuteId: string, price: number, additionalInfo: string, setStatus: Function, contact: any) => {
     // this is author of offeree
     setStatus("loading");
     try{
@@ -81,9 +92,10 @@ export const createCommuteOffer = async (commuteId: string, price: number, addit
             created: timestamp.now(),
             offeredPrice: price,
             additionalInfo,
-        parentCommute: commuteId,
-        status: "pending",
-        offerId: docId
+            parentCommute: commuteId,
+            status: "pending",
+            offerId: docId,
+            contact
     })
     // send notification
     
@@ -115,5 +127,30 @@ export const getCommuteOfferRequests = async (setError: Function, setLoading: Fu
         console.log(e)
         setError(e.message);
         setLoading(false);
+    }
+}
+
+//commuteOfferId = authorId_marketID_timestampSeconds
+export const acceptOfferAndSetSold = (commuteOfferID: string, status: "accepted" | "rejected") => {
+    const currentUser = auth.currentUser
+    const authorIdOfOfferee = commuteOfferID.split("_")[0];
+    const marketId = `${commuteOfferID.split("_")[1]}_${commuteOfferID.split("_")[2]}`;
+    firestore.collection("commute_offers").doc(commuteOfferID).update({
+        status
+    })
+    const notificationData: NotificationType = {
+        content: `Your request to buy ticket is ${status}`,
+        displayName: currentUser?.displayName!,
+        parent: "ticket",
+        photoURL: currentUser?.photoURL!,
+        postId: marketId,
+        recipientId: authorIdOfOfferee
+    }
+    sendNotification(authorIdOfOfferee, notificationData)
+    //if it gets accepted,then set it to sold
+    if(status === "accepted"){
+        marketPlaceRef.doc(marketId).update({
+            status: "Sold"
+        })
     }
 }

@@ -20,6 +20,7 @@ export default function TimelineCard({
 }) {
   const isBelongToCurrentUser = data.authorId === auth.currentUser?.uid;
   let emptySeatCount = data.passengerSeats - data.passengerUids.length + 1;
+  const isRideCancelled = data.status === "cancelled";
   // if passengers seat is unset
   if (data.passengerSeats === 0) {
     emptySeatCount = 0;
@@ -50,7 +51,11 @@ export default function TimelineCard({
 
   return (
     <div className="button-color-border secondary-bg timelinecard">
-      <div className="card-time fw-bold fontPrimary">
+      <div
+        className={`card-time fw-bold fontPrimary ${
+          isRideCancelled && "font-danger"
+        }`}
+      >
         {firebaseTimestampToTime(data.actualStartTime)}
       </div>
       <div className="card-ring">
@@ -66,7 +71,7 @@ export default function TimelineCard({
                 {isBelongToCurrentUser && (
                   <span
                     onClick={() => setRidePop({ edit: data.rideTicektId })}
-                    className="cursor border-bottom width-100 text-center"
+                    className="cursor  width-100 text-center"
                   >
                     Delay ride
                   </span>
@@ -74,7 +79,7 @@ export default function TimelineCard({
                 {isBelongToCurrentUser && (
                   <span
                     onClick={() => setRidePop({ delete: data.rideTicektId })}
-                    className="cursor border-bottom width-100 text-center"
+                    className="cursor width-100 text-center"
                   >
                     Cancel ride
                   </span>
@@ -127,6 +132,9 @@ export default function TimelineCard({
         </div>
         {isCurrentUserAPassengerOfRide && !isBelongToCurrentUser && (
           <div className="text-4 fw-bold font-safe">ACCEPTED</div>
+        )}
+        {isRideCancelled && (
+          <div className="text-4 fw-bold font-danger">CANCELLED</div>
         )}
         <div className="d-flex align-items-center gap-3">
           {isBelongToCurrentUser || isCurrentUserAPassengerOfRide ? (

@@ -122,11 +122,16 @@ export * from "./passenger";
 
 // schedule
 
-export const getMyScheduledRides = async (setError: Function, setLoading: Function, setData: Function, lastItemDate: typeof Timestamp, setNoMoreRides:Function) => {
+export const getMyScheduledRides = async (setError: Function, setLoading: Function, setData: Function, lastItemDate: typeof Timestamp, setNoMoreRides:Function, status: "ongoing" | "all") => {
    setLoading(true);
    const currUserId = auth.currentUser?.uid as string;
    try{
-       let data =  await firestore.collection("rides").where("passengerUids", "array-contains", currUserId).orderBy("actualStartTime", "asc").startAfter(lastItemDate).limit(10).get();   
+       let data;
+       if(status === "ongoing"){
+           data = await firestore.collection("rides").where("status", "==", "ongoing").where("passengerUids", "array-contains", currUserId).orderBy("actualStartTime", "asc").startAfter(lastItemDate).limit(10).get();   
+        }else {
+            data = await firestore.collection("rides").where("passengerUids", "array-contains", currUserId).orderBy("actualStartTime", "asc").startAfter(lastItemDate).limit(10).get();   
+        }
        const newData = data.docs.map((doc: any) => 
        {
        const data = doc.data();

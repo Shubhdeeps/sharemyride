@@ -23,6 +23,7 @@ export default function InputTextFieldSecondary(props: Props) {
           type={props.type}
           placeholder={props.placeholder}
           onChange={(e) => handleChange(e.target.value)}
+          min={0}
         />
       </div>
     </div>
