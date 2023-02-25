@@ -7,14 +7,12 @@ import addNotification from "react-push-notification";
 export default function Header({
   setSideBarFlex,
   sideBarFlex,
-  displayName,
-  photoURL,
 }: {
   setSideBarFlex: Function;
   sideBarFlex: boolean;
-  photoURL: string;
-  displayName: string;
 }) {
+  const displayName = auth.currentUser?.displayName;
+  const photoURL = auth.currentUser?.photoURL;
   const location = useLocation();
   const isOnDashboard =
     location.pathname === "/favourites" ||
@@ -22,25 +20,44 @@ export default function Header({
     location.pathname === "/";
   const navigation = useNavigate();
   const [newNotification, setNewNotification] = useState(false);
+  const [headerBackground, setHeaderBackground] = useState<
+    "active-bg" | "inactive-bg"
+  >("inactive-bg");
 
-  const element = document.body;
-  console.log(element.offsetHeight);
-  console.log(element.scrollTop);
+  useEffect(() => {
+    const main = document.querySelector(".main");
+    // local variable to handle the change
+    let currBg: "active-bg" | "inactive-bg" = "inactive-bg";
+    main!.addEventListener("scroll", (e) => {
+      const scrollValue = main?.scrollTop!;
+
+      if (scrollValue > 140 && currBg !== "active-bg") {
+        currBg = "active-bg";
+        setHeaderBackground(currBg);
+      }
+      if (scrollValue < 140 && currBg === "active-bg") {
+        currBg = "inactive-bg";
+        setHeaderBackground(currBg);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const uid = auth.currentUser?.uid as string;
     const dataRef = database.ref(`notification/${uid}`);
     dataRef.on("value", (snapshot) => {
       const data = snapshot.val();
-      setNewNotification(data["new"]);
-      if (data["new"]) {
-        // send push notification
-        addNotification({
-          title: "Share My Ride",
-          message: "New Request from the user",
-          theme: "darkblue",
-          native: true,
-        });
+      if (data) {
+        setNewNotification(data["new"]);
+        if (data["new"]) {
+          // send push notification
+          addNotification({
+            title: "Share My Ride",
+            message: "New Request from the user",
+            theme: "darkblue",
+            native: true,
+          });
+        }
       }
     });
   }, []);
@@ -54,7 +71,9 @@ export default function Header({
     navigation(`/notification`);
   };
   return (
-    <div className="primary-bg d-flex justify-content-center topbar position-fixed">
+    <div
+      className={`d-flex justify-content-center topbar position-fixed ${headerBackground}`}
+    >
       <Container className="d-flex justify-content-between pt-1 pb-1 fontLight">
         <div className="d-flex gap-1 align-items-center ">
           {!isOnDashboard && (
@@ -67,11 +86,13 @@ export default function Header({
             {photoURL ? (
               <Image className="small-container" src={photoURL} />
             ) : (
-              <>{displayName.split("")[0]}</>
+              <>{displayName && displayName.split("")[0]}</>
             )}
           </span>
           <div className="d-flex flex-column align-items-start">
-            <span className="text-2">Hello {displayName.split(" ")[0]},</span>
+            <span className="text-2">
+              Hello {displayName && displayName.split(" ")[0]},
+            </span>
             <span className="text-3 header-title">Ready to travel?</span>
           </div>
         </div>

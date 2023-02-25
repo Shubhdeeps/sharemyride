@@ -19,9 +19,6 @@ import { RideDB } from "../../types/ride.model";
 import { floatIcon } from "../dashboard/floatIcon";
 
 export default function Schedule() {
-  const { routeId } = useParams();
-
-  const navigation = useNavigate();
   const [data, setData] = useState<RideDB[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -29,6 +26,7 @@ export default function Schedule() {
   var now = new Date();
   now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
   const [dateFilter, setDateFilter] = useState(now.toISOString().slice(0, 16));
+  const [status, setStatus] = useState<"ongoing" | "all">("ongoing");
   const [fetchMoreData, setFetchMoreData] = useState<RideDB[]>([]);
   const [noMoreRides, setNoMoreRides] = useState("");
 
@@ -38,16 +36,18 @@ export default function Schedule() {
   //Timeline headers
   const previousDateRef = useRef(timestamp.now());
   useEffect(() => {
+    //onfirst render
     if (!!dateFilter) {
       getMyScheduledRides(
         setError,
         setLoading,
         setData,
         timestamp.fromMillis(+new Date(dateFilter)),
-        setNoMoreRides
+        setNoMoreRides,
+        status
       );
     }
-  }, [dateFilter]);
+  }, [dateFilter, status]);
 
   useEffect(() => {
     if (!!fetchMoreData.length) {
@@ -64,13 +64,13 @@ export default function Schedule() {
   const fetchMore = () => {
     if (!!rides.length) {
       const lastItemDate = rides[rides.length - 1].actualStartTime;
-
       getMyScheduledRides(
         setError,
         setLoading,
         setFetchMoreData,
         lastItemDate,
-        setNoMoreRides
+        setNoMoreRides,
+        status
       );
     }
   };
@@ -104,6 +104,20 @@ export default function Schedule() {
                 onChange={(e) => setDateFilter(e.target.value)}
               />
             </Filter>
+            <div className="d-flex gap-2 noselect">
+              <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
+                <span onClick={() => setStatus("ongoing")}>ON GOING</span>
+                {status === "ongoing" && (
+                  <i className="bi bi-check font-safe text-2"></i>
+                )}
+              </div>
+              <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
+                <span onClick={() => setStatus("all")}>ALL</span>
+                {status === "all" && (
+                  <i className="bi bi-check font-safe text-2"></i>
+                )}
+              </div>
+            </div>
           </FilterHeader>
           <div className="d-flex align-items-stretch w-100 mt-3">
             <div className="left-lining"></div>

@@ -22,9 +22,20 @@ body {
   margin: 0;
   color: var(--primary);
   background: linear-gradient(90deg, #8d5481 12.94%, #6e5084 55.25%);
+  overflow: auto !important;
+}
+
+.inactive-bg {
+  background: none;
+  transition: 100ms ease-in;
+}
+.active-bg {
+  background: rgba(37, 44, 52, 0.9);
+  transition: 100ms ease-in;
 }
 
 .main {
+  overflow: auto;
   width: 100vw;
   height: 100vh;
 }
@@ -223,4 +234,9 @@ button::after {
 
 .width-30 {
   width: 30px;
+}
+
+.no-scroll {
+  transition: 10ms ease-in-out;
+  overflow: hidden;
 }

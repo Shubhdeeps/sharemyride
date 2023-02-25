@@ -14,6 +14,7 @@ export default function InputTextFieldwitState(props: Props) {
       <span className="text-3">{props.title}</span>
       <div className="border-r1 w-100 p-2 ps-3 textField2">
         <input
+          maxLength={18}
           className="fontPrimary"
           autoComplete="new-password"
           type={props.type}

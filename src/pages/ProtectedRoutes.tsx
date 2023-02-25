@@ -18,6 +18,7 @@ export const ProtectedRoutesFN = () => {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
+      setIsLoading(true);
       if (user) {
         currentUserProfile.value = user;
         setCurrUser(user);
@@ -27,7 +28,7 @@ export const ProtectedRoutesFN = () => {
         setCurrUser(null);
       }
     });
-  }, []);
+  }, [auth.currentUser]);
 
   if (isLoading) {
     return (
@@ -39,14 +40,9 @@ export const ProtectedRoutesFN = () => {
 
   return (
     <>
-      {currUser ? (
+      {!!currUser ? (
         <Layout>
-          <Header
-            setSideBarFlex={setSideBarFlex}
-            sideBarFlex={sideBarFlex}
-            displayName={currUser.displayName as string}
-            photoURL={currUser.photoURL as string}
-          />
+          <Header setSideBarFlex={setSideBarFlex} sideBarFlex={sideBarFlex} />
           <Sidebar SetFlex={setSideBarFlex} sideBarFlex={sideBarFlex} />
           <Outlet />
         </Layout>
