@@ -22,7 +22,7 @@ export default function SingleCommutePage() {
 
   useEffect(() => {
     getSingleCommute(setError, setLoading, setData, commuteId as string);
-  }, []);
+  }, [commuteId]);
 
   useEffect(() => {
     if (data) {
@@ -33,7 +33,7 @@ export default function SingleCommutePage() {
         commuteId as string
       );
     }
-  }, [data]);
+  }, [commuteId, data]);
   if (error) {
     return <Error errMessage={error} />;
   }

@@ -25,7 +25,7 @@ export default function ReviewRidePost() {
 
   useEffect(() => {
     getSingleRideBasedOnRideId(rideId as string, setError, setLoading, setData);
-  }, []);
+  }, [rideId]);
 
   useEffect(() => {
     if (data) {
@@ -36,7 +36,7 @@ export default function ReviewRidePost() {
         setRequestsData
       );
     }
-  }, [data]);
+  }, [data, rideId]);
 
   if (!!error) {
     return <Error errMessage={error} />;

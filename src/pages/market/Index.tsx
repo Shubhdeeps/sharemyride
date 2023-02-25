@@ -12,7 +12,6 @@ import { TimelineTag } from "../../components/timeline/TimelineTag";
 import { Timestamp, timestamp } from "../../service/firebase/firebaseConfig";
 import { getMarketPlacePosts } from "../../service/firebase/marketPlace";
 import { firebaseTimestampToDayNumber } from "../../service/helperFunctions/firebaseTimestampToString";
-import { RidePopUp } from "../../types/customTypes.model";
 import { MarketPlaceDB } from "../../types/marketPlace";
 
 export default function MarketPlace() {
@@ -52,10 +51,10 @@ export default function MarketPlace() {
     }
   }, [dataFilter]);
 
-  // run only once
+  // run only for the first time
   useEffect(() => {
     const now = timestamp.now();
-    fetchData(now, setData, filter);
+    fetchData(now, setData, "ALL");
   }, []);
 
   const handleFilterChange = (filterName: "ALL" | "MINE") => {

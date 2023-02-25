@@ -74,7 +74,7 @@ const fetchRouteTiles = async (countryName: string | undefined, lastItemDate: ty
     if(lastItemDate){
         return await firestore.collection("routes").orderBy("created", "desc").startAfter(lastItemDate).limit(10).get();
     }
-    return await firestore.collection("routes").orderBy("created", "desc").limit(5).get();
+    return await firestore.collection("routes").orderBy("created", "desc").limit(10).get();
 }
 
 //FAVOURITE

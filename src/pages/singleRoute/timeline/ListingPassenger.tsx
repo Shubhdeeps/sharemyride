@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Container } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import TitleHeader from "../../../components/cards/TitleHeader";
 import Error from "../../../components/error/Error";
 import Filter from "../../../components/filter/Filter";
 import FilterHeader from "../../../components/headers/TimeHeader";

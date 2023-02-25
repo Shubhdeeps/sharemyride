@@ -51,3 +51,7 @@ select:focus {
   outline: none;
   background: none !important;
 }
+
+.error404 {
+  height: 90vh;
+}
