@@ -50,7 +50,7 @@ export default function TimelineCard({
   ];
 
   return (
-    <div className="button-color-border secondary-bg timelinecard">
+    <div className="secondary-bg timelinecard">
       <div
         className={`card-time fw-bold fontPrimary ${
           isRideCancelled && "font-danger"

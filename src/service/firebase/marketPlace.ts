@@ -43,6 +43,10 @@ export const getMarketPlacePosts = async (setError: Function, setLoading: Functi
         if(!newData.length){
             setNoMoreRides("No more sales")
         }
+        if(newData.length < 20){
+            setNoMoreRides("No more sales")
+
+        }
         setLoading(false);
 
     } catch (e: any) {

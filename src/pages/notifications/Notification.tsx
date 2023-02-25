@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
 import Error from "../../components/error/Error";
 import Loader from "../../components/loader";
 import { Timestamp } from "../../service/firebase/firebaseConfig";
@@ -12,7 +11,7 @@ export default function Notification() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState<NotificationDB[]>([]);
-
+  const noMoreToLoad = data.length === 0 || data.length < 20;
   const fetchData = (lastVisibleItemDate: typeof Timestamp | undefined) => {
     getAllNotificationsByUid(
       setError,
@@ -58,7 +57,7 @@ export default function Notification() {
             <Loader />
           ) : (
             <>
-              {data.length !== 0 && (
+              {!noMoreToLoad && (
                 <div className="p-3 text-center w-100">
                   <i
                     onClick={() => fetchMore()}

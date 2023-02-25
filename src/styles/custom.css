@@ -30,9 +30,9 @@ textarea {
 }
 
 .filled-area {
-  min-height: 70vh;
+  min-height: 90vh;
   height: 100%;
-  background: #ecf3ff;
+  background: #eeeeee;
 }
 
 .float-btn {

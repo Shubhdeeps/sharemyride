@@ -32,7 +32,6 @@ export default function NewReport({
       onSubmit={(e) => handleReport(e)}
       className="d-flex flex-column gap-2"
     >
-      <span className="fw-bold text-3">REPORT</span>
       <InputTextFieldSecondary
         placeholder="report"
         textRef={reportRef}

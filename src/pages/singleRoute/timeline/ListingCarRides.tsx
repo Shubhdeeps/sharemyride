@@ -8,7 +8,6 @@ import FloatButton from "../../../components/inputFields/FloatButton";
 import Loader from "../../../components/loader";
 import RequestModal from "../../../components/modals/RequestRideModal";
 import TripActionModal from "../../../components/modals/TripActionModal";
-import RideActionModal from "../../../components/modals/TripActionModal";
 import NavButton from "../../../components/navigationBars/NavButton";
 import RouteDetails from "../../../components/route/RouteDetails";
 import { DateHeader } from "../../../components/timeline/DateTimestampHeader";

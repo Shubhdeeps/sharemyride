@@ -34,7 +34,7 @@ export default function RouteCard(data: Props) {
     navigation(`/route/${routeId}`);
   };
   return (
-    <Container className="primary-color container border-r1 route-card p-3 shadow d-flex flex-column justify-content-between">
+    <Container className="primary-color route-card p-3 d-flex flex-column justify-content-between">
       <span className="text-3 fw-bold">
         {capitalizeFirstLetter(data.countryName)} <i className="bi bi-flag"></i>
       </span>

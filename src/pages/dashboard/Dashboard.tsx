@@ -107,6 +107,10 @@ export default function Dashboard() {
   if (!!error) {
     return <Error errMessage={error} />;
   }
+  let currentPath = pathname.split("/")[1];
+  if (currentPath === "") {
+    currentPath = "dashboard";
+  }
   return (
     <>
       {filterFlex && (
@@ -125,18 +129,18 @@ export default function Dashboard() {
           <div className="w-100 d-flex justify-content-between">
             <NavButton
               title="Dashboard"
-              currentState={pathname.split("/")[1]}
+              currentState={currentPath}
               onClick={() => navigate("/dashboard")}
               icon="bi-house-fill"
             />
             <NavButton
               title="Favourites"
-              currentState={pathname.split("/")[1]}
+              currentState={currentPath}
               onClick={() => navigate("/favourites")}
               icon="bi-star-fill"
             />
           </div>
-          <div className="d-flex flex-column gap-3 position-relative">
+          <div className="d-flex flex-column gap-2 position-relative">
             <br />
             <span onClick={() => setFilterFlex(true)}>
               <Filter>

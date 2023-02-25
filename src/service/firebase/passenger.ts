@@ -49,6 +49,10 @@ export const getPassengerCardsBasedOnRouteId = async (routeId: string, setError:
         if(!newData.length){
             setNoMoreRides("No more requests")
         }
+        //if no passengers to load
+        if(newData.length < 10){
+            setNoMoreRides("No more requests")
+        }
         setData(newData);
         setLoading(false);
     } catch (e: any) {

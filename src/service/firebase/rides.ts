@@ -49,6 +49,10 @@ export const getRideCardsBasedOnRouteId = async (routeId: string, setError: Func
         if(!newData.length){
             setNoMoreRides("No more rides")
         }
+        if(newData.length < 10){
+            setNoMoreRides("No more rides")
+
+        }
         setData(newData);
         setLoading(false);
     } catch (e: any) {

@@ -1,9 +1,12 @@
 :root {
   --highlight: #f2b349;
+  --card-bg: #f8f8f8;
 }
 
 .route-card {
   min-height: 120px;
+  border-radius: 5px;
+  background: var(--card-bg);
 }
 
 .cards {
@@ -67,14 +70,16 @@
   min-height: 90px;
   width: 100%;
   border-radius: 5px;
+  background: var(--card-bg) !important;
 }
 .timelinecard {
   position: relative;
   min-height: 50px;
   width: 100%;
   max-width: 400px;
-  border-radius: 5px;
+  border-radius: 0px 5px 5px 0px;
   padding-bottom: 14px;
+  background: var(--card-bg) !important;
 }
 
 .card-time {
@@ -99,9 +104,11 @@
   position: relative;
   left: -80px;
   width: 160px;
+  border: 2px solid var(--highlight);
 }
 
 .timeline-tag {
+  border: 2px solid var(--highlight);
   position: relative;
   left: -60px;
   width: 120px;

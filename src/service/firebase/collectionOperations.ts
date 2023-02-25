@@ -52,6 +52,9 @@ export const getRouteTilesData =  async (setError: Function, setLoading: Functio
         if(!newData.length){
             setNoMoreRides("No more routes")
         }
+        if(newData.length < 10){
+            setNoMoreRides("No more routes")
+        }
         setData(newData);
         setLoading(false);
     } catch (e: any) {
@@ -63,13 +66,13 @@ export const getRouteTilesData =  async (setError: Function, setLoading: Functio
 
 const fetchRouteTiles = async (countryName: string | undefined, lastItemDate: typeof Timestamp | undefined) => {
     if(!!countryName && lastItemDate){
-        return await firestore.collection("routes").where("country", "==", countryName.toLowerCase()).orderBy("created", "desc").startAfter(lastItemDate).limit(5).get();
+        return await firestore.collection("routes").where("country", "==", countryName.toLowerCase()).orderBy("created", "desc").startAfter(lastItemDate).limit(10).get();
     }
     if(!!countryName){
-        return await firestore.collection("routes").where("country", "==", countryName.toLowerCase()).orderBy("created", "desc").limit(5).get();
+        return await firestore.collection("routes").where("country", "==", countryName.toLowerCase()).orderBy("created", "desc").limit(10).get();
     }
     if(lastItemDate){
-        return await firestore.collection("routes").orderBy("created", "desc").startAfter(lastItemDate).limit(5).get();
+        return await firestore.collection("routes").orderBy("created", "desc").startAfter(lastItemDate).limit(10).get();
     }
     return await firestore.collection("routes").orderBy("created", "desc").limit(5).get();
 }
@@ -140,6 +143,9 @@ export const getMyScheduledRides = async (setError: Function, setLoading: Functi
        }
        )
        if(!newData.length){
+        setNoMoreRides("No more scheduled rides")
+       }
+       if(newData.length < 10){
         setNoMoreRides("No more scheduled rides")
        }
        setData(newData);
