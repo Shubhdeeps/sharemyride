@@ -1,8 +1,5 @@
-import { NewRideModal, RideDB } from "../../types/ride.model";
-import { auth, database, FieldValue, firestore, timestamp, Timestamp } from "./firebaseConfig"
-import firebase from "firebase";
-import { Contact } from "../../types/Requst.modal";
-import { capitalizeFirstLetter } from "../helperFunctions/captalizeFirstLetter";
+import { RideDB } from "../../types/ride.model";
+import { auth, firestore, timestamp, Timestamp } from "./firebaseConfig"
 
 
 export const logout = () => {
@@ -163,5 +160,19 @@ export const reportATicket = async (ticketId: string, comment: string, type: "ri
         ticketId,
         reportedBy: currUserId,
         
+    })
+}
+
+
+// feed back and report 
+
+export const setFeedBack = async (feedback: string, report: string) => {
+    const currUserId = auth.currentUser;
+    await firestore.collection("feedback-report").add({
+        created: timestamp.now(),
+        authorUid: currUserId?.uid,
+        authorName: currUserId?.displayName,
+        feedback,
+        report
     })
 }
