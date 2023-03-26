@@ -12,6 +12,7 @@ import { createNewRideTile } from "../../service/firebase/collectionOperations";
 import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
 import { timestamp } from "../../service/firebase/firebaseConfig";
 import { Container } from "react-bootstrap";
+import { localization } from "../../service/languages/languages";
 
 export default function NewRide() {
   const { routeId } = useParams();
@@ -133,7 +134,9 @@ export default function NewRide() {
       </div>
       <div className="filled-area">
         <Container>
-          <span className="text-2 fw-bold fontLigh">New Ride</span>
+          <span className="text-2 fw-bold fontLigh">
+            {localization["New Ride"]}
+          </span>
           <Timeline
             endPoint={arriveAt}
             startPoint={departFrom}
@@ -145,7 +148,9 @@ export default function NewRide() {
 
           <br />
           <div className="d-flex flex-column gap-1">
-            <span className="text-5 fontSecondary">TIME*</span>
+            <span className="text-5 fontSecondary">
+              {localization["TIME*"]}
+            </span>
 
             <InputTextFieldwitState
               placeholder="14:00"
@@ -166,7 +171,9 @@ export default function NewRide() {
           </div>
           <hr />
           <div className="d-flex flex-column gap-1 mt-2">
-            <span className="text-5 fontSecondary">EXPENSES*</span>
+            <span className="text-5 fontSecondary">
+              {localization["EXPENSES*"]}
+            </span>
             <InputTextFieldSecondary
               placeholder="$15"
               textRef={costRef}
@@ -176,7 +183,9 @@ export default function NewRide() {
           </div>
           <hr />
           <div className="d-flex flex-column gap-1 mt-2">
-            <span className="text-5 fontSecondary">ROUTE</span>
+            <span className="text-5 fontSecondary">
+              {localization["ROUTE"]}
+            </span>
             <div className="d-flex align-items-end gap-1">
               <InputTextFieldwitState
                 placeholder="Kristiine"
@@ -200,15 +209,17 @@ export default function NewRide() {
               <span className="text-2">, {arrivingCity}</span>
             </div>
             <br />
-            <span className="text-5 fontSecondary">DESCRIBE THE ROUTE</span>
+            <span className="text-5 fontSecondary">
+              {localization["DESCRIBE THE ROUTE"]}
+            </span>
             {Array.from({ length: stoppageRef.length }, (_, i) => i + 1).map(
               (stop) => {
                 return (
                   <React.Fragment key={stop}>
                     <InputTextFieldSecondary
-                      placeholder={`Xyz city ${stop}`}
+                      placeholder={`Xyz city ${stop}` as "RANDOM"}
                       textRef={stoppageRef[stop - 1]}
-                      title={`Stoppage ${stop}`}
+                      title={`Stoppage ${stop}` as "RANDOM"}
                       type="text"
                     />
                   </React.Fragment>
@@ -252,13 +263,15 @@ export default function NewRide() {
                 }}
                 className="cursor bi bi-x-circle text-2 p-2 primary-bg border-r1 fontLight d-flex gap-2 justify-content-center align-items-center w-75"
               >
-                Remove Stoppage
+                {localization["Remove Stoppage"]}
               </i>
             </span>
           </div>
           <hr />
           <div className="d-flex flex-column gap-1 mt-2">
-            <span className="text-5 fontSecondary">CAR DETAILS*</span>
+            <span className="text-5 fontSecondary">
+              {localization["CAR DETAILS*"]}
+            </span>
 
             <InputTextFieldSecondary
               placeholder="Passenger seats"
@@ -269,7 +282,9 @@ export default function NewRide() {
           </div>
           <hr />
           <div className="d-flex flex-column gap-1 mt-2">
-            <span className="text-5 fontSecondary">CONTACT DETAILS</span>
+            <span className="text-5 fontSecondary">
+              {localization["CONTACT DETAILS"]}
+            </span>
 
             <InputTextFieldSecondary
               placeholder="john01"
@@ -292,7 +307,9 @@ export default function NewRide() {
           </div>
           <hr />
           <div className="d-flex flex-column gap-1 mt-2">
-            <span className="text-5 fontSecondary">PRIVACY SETTINGS</span>
+            <span className="text-5 fontSecondary">
+              {localization["PRIVACY SETTINGS"]}
+            </span>
             <div className="d-flex flex-wrap gap-2">
               <InputCheckboxField
                 placeholder=""

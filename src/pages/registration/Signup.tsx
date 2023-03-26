@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import FilledButton from "../../components/inputFields/FIlledButton";
 import InputTextFieldPrimary from "../../components/inputFields/InputTextFieldPrimary";
 import { auth } from "../../service/firebase/firebaseConfig";
+import { localization } from "../../service/languages/languages";
 
 export default function Signup({ setIsLogIn }: { setIsLogIn: Function }) {
   const [error, setError] = useState("");
@@ -12,7 +13,7 @@ export default function Signup({ setIsLogIn }: { setIsLogIn: Function }) {
 
   const handleRegister = () => {
     if (!displayNameRef.current || !email.current || !password.current) {
-      setError("All the fields with * are required!");
+      setError(localization["All the fields with * are required!"]);
       return;
     }
     auth
@@ -31,7 +32,7 @@ export default function Signup({ setIsLogIn }: { setIsLogIn: Function }) {
   };
   return (
     <div className="h-100 container d-flex flex-column justify-content-between fontLight">
-      <span className="text-2">Welcome Traveller</span>
+      <span className="text-2">{localization["Welcome Traveller"]}</span>
       <form className="d-flex flex-column gap-1" autoComplete="off">
         <span className="text-2-5">{`Let's register`}</span>
         <InputTextFieldPrimary
@@ -84,7 +85,7 @@ export default function Signup({ setIsLogIn }: { setIsLogIn: Function }) {
       </div> */}
       <div className="d-flex flex-column align-items-center pb-4">
         <span>
-          I already have an account
+          {localization["I already have an account"]}
           <span
             onClick={() => setIsLogIn("login")}
             className="highlight-color noselect cursor"

@@ -1,7 +1,7 @@
-import React from "react";
+import { localization } from "../../service/languages/languages";
 
 type Props = {
-  title: string;
+  title: "Favourites" | "Dashboard" | "Passenger" | "Cars";
   currentState: string;
   onClick: Function;
   icon: string;
@@ -22,7 +22,7 @@ export default function NavButton({
       onClick={() => onClick()}
     >
       <i className={`bi text-1-5 ${icon}`}></i>
-      <span className="text-3">{title}</span>
+      <span className="text-3">{localization[title]}</span>
     </div>
   );
 }

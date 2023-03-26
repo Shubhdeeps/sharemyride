@@ -1,6 +1,7 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { localization } from "../../service/languages/languages";
 
 export default function Error404() {
   const navigate = useNavigate();
@@ -13,12 +14,14 @@ export default function Error404() {
         >
           4{emoji}4
         </div>
-        <div style={{ fontSize: "40px", marginTop: "-60px" }}>NOT FOUND</div>
+        <div style={{ fontSize: "40px", marginTop: "-60px" }}>
+          {localization["NOT FOUND"]}
+        </div>
         <button
           onClick={() => navigate(-1)}
           className="border-r3 ps-5 pe-5 p-2"
         >
-          Go back
+          {localization["Go back"]}
         </button>
       </div>
     </Container>

@@ -1,4 +1,3 @@
-import React from "react";
 import { Image } from "react-bootstrap";
 import { Timestamp } from "../../../service/firebase/firebaseConfig";
 import { firebaseTimestampToString } from "../../../service/helperFunctions/firebaseTimestampToString";
@@ -17,14 +16,14 @@ export default function ProfileDetails({
     <div className="d-flex gap-1 align-items-center">
       {!!photoURL ? (
         <Image
-          style={{ width: "55px", height: "55px" }}
+          style={{ width: "36px", height: "36px" }}
           className="border-r1"
           fluid
           src={photoURL}
         />
       ) : (
         <div className="card-pfp primary-bg d-flex align-items-center justify-content-center fontLight fw-bold">
-          J
+          {displayName.split(" ")[0]}
         </div>
       )}
       <div className="d-flex flex-column align-items-start">

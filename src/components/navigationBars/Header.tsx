@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, Container } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth, database } from "../../service/firebase/firebaseConfig";
 import addNotification from "react-push-notification";
+import { localization } from "../../service/languages/languages";
+import { useStatePersistance } from "../../service/hooks/useStatePersistance";
+import { ExtensionLanguage } from "./Extension";
 
 export default function Header({
   setSideBarFlex,
@@ -11,6 +14,11 @@ export default function Header({
   setSideBarFlex: Function;
   sideBarFlex: boolean;
 }) {
+  const language = useStatePersistance<"ee" | "en">("lan", "en");
+  const currLanguage = language.state;
+  localization.setLanguage(currLanguage);
+  const setCurrLanguage = language.setState;
+
   const displayName = auth.currentUser?.displayName;
   const photoURL = auth.currentUser?.photoURL;
   const location = useLocation();
@@ -91,13 +99,31 @@ export default function Header({
           </span>
           <div className="d-flex flex-column align-items-start">
             <span className="text-2">
-              Hello {displayName && displayName.split(" ")[0]},
+              {localization.Hello} {displayName && displayName.split(" ")[0]},
             </span>
-            <span className="text-3 header-title">Ready to travel?</span>
+            <span className="text-3 header-title">
+              {localization["Ready to travel"]}?
+            </span>
           </div>
         </div>
         <div className="d-flex gap-3 align-items-center">
-          <span onClick={() => handleBellIcon()}>
+          <ExtensionLanguage>
+            <div className="d-flex flex-column align-items-center gap-2 ps-3 pe-3">
+              <div
+                onClick={() => setCurrLanguage("en")}
+                className={currLanguage === "en" ? "highlight-color" : "cursor"}
+              >
+                Eng
+              </div>
+              <div
+                onClick={() => setCurrLanguage("ee")}
+                className={currLanguage === "ee" ? "highlight-color" : "cursor"}
+              >
+                Est
+              </div>
+            </div>
+          </ExtensionLanguage>
+          <span title="Notifications" onClick={() => handleBellIcon()}>
             {newNotification ? bellActive : bell}
           </span>
           <div

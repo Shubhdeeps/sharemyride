@@ -16,6 +16,7 @@ import { TimelineTag } from "../../../components/timeline/TimelineTag";
 import { timestamp } from "../../../service/firebase/firebaseConfig";
 import { getRideCardsBasedOnRouteId } from "../../../service/firebase/rides";
 import { firebaseTimestampToDayNumber } from "../../../service/helperFunctions/firebaseTimestampToString";
+import { localization } from "../../../service/languages/languages";
 import { RidePopUp } from "../../../types/customTypes.model";
 import { RideDB } from "../../../types/ride.model";
 import { floatIcon, floatIcon2 } from "../icons";
@@ -141,7 +142,7 @@ export default function ListingCarRides({
           <FilterHeader>
             <Filter>
               <label htmlFor="dateTime" className="fw-bold">
-                Show Rides after
+                {localization["Show Rides after"]}
               </label>
               <input
                 name="dateTime"
@@ -152,13 +153,17 @@ export default function ListingCarRides({
             </Filter>
             <div className="d-flex gap-2 noselect">
               <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
-                <span onClick={() => setFilterType("ALL")}>ALL</span>
+                <span onClick={() => setFilterType("ALL")}>
+                  {localization["ALL"]}
+                </span>
                 {filterType === "ALL" && (
                   <i className="bi bi-check font-safe text-2"></i>
                 )}
               </div>
               <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
-                <span onClick={() => setFilterType("MINE")}>MINE</span>
+                <span onClick={() => setFilterType("MINE")}>
+                  {localization["MINE"]}
+                </span>
                 {filterType === "MINE" && (
                   <i className="bi bi-check font-safe text-2"></i>
                 )}

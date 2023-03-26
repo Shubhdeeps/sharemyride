@@ -6,6 +6,7 @@ import InputTextFieldSecondary from "../../components/inputFields/InputTextField
 import InputTextFieldwitState from "../../components/inputFields/InputTextFieldwithState";
 import { auth, timestamp } from "../../service/firebase/firebaseConfig";
 import { setNewMarketSale } from "../../service/firebase/marketPlace";
+import { localization } from "../../service/languages/languages";
 import { MarketPlace } from "../../types/marketPlace";
 
 export default function NewMarketTicket() {
@@ -62,7 +63,9 @@ export default function NewMarketTicket() {
     <>
       <div className="empty-area"></div>
       <div className="filled-area container noselect">
-        <span className="text-2 fw-bold fontLigh">New Sale</span>
+        <span className="text-2 fw-bold fontLigh">
+          {localization["New Sale"]}
+        </span>
         <Timeline
           endPoint={arriveAt}
           startPoint={departFrom}
@@ -74,7 +77,7 @@ export default function NewMarketTicket() {
 
         <br />
         <div className="d-flex flex-column gap-1">
-          <span className="text-5 fontSecondary">TIME*</span>
+          <span className="text-5 fontSecondary">{localization["TIME*"]}</span>
 
           <InputTextFieldwitState
             placeholder="14:00"
@@ -95,18 +98,24 @@ export default function NewMarketTicket() {
         </div>
         <hr />
         <div className="d-flex flex-column gap-1">
-          <span className="text-5 fontSecondary">TYPE OF TICKET*</span>
+          <span className="text-5 fontSecondary">
+            {localization["TYPE OF TICKET*"]}
+          </span>
           <div className="d-flex gap-2 noselect">
             <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
               <i className="bi bi-bus-front"></i>
-              <span onClick={() => setCommute("bus")}>BUS</span>
+              <span onClick={() => setCommute("bus")}>
+                {localization["BUS"]}
+              </span>
               {commute === "bus" && (
                 <i className="bi bi-check font-safe text-2"></i>
               )}
             </div>
             <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
               <i className="bi bi-train-lightrail-front"></i>
-              <span onClick={() => setCommute("train")}>TRAIN</span>
+              <span onClick={() => setCommute("train")}>
+                {localization["TRAIN"]}
+              </span>
               {commute === "train" && (
                 <i className="bi bi-check font-safe text-2"></i>
               )}
@@ -115,7 +124,9 @@ export default function NewMarketTicket() {
         </div>
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">EXPENSES*</span>
+          <span className="text-5 fontSecondary">
+            {localization["EXPENSES*"]}
+          </span>
           <InputTextFieldSecondary
             placeholder="$15"
             textRef={costRef}
@@ -125,7 +136,7 @@ export default function NewMarketTicket() {
         </div>
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">ROUTE</span>
+          <span className="text-5 fontSecondary">{localization["ROUTE"]}</span>
           <InputTextFieldwitState
             placeholder="City/Country"
             setData={setDepartFrom}
@@ -153,7 +164,9 @@ export default function NewMarketTicket() {
         </div>
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">CONTACT DETAILS</span>
+          <span className="text-5 fontSecondary">
+            {localization["CONTACT DETAILS"]}
+          </span>
 
           <InputTextFieldSecondary
             placeholder="john01"
@@ -176,7 +189,9 @@ export default function NewMarketTicket() {
         </div>
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">ADDITIONAL INFORMATION</span>
+          <span className="text-5 fontSecondary">
+            {localization["ADDITIONAL INFORMATION"]}
+          </span>
 
           <InputTextFieldSecondary
             placeholder="The ticket is from Tart"

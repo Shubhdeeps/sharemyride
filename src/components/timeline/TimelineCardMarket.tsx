@@ -3,6 +3,7 @@ import { Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../service/firebase/firebaseConfig";
 import { firebaseTimestampToTime } from "../../service/helperFunctions/firebaseTimestampToString";
+import { localization } from "../../service/languages/languages";
 import { MarketPlaceDB } from "../../types/marketPlace";
 import ContactRow from "../cards/cars/ContactRow";
 import Cost from "../cards/cars/Cost";
@@ -13,15 +14,15 @@ import { NameAndCreated } from "./NameAndCreated";
 const status = {
   Onsale: {
     color: "font-safe",
-    status: "ON SALE",
+    status: localization["ON SALE"],
   },
   Sold: {
     color: "font-safe",
-    status: "SOLD",
+    status: localization["SOLD"],
   },
   cancelled: {
     color: "font-danger",
-    status: "SALE CANCELLED",
+    status: localization["SALE CANCELLED"],
   },
 };
 export default function TimelineCardMarket({
@@ -78,7 +79,7 @@ export default function TimelineCardMarket({
                   onClick={() => setRidePop(data.commuteId)}
                   className="cursor font-danger text-center width-100"
                 >
-                  Delete ad.
+                  {localization["Delete ad."]}
                 </div>
               </Extension>
             )}
@@ -102,12 +103,12 @@ export default function TimelineCardMarket({
         <div className="d-flex align-items-center gap-3">
           {isBelongToCurrentUser ? (
             <button className="p-2 ps-3 pe-3" onClick={() => handleVisit()}>
-              Visit
+              {localization["Visit"]}
             </button>
           ) : (
             <>
               <button className="p-2 ps-3 pe-3" onClick={handleBuy}>
-                Buy
+                {localization["Buy"]}
               </button>
               <ContactRow
                 messanger={data.messenger}

@@ -11,6 +11,7 @@ import { TimelineTag } from "../../components/timeline/TimelineTag";
 import { getMyScheduledRides } from "../../service/firebase/collectionOperations";
 import { timestamp } from "../../service/firebase/firebaseConfig";
 import { firebaseTimestampToDayNumber } from "../../service/helperFunctions/firebaseTimestampToString";
+import { localization } from "../../service/languages/languages";
 import { RidePopUp } from "../../types/customTypes.model";
 import { RideDB } from "../../types/ride.model";
 
@@ -91,7 +92,7 @@ export default function Schedule() {
           <FilterHeader>
             <Filter>
               <label htmlFor="dateTime" className="fw-bold">
-                Show Rides after
+                {localization["Show Rides after"]}
               </label>
               <input
                 name="dateTime"
@@ -102,7 +103,9 @@ export default function Schedule() {
             </Filter>
             <div className="d-flex gap-2 noselect">
               <div className="d-flex align-items-center gap-1 border border-r1 p-2 cursor">
-                <span onClick={() => setStatus("ongoing")}>ON GOING</span>
+                <span onClick={() => setStatus("ongoing")}>
+                  {localization["ON GOING"]}
+                </span>
                 {status === "ongoing" && (
                   <i className="bi bi-check font-safe text-2"></i>
                 )}

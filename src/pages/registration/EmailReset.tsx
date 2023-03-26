@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import InputTextFieldPrimary from "../../components/inputFields/InputTextFieldPrimary";
 import Loader from "../../components/loader";
 import { auth } from "../../service/firebase/firebaseConfig";
+import { localization } from "../../service/languages/languages";
 export default function PasswordReset({
   setIsLogIn,
 }: {
@@ -31,7 +32,7 @@ export default function PasswordReset({
         className="d-flex flex-column gap-1"
         autoComplete="off"
       >
-        <span className="text-2-5">Password reset</span>
+        <span className="text-2-5">{localization["Password reset"]}</span>
         <InputTextFieldPrimary
           placeholder="Email address"
           type="text"
@@ -47,12 +48,16 @@ export default function PasswordReset({
         <br />
         <div className="text-3 text-center">
           <button type="submit" className="p-2 ps-5 pe-5 border-r3">
-            Reset password
+            {localization["Reset password"]}
           </button>
         </div>
         <br />
         <div className="text-center text-3">
-          An email with link to reset your password will be sent to you.
+          {
+            localization[
+              "An email with link to reset your password will be sent to you."
+            ]
+          }
         </div>
       </form>
       <br />

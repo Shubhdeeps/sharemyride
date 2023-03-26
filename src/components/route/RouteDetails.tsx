@@ -1,7 +1,6 @@
-import React from "react";
+import { localization } from "../../service/languages/languages";
 import { useParams } from "react-router-dom";
 import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
-
 // type Props = {
 //   routeStart: string;
 //   routeEnd: string;
@@ -14,14 +13,22 @@ export default function RouteDetails() {
       <div className="d-flex gap-1">
         <span>{start}</span>
         <span>
-          {routeArray ? capitalizeFirstLetter(routeArray[0]) : "No data"}
+          {routeArray ? (
+            capitalizeFirstLetter(routeArray[0])
+          ) : (
+            <>{localization["No data"]} </>
+          )}
         </span>
       </div>
       <div className="w-100 ps-2">{arrow}</div>
       <div className="d-flex gap-1">
         <span>{end}</span>
         <span>
-          {routeArray ? capitalizeFirstLetter(routeArray[1]) : "No data"}
+          {routeArray ? (
+            capitalizeFirstLetter(routeArray[1])
+          ) : (
+            <>{localization["No data"]} </>
+          )}
         </span>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { Timestamp } from "../firebase/firebaseConfig";
+import { localization } from "../languages/languages";
 
 export const firebaseTimestampToString = (time: typeof Timestamp) => {
   const timestampSeconds = time.seconds;
@@ -6,16 +7,16 @@ export const firebaseTimestampToString = (time: typeof Timestamp) => {
   const seconds = currentTime - timestampSeconds;
 
   if (seconds < 60) {
-    return `< 1 minute ago`;
+    return `< 1 ${localization["minute ago"]}`;
   }
   if (seconds < 3600) {
-    return `${Math.round(seconds / 60)} minutes ago`;
+    return `${Math.round(seconds / 60)} ${localization["minutes ago"]}`;
   }
   if (seconds < 24 * 3600) {
-    return `${Math.round(seconds / 3600)} hours ago`;
+    return `${Math.round(seconds / 3600)} ${localization["hours ago"]}`;
   }
   if (seconds < 30 * 24 * 3600) {
-    return `${Math.round(seconds / (24 * 3600))} days ago`;
+    return `${Math.round(seconds / (24 * 3600))} ${localization["days ago"]}`;
   }
 };
 

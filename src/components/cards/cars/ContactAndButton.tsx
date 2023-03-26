@@ -6,7 +6,7 @@ import text from "./icons/text.png";
 import FilledBButton from "../../inputFields/FIlledButton";
 
 type Props = {
-  buttonText: string;
+  buttonText: "Request to join" | "Accepted" | "Request ride";
   messanger: string | undefined;
   whatsapp: string | undefined;
   text: string | undefined;

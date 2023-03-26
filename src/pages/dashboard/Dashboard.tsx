@@ -10,6 +10,8 @@ import NewRouteModal from "../../components/modals/NewRouteModal";
 import RouteFiltersModal from "../../components/modals/RouteFiltersModal";
 import NavButton from "../../components/navigationBars/NavButton";
 import { getRouteTilesData } from "../../service/firebase/collectionOperations";
+import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
+import { localization } from "../../service/languages/languages";
 import { RouteTileDB } from "../../types/RoutesTile";
 import { floatIcon } from "./floatIcon";
 
@@ -17,10 +19,8 @@ export default function Dashboard() {
   // get localstorage filter name
   const storedRouteName = localStorage.getItem("route-filter");
   let localData: string | undefined = undefined;
-  const countryRef = useRef("");
   if (storedRouteName) {
     localData = JSON.parse(storedRouteName) as string;
-    countryRef.current = localData;
   }
   const { pathname } = useLocation();
 
@@ -36,53 +36,42 @@ export default function Dashboard() {
 
   //Filters
   const [filterFlex, setFilterFlex] = useState(false);
+
+  // user can set start point only after selecting a country name
+  const [startPoint, setStartPoint] = useState("");
   const [appliedFilter, setAppliedFilters] = useState<string | undefined>(
     localData
   );
-
   const [noMoreRides, setNoMoreRides] = useState("");
 
-  const handleFilterApply = () => {
-    setAppliedFilters(countryRef.current);
+  const handleFilterApply = (country: string, start: string) => {
+    setAppliedFilters(country);
+    setStartPoint(start);
     setFilterFlex(false);
-
     //saving filter to local storage
-    localStorage.setItem("route-filter", JSON.stringify(countryRef.current));
+    localStorage.setItem("route-filter", JSON.stringify(country));
   };
 
   const handleClear = () => {
-    countryRef.current = "";
     setFilterFlex(false);
-    setAppliedFilters("");
+    setAppliedFilters(undefined);
+    setStartPoint("");
     localStorage.setItem("route-filter", JSON.stringify(""));
   };
 
+  // first fetch from here, if there was filter applied in the past
   // run on filter change
   useEffect(() => {
-    if (appliedFilter !== undefined) {
-      getRouteTilesData(
-        setError,
-        setLoading,
-        setCountrySpecificData,
-        undefined,
-        appliedFilter,
-        setNoMoreRides
-      );
-    }
-  }, [appliedFilter]);
-
-  useEffect(() => {
-    if (!localData) {
-      getRouteTilesData(
-        setError,
-        setLoading,
-        setData,
-        undefined,
-        "",
-        setNoMoreRides
-      );
-    }
-  }, [localData]);
+    getRouteTilesData(
+      setError,
+      setLoading,
+      setCountrySpecificData,
+      undefined,
+      appliedFilter,
+      setNoMoreRides,
+      startPoint
+    );
+  }, [appliedFilter, startPoint]);
 
   useEffect(() => {
     setRoutes((prevState) => [...prevState, ...data]);
@@ -101,7 +90,8 @@ export default function Dashboard() {
       setData,
       lastItemDate,
       appliedFilter,
-      setNoMoreRides
+      setNoMoreRides,
+      startPoint
     );
   };
 
@@ -116,9 +106,10 @@ export default function Dashboard() {
     <>
       {filterFlex && (
         <RouteFiltersModal
-          countryRef={countryRef}
           onClick={handleFilterApply}
           handleClear={handleClear}
+          defaultCountry={!!localData ? localData : ""}
+          startPoint={startPoint}
         />
       )}
       {newRoutePopup && (
@@ -145,25 +136,33 @@ export default function Dashboard() {
             <br />
             <span onClick={() => setFilterFlex(true)}>
               <Filter>
-                <span className="text-4 fw-bold">Search</span>
+                <span className="text-4 fw-bold">{localization["Search"]}</span>
                 {!!appliedFilter && (
-                  <span className="text-4 mt-1">{appliedFilter}</span>
+                  <span className="text-2-5">{appliedFilter}</span>
+                )}
+                {!!startPoint && (
+                  <span className="text-2-5">
+                    {localization["Start Point"]}:{" "}
+                    {capitalizeFirstLetter(startPoint)}
+                  </span>
                 )}
               </Filter>
             </span>
             <TitleHeader heading="Expore routes" />
-            {routes.map((routeData) => {
-              return (
-                <React.Fragment key={routeData.routeId}>
-                  <RouteCard
-                    startPoint={routeData.depart}
-                    countryName={routeData.country}
-                    endPoint={routeData.arrive}
-                    isFavourite={false}
-                  />
-                </React.Fragment>
-              );
-            })}
+            <div className="d-flex gap-2 flex-wrap">
+              {routes.map((routeData) => {
+                return (
+                  <React.Fragment key={routeData.routeId}>
+                    <RouteCard
+                      startPoint={routeData.depart}
+                      countryName={routeData.country}
+                      endPoint={routeData.arrive}
+                      isFavourite={false}
+                    />
+                  </React.Fragment>
+                );
+              })}
+            </div>
             {loading ? (
               <Loader />
             ) : (

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createRouteTile } from "../../service/firebase/collectionOperations";
+import { localization } from "../../service/languages/languages";
 import FilledButton from "../inputFields/FIlledButton";
 import InputTextFieldSecondary from "../inputFields/InputTextFieldSecondary";
 import OutlinedButton from "../inputFields/OutlinedButton";
@@ -39,7 +40,7 @@ export default function NewRouteModal({ setModelPopUp }: Props) {
 
   return (
     <ModalWrapper>
-      <span className="text-3 fw-bold">Create new route</span>
+      <span className="text-3 fw-bold">{localization["Create new route"]}</span>
       <br />
       <div className="d-flex flex-column gap-3 ">
         <InputTextFieldSecondary

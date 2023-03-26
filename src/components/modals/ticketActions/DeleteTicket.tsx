@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { deleteMyAd } from "../../../service/firebase/marketPlace";
 import { canclePassengerTrip } from "../../../service/firebase/passenger";
 import { cancleMyRde } from "../../../service/firebase/rides";
+import { localization } from "../../../service/languages/languages";
 import Loader from "../../loader";
 
 const roles = {
@@ -45,9 +46,9 @@ export default function DeleteTicket({
       <span>{roles[role]}</span>
       <div className="d-flex gap-2 justify-content-end">
         <button type="button" onClick={handleClose}>
-          Close
+          {localization["Close"]}
         </button>
-        <button type="submit">Confirm</button>
+        <button type="submit">{localization["Confirm"]}</button>
       </div>
     </form>
   );

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { auth } from "../../service/firebase/firebaseConfig";
 import { acceptOfferAndSetSold } from "../../service/firebase/marketPlace";
 import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
+import { localization } from "../../service/languages/languages";
 import { CommuteOffer } from "../../types/marketPlace";
 import ContactRow from "./cars/ContactRow";
 import Cost from "./cars/Cost";
@@ -43,12 +44,16 @@ export default function CommuteOfferCard({
       />
       {isCurrUserTheOwnerOfAd && state === "pending" ? (
         <div className="d-flex align-items-center gap-2">
-          <button onClick={() => handleOfferResult("rejected")}>Reject</button>
-          <button onClick={() => handleOfferResult("accepted")}>Accept</button>
+          <button onClick={() => handleOfferResult("rejected")}>
+            {localization.Reject}
+          </button>
+          <button onClick={() => handleOfferResult("accepted")}>
+            {localization.Accept}
+          </button>
         </div>
       ) : (
         <span className="text-center w-50 p-2 ps-3 pe-3 border-r1 button-color fontLight">
-          {capitalizeFirstLetter(state)}
+          {capitalizeFirstLetter(localization[state])}
         </span>
       )}
     </div>

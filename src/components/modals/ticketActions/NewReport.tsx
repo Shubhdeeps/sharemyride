@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { reportATicket } from "../../../service/firebase/collectionOperations";
+import { localization } from "../../../service/languages/languages";
 import InputTextFieldSecondary from "../../inputFields/InputTextFieldSecondary";
 import Loader from "../../loader";
 
@@ -40,9 +41,9 @@ export default function NewReport({
       />
       <div className="d-flex gap-2 justify-content-end">
         <button type="button" onClick={handleClose}>
-          Cancle
+          {localization["Cancle"]}
         </button>
-        <button type="submit">Submit</button>
+        <button type="submit">{localization["Submit"]}</button>
       </div>
     </form>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../service/firebase/firebaseConfig";
+import { localization } from "../../service/languages/languages";
 import { PassengerDB } from "../../types/passenger.model";
 import OutlinedButton from "../inputFields/OutlinedButton";
 import { AdditionalInfoBox } from "./AdditionalInfoBlock";
@@ -17,15 +18,15 @@ type Props = {
 const status = {
   ongoing: {
     color: "font-safe",
-    status: "LIVE",
+    status: localization["LIVE"],
   },
   cancelled: {
     color: "font-danger",
-    status: "CANCELLED",
+    status: localization["CANCELLED"],
   },
   occupied: {
     color: "",
-    status: "RESERVED",
+    status: localization["RESERVED"],
   },
 };
 
@@ -68,7 +69,9 @@ export default function PassengerCard({ data, requestRideOnClick }: Props) {
         commute="car"
       />
       <br />
-      <span className="fw-bold text-4">ADDITIONAL INFORMATION</span>
+      <span className="fw-bold text-4">
+        {localization["ADDITIONAL INFORMATION"]}
+      </span>
       <div className="d-flex gap-2 flex-wrap">
         {additionalInformation.map((info) => {
           return (

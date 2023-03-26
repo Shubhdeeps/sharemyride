@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../service/firebase/collectionOperations";
 import SideBarButton from "../inputFields/SideBarButton";
@@ -33,6 +33,10 @@ export default function Sidebar({
         <SideBarButton
           onClick={() => handleClick(() => navigate("/dashboard"))}
           title="Dashboard"
+        />
+        <SideBarButton
+          onClick={() => handleClick(() => navigate("/feed"))}
+          title="Alerts and News"
         />
         <SideBarButton
           onClick={() => handleClick(() => navigate("/favourites"))}

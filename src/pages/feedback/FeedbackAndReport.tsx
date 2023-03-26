@@ -3,6 +3,7 @@ import TitleHeader from "../../components/cards/TitleHeader";
 import InputTextAreaPrimary from "../../components/inputFields/InputTextAreaPrimary";
 import Loader from "../../components/loader";
 import { setFeedBack } from "../../service/firebase/collectionOperations";
+import { localization } from "../../service/languages/languages";
 
 export default function FeedbackAndReport() {
   const feedbackRef = useRef("");
@@ -30,7 +31,7 @@ export default function FeedbackAndReport() {
             <>
               {isSubmitted ? (
                 <div className="fw-bold font-safe text-2 d-flex gap-2 align-items-center justify-content-center">
-                  Submitted
+                  {localization["Submitted"]}
                   <i className="bi bi-check-lg"></i>
                 </div>
               ) : (
@@ -45,7 +46,9 @@ export default function FeedbackAndReport() {
                     textRef={reportRef}
                     title="Report"
                   />
-                  <button onClick={() => handleSubmit()}>Submit</button>
+                  <button onClick={() => handleSubmit()}>
+                    {localization["Submit"]}
+                  </button>
                 </>
               )}
             </>

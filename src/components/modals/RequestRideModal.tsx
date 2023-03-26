@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { requestToJoinTheRide } from "../../service/firebase/collectionOperations";
+import { localization } from "../../service/languages/languages";
 import { Contact } from "../../types/Requst.modal";
 import Error from "../error/Error";
 import FilledButton from "../inputFields/FIlledButton";
@@ -17,7 +18,9 @@ export default function RequestModal({
   rideTicketId: string;
   role: "passenger" | "ride" | "ticket";
 }) {
-  const additionalInfoRef = useRef("Hello, I would like to join.");
+  const additionalInfoRef = useRef(
+    localization["Hello, I would like to join."]
+  );
   const messangerRef = useRef("");
   const textRef = useRef("");
   const whatsappRef = useRef("");
@@ -55,7 +58,7 @@ export default function RequestModal({
         {status === "success" && (
           <>
             <div className="text-3 fw-bold text-center">
-              Request sent successfully.
+              {localization["Request sent successfully"]}.
             </div>
             <br />
             <OutlinedButton title="Close" onClick={() => handleCloseTicket()} />
@@ -63,16 +66,20 @@ export default function RequestModal({
         )}
         {status === "pending" && (
           <>
-            <span className="text-3 fw-bold">Request ride</span>
+            <span className="text-3 fw-bold">
+              {localization["Request ride"]}
+            </span>
             <br />
-            <span className="text-5">ADDITIONAL INFORMATION</span>
+            <span className="text-5">
+              {localization["ADDITIONAL INFORMATION"]}
+            </span>
             <InputTextFieldSecondary
               placeholder="Ride description"
               title=""
               type="text"
               textRef={additionalInfoRef}
             />
-            <span className="text-5">CONTACT DETAILS</span>
+            <span className="text-5">{localization["CONTACT DETAILS"]}</span>
             <InputTextFieldSecondary
               placeholder="Messanger"
               title=""

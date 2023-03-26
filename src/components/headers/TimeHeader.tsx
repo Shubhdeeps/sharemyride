@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { localization } from "../../service/languages/languages";
 
 export default function FilterHeader({
   children,
@@ -12,7 +13,7 @@ export default function FilterHeader({
         onClick={() => setFlexFilter(!flexFilter)}
         className=" d-flex align-items-center gap-2 p-2 justify-content-between"
       >
-        <span className="text-muted text-2-5">Filters</span>
+        <span className="text-muted text-2-5">{localization["Filters"]}</span>
         <i
           className={`"text-muted cursor bi" ${
             flexFilter ? "bi-caret-down-fill" : "bi-caret-right-fill"

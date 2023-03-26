@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { createNewPassengerTile } from "../../service/firebase/collectionOperations";
 import RouteDetails from "../../components/route/RouteDetails";
 import { capitalizeFirstLetter } from "../../service/helperFunctions/captalizeFirstLetter";
+import { localization } from "../../service/languages/languages";
 
 export default function NewPassenger() {
   const { routeId } = useParams();
@@ -104,7 +105,7 @@ export default function NewPassenger() {
       setError("");
       handleCancel();
     } else {
-      setError("Something went wrong, please try again later.");
+      setError(localization["Something went wrong, please try again later."]);
       return;
     }
   };
@@ -121,7 +122,9 @@ export default function NewPassenger() {
         <RouteDetails />
       </div>
       <div className="filled-area container noselect">
-        <span className="text-2 fw-bold fontLigh">Request new ride</span>
+        <span className="text-2 fw-bold fontLigh">
+          {localization["Request new ride"]}
+        </span>
         <Timeline
           endPoint={arriveAt}
           startPoint={departFrom}
@@ -133,7 +136,7 @@ export default function NewPassenger() {
 
         <br />
         <div className="d-flex flex-column gap-1">
-          <span className="text-5 fontSecondary">TIME*</span>
+          <span className="text-5 fontSecondary">{localization["TIME*"]}</span>
 
           <InputTextFieldwitState
             placeholder="14:00"
@@ -154,7 +157,9 @@ export default function NewPassenger() {
         </div>
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">EXPENSES*</span>
+          <span className="text-5 fontSecondary">
+            {localization["EXPENSES*"]}
+          </span>
           <InputTextFieldSecondary
             placeholder="$15"
             textRef={costRef}
@@ -170,7 +175,9 @@ export default function NewPassenger() {
         </div>
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">LOCATION*</span>
+          <span className="text-5 fontSecondary">
+            {localization["LOCATION*"]}
+          </span>
           <div className="d-flex align-items-end gap-1">
             <InputTextFieldwitState
               placeholder="Kristiine"
@@ -198,7 +205,9 @@ export default function NewPassenger() {
 
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">CONTACT DETAILS</span>
+          <span className="text-5 fontSecondary">
+            {localization["CONTACT DETAILS"]}
+          </span>
 
           <InputTextFieldSecondary
             placeholder="john01"
@@ -222,7 +231,9 @@ export default function NewPassenger() {
 
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">ADDITIONAL INFORMATION</span>
+          <span className="text-5 fontSecondary">
+            {localization["ADDITIONAL INFORMATION"]}
+          </span>
 
           <InputTextFieldSecondary
             placeholder="I would like to travel back too..."
@@ -233,7 +244,9 @@ export default function NewPassenger() {
         </div>
         <hr />
         <div className="d-flex flex-column gap-1 mt-2">
-          <span className="text-5 fontSecondary">PRIVACY SETTINGS</span>
+          <span className="text-5 fontSecondary">
+            {localization["PRIVACY SETTINGS"]}
+          </span>
           <div className="d-flex flex-wrap gap-2">
             <InputCheckboxField
               placeholder=""

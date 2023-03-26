@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import FilledButton from "../../components/inputFields/FIlledButton";
 import InputTextFieldPrimary from "../../components/inputFields/InputTextFieldPrimary";
 import { auth } from "../../service/firebase/firebaseConfig";
+import { localization } from "../../service/languages/languages";
 export default function Login({ setIsLogIn }: { setIsLogIn: Function }) {
   const [error, setError] = useState("");
   const email = useRef("");
@@ -21,7 +22,7 @@ export default function Login({ setIsLogIn }: { setIsLogIn: Function }) {
   };
   return (
     <div className="h-100 container d-flex flex-column justify-content-between fontLight">
-      <span className="text-2">Welcome Traveller</span>
+      <span className="text-2">{localization["Welcome Traveller"]}</span>
       <form className="d-flex flex-column gap-1" autoComplete="off">
         <span className="text-2-5">{`Let's register`}</span>
 
@@ -55,19 +56,19 @@ export default function Login({ setIsLogIn }: { setIsLogIn: Function }) {
           onClick={() => setIsLogIn("password")}
           className="border-r3 p-2 ps-4 pe-4 border cursor"
         >
-          Reset password
+          {localization["Reset password"]}
         </span>
       </div>
       <br />
       <div className="d-flex flex-column align-items-center pb-4">
         <span>
-          I want to register a new account
+          {localization["I want to register a new account"]}
           <span
             onClick={() => setIsLogIn("register")}
             className="highlight-color noselect cursor"
           >
             {" "}
-            Signup
+            {localization["Signup"]}
           </span>
         </span>
       </div>

@@ -23,6 +23,7 @@ body {
   color: var(--primary);
   background: linear-gradient(90deg, #8d5481 12.94%, #6e5084 55.25%);
   overflow: auto !important;
+  font-family: "Josefin Sans", sans-serif;
 }
 
 .inactive-bg {

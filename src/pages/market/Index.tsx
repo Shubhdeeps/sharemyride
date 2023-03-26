@@ -12,6 +12,7 @@ import { TimelineTag } from "../../components/timeline/TimelineTag";
 import { Timestamp, timestamp } from "../../service/firebase/firebaseConfig";
 import { getMarketPlacePosts } from "../../service/firebase/marketPlace";
 import { firebaseTimestampToDayNumber } from "../../service/helperFunctions/firebaseTimestampToString";
+import { localization } from "../../service/languages/languages";
 import { MarketPlaceDB } from "../../types/marketPlace";
 
 export default function MarketPlace() {
@@ -112,7 +113,7 @@ export default function MarketPlace() {
                   handleFilterChange("ALL");
                 }}
               >
-                ALL
+                {localization.ALL}
               </span>
               {filter === "ALL" && (
                 <i className="bi bi-check font-safe text-2"></i>
@@ -124,7 +125,7 @@ export default function MarketPlace() {
                   handleFilterChange("MINE");
                 }}
               >
-                MINE
+                {localization.MINE}
               </span>
               {filter === "MINE" && (
                 <i className="bi bi-check font-safe text-2"></i>

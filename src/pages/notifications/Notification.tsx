@@ -3,6 +3,7 @@ import Error from "../../components/error/Error";
 import Loader from "../../components/loader";
 import { Timestamp } from "../../service/firebase/firebaseConfig";
 import { getAllNotificationsByUid } from "../../service/firebase/notification";
+import { localization } from "../../service/languages/languages";
 import { NotificationDB } from "../../types/notification.model";
 import { NotificationCard } from "./NotificationCard";
 
@@ -44,7 +45,9 @@ export default function Notification() {
     <>
       <div className="empty-area"></div>
       <div className="filled-area">
-        <div className="ps-2 text-4 mt-1 fw-bold container">NOTIFICATIONS</div>
+        <div className="ps-2 text-4 mt-1 fw-bold container">
+          {localization["NOTIFICATIONS"]}
+        </div>
         <div className="mt-3 d-flex flex-column container">
           {notifications.map((notification) => {
             return (
@@ -64,7 +67,7 @@ export default function Notification() {
                     className="bi bi-plus-circle text-2-5"
                   >
                     {" "}
-                    Load more
+                    {localization["Load more"]}
                   </i>
                 </div>
               )}

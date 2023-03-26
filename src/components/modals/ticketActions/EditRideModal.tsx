@@ -8,6 +8,7 @@ import {
   delayMyRide,
   getSingleRideBasedOnRideId,
 } from "../../../service/firebase/rides";
+import { localization } from "../../../service/languages/languages";
 import { RideDB } from "../../../types/ride.model";
 import Error from "../../error/Error";
 import InputTextFieldwitState from "../../inputFields/InputTextFieldwithState";
@@ -78,7 +79,7 @@ export default function EditRide({
         className="d-flex align-items-center gap-2"
       >
         <span className="fw-bold text-3 font-safe">{status.toUpperCase()}</span>
-        <button type="submit">Close</button>
+        <button type="submit">{localization["Close"]}</button>
       </form>
     );
   }
@@ -121,9 +122,9 @@ export default function EditRide({
       />
       <div className="d-flex gap-2 align-items-center justify-content-end mt-2">
         <button type="button" onClick={handleClose}>
-          Cancel
+          {localization["Cancel"]}
         </button>
-        <button type="submit">Update</button>
+        <button type="submit">{localization["Update"]}</button>
       </div>
     </form>
   );

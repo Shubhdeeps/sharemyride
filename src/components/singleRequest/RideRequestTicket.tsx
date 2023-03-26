@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { requestIdUpdateStatus } from "../../service/firebase/collectionOperations";
 import { auth } from "../../service/firebase/firebaseConfig";
+import { localization } from "../../service/languages/languages";
 import { RequestsDB } from "../../types/Requst.modal";
 import ContactRow from "../cards/cars/ContactRow";
 import ProfileDetails from "../cards/cars/ProfileDetails";
@@ -37,7 +38,9 @@ export default function RideRequestTicket({
       />
       {!!data.description && (
         <>
-          <span className="text-4 mt-2">ADDITIONAL INFORMATION</span>
+          <span className="text-4 mt-2">
+            {localization["ADDITIONAL INFORMATION"]}
+          </span>
           <span className="mb-2 ps-2 pe-2">{data.description}</span>
         </>
       )}

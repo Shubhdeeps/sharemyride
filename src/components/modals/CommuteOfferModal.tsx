@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { createCommuteOffer } from "../../service/firebase/marketPlace";
+import { localization } from "../../service/languages/languages";
 import Error from "../error/Error";
 import FilledButton from "../inputFields/FIlledButton";
 import InputTextFieldSecondary from "../inputFields/InputTextFieldSecondary";
@@ -44,7 +45,7 @@ export default function CreateCommuteOfferModal({
       <div style={{ minWidth: "300px" }}>
         {status === "pending" ? (
           <div className="d-flex flex-column gap-3">
-            <span className="fw-bold text-4">BUY</span>
+            <span className="fw-bold text-4">{localization["BUY"]}</span>
             <InputTextFieldSecondary
               placeholder="$"
               title="Offer price"
@@ -83,7 +84,9 @@ export default function CreateCommuteOfferModal({
             {status === "loading" && <Loader />}
             {status === "success" && (
               <div className="d-flex flex-column gap-3 text-center fw-bold">
-                <span className="text-3">Offer has been made successfully</span>
+                <span className="text-3">
+                  {localization["Offer has been made successfully"]}
+                </span>
                 <OutlinedButton title="Close" onClick={() => setModelPopUp()} />
               </div>
             )}

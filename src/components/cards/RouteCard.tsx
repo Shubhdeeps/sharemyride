@@ -7,6 +7,7 @@ import {
   removeFromFavourite,
 } from "../../service/firebase/collectionOperations";
 import OutlinedButton from "../inputFields/OutlinedButton";
+import { localization } from "../../service/languages/languages";
 type Props = {
   countryName: string;
   startPoint: string;
@@ -51,11 +52,13 @@ export default function RouteCard(data: Props) {
       >
         {isFav ? (
           <>
-            <i className="bi bi-star-fill highlight-color"></i> Favourite
+            <i className="bi bi-star-fill highlight-color"></i>{" "}
+            {localization.Favourite}
           </>
         ) : (
           <>
-            <i className="bi bi-star"></i> Add to favourite
+            <i className="bi bi-star"></i>
+            {localization["Add to favourite"]}
           </>
         )}
       </div>

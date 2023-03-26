@@ -17,8 +17,10 @@
   transition: 0.2s ease-in-out;
   right: 0%;
   z-index: 1;
+  max-width: 600px;
 }
 .sidebar-inactive {
+  max-width: 600px;
   right: -100%;
   transition: 0.2s ease-in-out;
   z-index: 1;

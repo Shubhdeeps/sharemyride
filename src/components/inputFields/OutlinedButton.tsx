@@ -1,7 +1,14 @@
-import React from "react";
+import { localization } from "../../service/languages/languages";
 
 type Props = {
-  title: string;
+  title:
+    | "Visit"
+    | "See Rides"
+    | "Cancel"
+    | "Close"
+    | "Apply"
+    | "Clear"
+    | "Reject";
   onClick: Function;
 };
 export default function OutlinedButton({ title, onClick }: Props) {
@@ -10,7 +17,7 @@ export default function OutlinedButton({ title, onClick }: Props) {
       onClick={() => onClick()}
       className="w-100 noselect text-center cursor p-2 button-color-border highlight-color border-r2"
     >
-      {title}
+      {localization[title]}
     </div>
   );
 }

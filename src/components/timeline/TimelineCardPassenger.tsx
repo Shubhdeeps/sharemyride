@@ -1,8 +1,8 @@
-import React from "react";
 import { Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../service/firebase/firebaseConfig";
 import { firebaseTimestampToTime } from "../../service/helperFunctions/firebaseTimestampToString";
+import { localization } from "../../service/languages/languages";
 import { PassengerDB } from "../../types/passenger.model";
 import Cost from "../cards/cars/Cost";
 import Extension from "../navigationBars/Extension";
@@ -44,7 +44,7 @@ export default function TimelineCardPassenger({
                     onClick={() => setRidePop({ edit: data.passengerTicektId })}
                     className="cursor width-100 text-center"
                   >
-                    Delay trip
+                    {localization["Delay trip"]}
                   </span>
                 )}
                 {isBelongToCurrentUser && (
@@ -54,7 +54,7 @@ export default function TimelineCardPassenger({
                     }
                     className="cursor width-100 text-center"
                   >
-                    Cancel trip
+                    {localization["Cancel trip"]}
                   </span>
                 )}
                 {!isBelongToCurrentUser && (
@@ -64,7 +64,7 @@ export default function TimelineCardPassenger({
                     }
                     className="cursor font-danger width-100 text-center"
                   >
-                    Report trip
+                    {localization["Report trip"]}
                   </span>
                 )}
               </div>
@@ -72,22 +72,26 @@ export default function TimelineCardPassenger({
           </div>
         </div>
         <span className="text-4 fw-bold">
-          {data.departFrom.toUpperCase()} TO {data.arriveAt.toUpperCase()}
+          {data.departFrom.toUpperCase()} {localization["TO"]}{" "}
+          {data.arriveAt.toUpperCase()}
         </span>
         <div className="d-flex gap-2 align-items-center">
-          Passengers count: {data.additionalInfo.passengerCount}
+          {localization["Passengers count"]}:{" "}
+          {data.additionalInfo.passengerCount}
         </div>
         <span className="text-3">{data.additionalInfo.details}</span>
         <div className="d-flex align-items-center gap-3">
           {isBelongToCurrentUser ? (
-            <button onClick={() => handleVisitCard()}>Visit</button>
+            <button onClick={() => handleVisitCard()}>
+              {localization["Visit"]}
+            </button>
           ) : (
             <button
               onClick={() =>
                 requestRideOnClick(`${data.authorId}_${data.passengerTicektId}`)
               }
             >
-              Request for seat
+              {localization["Request"]}
             </button>
           )}
           {petSvg(!!data.privacy.petsAllowed)}

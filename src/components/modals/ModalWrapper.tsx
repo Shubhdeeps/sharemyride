@@ -18,10 +18,8 @@ export default function ModalWrapper({
   }, []);
   return (
     <div className="modal-wrapper d-flex justify-content-center pt-5">
-      <div className="scroll">
-        <div className="modal-container secondary-bg w-100 border-r1 p-3">
-          {children}
-        </div>
+      <div className="modal-container secondary-bg border-r1 p-3">
+        {children}
       </div>
     </div>
   );

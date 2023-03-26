@@ -1,8 +1,15 @@
-import React from "react";
+import { localization } from "../../service/languages/languages";
 
 type Props = {
   onClick: Function;
-  title: string;
+  title:
+    | "Dashboard"
+    | "Alerts and News"
+    | "Favourites Routes"
+    | "My Schedule"
+    | "Market Place"
+    | "Feedback/Report"
+    | "Log out";
 };
 export default function SideBarButton({ onClick, title }: Props) {
   return (
@@ -10,7 +17,7 @@ export default function SideBarButton({ onClick, title }: Props) {
       onClick={() => onClick()}
       className="border-r1 primaryOverlay-bg fontLight w-100 p-3 noselect text-center"
     >
-      {title}
+      {localization[title]}
     </div>
   );
 }

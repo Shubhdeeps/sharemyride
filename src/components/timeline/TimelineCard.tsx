@@ -3,6 +3,7 @@ import { Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../service/firebase/firebaseConfig";
 import { firebaseTimestampToTime } from "../../service/helperFunctions/firebaseTimestampToString";
+import { localization } from "../../service/languages/languages";
 import { RideDB } from "../../types/ride.model";
 import Cost from "../cards/cars/Cost";
 import Timeline from "../cards/cars/Timeline";
@@ -73,7 +74,7 @@ export default function TimelineCard({
                     onClick={() => setRidePop({ edit: data.rideTicektId })}
                     className="cursor  width-100 text-center"
                   >
-                    Delay ride
+                    {localization["Delay ride"]}
                   </span>
                 )}
                 {isBelongToCurrentUser && (
@@ -81,7 +82,7 @@ export default function TimelineCard({
                     onClick={() => setRidePop({ delete: data.rideTicektId })}
                     className="cursor width-100 text-center"
                   >
-                    Cancel ride
+                    {localization["Cancel ride"]}
                   </span>
                 )}
                 {!isBelongToCurrentUser && (
@@ -89,7 +90,7 @@ export default function TimelineCard({
                     onClick={() => setRidePop({ report: data.rideTicektId })}
                     className="cursor font-danger width-100 text-center"
                   >
-                    Report ride
+                    {localization["Report ride"]}
                   </span>
                 )}
               </div>
@@ -131,15 +132,19 @@ export default function TimelineCard({
           </span>
         </div>
         {isCurrentUserAPassengerOfRide && !isBelongToCurrentUser && (
-          <div className="text-4 fw-bold font-safe">ACCEPTED</div>
+          <div className="text-4 fw-bold font-safe">
+            {localization["ACCEPTED"]}
+          </div>
         )}
         {isRideCancelled && (
-          <div className="text-4 fw-bold font-danger">CANCELLED</div>
+          <div className="text-4 fw-bold font-danger">
+            {localization["CANCELLED"]}
+          </div>
         )}
         <div className="d-flex align-items-center gap-3">
           {isBelongToCurrentUser || isCurrentUserAPassengerOfRide ? (
             <button className="btn-height" onClick={() => handleVisitCard()}>
-              Visit
+              {localization["Visit"]}
             </button>
           ) : (
             requestRideOnClick &&
@@ -150,7 +155,7 @@ export default function TimelineCard({
                   requestRideOnClick(`${data.authorId}_${data.rideTicektId}`)
                 }
               >
-                Request for seat
+                {localization["Request"]}
               </button>
             )
           )}

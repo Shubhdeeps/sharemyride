@@ -51,18 +51,20 @@ export default function Favourites() {
           </div>
           <div className="d-flex flex-column gap-3 position-relative">
             <TitleHeader heading="Favourite routes" />
-            {data.map((routeData) => {
-              return (
-                <React.Fragment key={routeData.routeId}>
-                  <RouteCard
-                    startPoint={routeData.depart}
-                    countryName={routeData.country}
-                    endPoint={routeData.arrive}
-                    isFavourite={true}
-                  />
-                </React.Fragment>
-              );
-            })}
+            <div className="d-flex gap-2 flex-wrap">
+              {data.map((routeData) => {
+                return (
+                  <React.Fragment key={routeData.routeId}>
+                    <RouteCard
+                      startPoint={routeData.depart}
+                      countryName={routeData.country}
+                      endPoint={routeData.arrive}
+                      isFavourite={true}
+                    />
+                  </React.Fragment>
+                );
+              })}
+            </div>
             {loading && <Loader />}
           </div>
           <FloatButton onClick={() => setNewRoutePopup(true)}>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Timestamp } from "../../../service/firebase/firebaseConfig";
 import { firebaseTimestampToTime } from "../../../service/helperFunctions/firebaseTimestampToString";
+import { localization } from "../../../service/languages/languages";
 
 type TimelineData = {
   startTime: (typeof Timestamp)[];
@@ -91,7 +92,8 @@ const Time = ({
             }`}
             key={time.seconds}
           >
-            {timeFormatted} {ind > 0 && ind === timeLastIndex && <>Updated</>}
+            {timeFormatted}{" "}
+            {ind > 0 && ind === timeLastIndex && <>{localization.Updated}</>}
           </span>
         );
       })}

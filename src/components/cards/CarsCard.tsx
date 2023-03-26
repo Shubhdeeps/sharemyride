@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../service/firebase/firebaseConfig";
+import { localization } from "../../service/languages/languages";
 import { RideDB } from "../../types/ride.model";
 import OutlinedButton from "../inputFields/OutlinedButton";
 import { AdditionalInfoBox } from "./AdditionalInfoBlock";
@@ -38,17 +39,21 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
   const isBelongToCurrentUser = data.authorId === auth.currentUser?.uid;
   const additionalInformation = [
     {
-      value: data.privacy.EVCar ? "Yes" : "No",
+      value: data.privacy.EVCar ? localization["Yes"] : localization["No"],
       key: "Electric Car",
       show: !!data.privacy.EVCar,
     },
     {
-      value: data.privacy.acceptParcel ? "Yes" : "No",
+      value: data.privacy.acceptParcel
+        ? localization["Yes"]
+        : localization["No"],
       key: "Accepting Parcels",
       show: !!data.privacy.acceptParcel,
     },
     {
-      value: data.privacy.petsAllowed ? "Yes" : "No",
+      value: data.privacy.petsAllowed
+        ? localization["Yes"]
+        : localization["No"],
       key: "Pets allowed",
       show: !!data.privacy.petsAllowed,
     },
@@ -68,7 +73,9 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
         <div className="d-flex align-items-center gap-1 d-flex justify-content-end">
           {!!data.passengerSeats && (
             <>
-              <span className="text-4 fw-bold">Seats left</span>
+              <span className="text-4 fw-bold">
+                {localization["Seats left"]}
+              </span>
               <span className="text-1-5 highlight-color">
                 {emptySeatCount}/{data.passengerSeats}
               </span>
@@ -87,7 +94,9 @@ export default function CarsCard({ data, requestRideOnClick }: Props) {
           commute="car"
         />
         <br />
-        <span className="fw-bold text-4">ADDITIONAL INFORMATION</span>
+        <span className="fw-bold text-4">
+          {localization["ADDITIONAL INFORMATION"]}
+        </span>
         <div className="d-flex gap-2 flex-wrap mb-2">
           {additionalInformation.map((info) => {
             return (
